@@ -1,0 +1,46 @@
+<variant-selects
+  class="product__select no-js-hidden {{ class }}"
+  data-section="{{ section.id }}"
+  data-url="{{ product.url }}"
+  {{ block.shopify_attributes }}
+>
+  {%- for option in product.options_with_values -%}
+    <div class="product-form__input{% unless forloop.last %} mb-1.5{% endunless %} d-flex align-items-center position-relative z-stack js">
+      <label
+        class="product-form__variant-selector__label text-nowrap font-medium text-1.23 text-1.54--desk position-absolute events-none"
+        for="Option-{{ section.id }}-{{ forloop.index0 }}"
+      >
+        {{ option.name }}
+      </label>
+      <select
+        id="Option-{{ section.id }}-{{ forloop.index0 }}"
+        class="product-form__variant-selector select__select w-100 link--full text-right text-transparent"
+        name="options[{{ option.name | escape }}]"
+        form="{{ product_form_id }}"
+      >
+        {%- for value in option.values -%}
+          <option
+            value="{{ value | escape }}"
+            {% if option.selected_value == value %}
+              selected="selected"
+            {% endif %}
+          >
+            {{ value }}
+          </option>
+        {%- endfor -%}
+      </select>
+      {%- render 'icon' with 'chevron', class: 'position-absolute events-none' -%}
+
+      <span
+        class="product-form__variant-selector__value position-absolute text-1.23 text-1.54--desk lh-150 events-none"
+        data-option-value
+      >
+        {{ option.selected_value }}
+      </span>
+    </div>
+  {%- endfor -%}
+
+  <script type="application/json">
+    {{ product.variants | json }}
+  </script>
+</variant-selects>

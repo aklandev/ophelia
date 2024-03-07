@@ -1,0 +1,50 @@
+.testimonials {
+  padding: 0 0 25px;
+  margin-top: -50px;
+  @include media-breakpoint-up(md) {
+    margin-top: 0;
+    padding: 100px 0;
+  }
+  .testimonial {
+    @include media-breakpoint-up(lg) {
+      max-width: calc(100% - 240px);
+      margin: 0 auto;
+    }
+  }
+  .flickity-viewport {
+    overflow: visible;
+    transition: height 0.2s;
+  }
+  &__slider {
+    z-index: 1;
+    &__inner {
+      @include media-breakpoint-up(lg) {
+        padding: 0 25px;
+      }
+    }
+    &__btn {
+      z-index: 3;
+      @include media-breakpoint-up(lg) {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+    &__prev-btn {
+      left: 0;
+      transform: rotate(180deg) translateY(50%);
+    }
+    &__next-btn {
+      right: 0;
+    }
+    &__slide {
+      @include media-breakpoint-down(md) {
+        opacity: 0;
+        transition: opacity 0.2s;
+        &.is-selected {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}

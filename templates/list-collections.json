@@ -1,0 +1,46 @@
+{
+  "sections": {
+    "1647245372c5a640e8": {
+      "type": "single-collection",
+      "settings": {
+        "heading_tag": "h1",
+        "section_collection": "creams",
+        "show_description": true,
+        "show_collection_image": true,
+        "enable_lazy": true,
+        "show_ellipse": true,
+        "button_label": "Shop creams",
+        "show_button_arrow": true,
+        "remove_top_margin": true,
+        "remove_bottom_margin": false
+      }
+    },
+    "main": {
+      "type": "main-list-collections",
+      "blocks": {
+        "132419f8-c3c2-4972-b854-c393789206b2": {
+          "type": "collection",
+          "settings": {
+            "collection": "frontpage"
+          }
+        }
+      },
+      "block_order": [
+        "132419f8-c3c2-4972-b854-c393789206b2"
+      ],
+      "settings": {
+        "override_with_blocks": false,
+        "paginate_collections": 8,
+        "enable_button": true,
+        "button_label": "Shop all",
+        "button_url": "shopify:\/\/collections\/all",
+        "remove_top_margin": true,
+        "remove_bottom_margin": false
+      }
+    }
+  },
+  "order": [
+    "1647245372c5a640e8",
+    "main"
+  ]
+}

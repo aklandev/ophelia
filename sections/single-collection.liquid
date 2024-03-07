@@ -1,0 +1,192 @@
+{{ 'section-single-collection.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .main-content {
+    overflow-x: hidden;
+  }
+</style>
+
+{% assign section_collection = section.settings.section_collection %}
+
+<div class="section-space{% if section.settings.remove_top_margin %} mt-0{% endif %}{% if section.settings.remove_bottom_margin %} mb-0{% endif %}">
+  <div class="page-width{% unless section.settings.show_collection_image %} page-width--narrow{% endunless %}">
+    <div class="grid grid--1-col{% if section.settings.show_collection_image %} grid--2-col-tablet grid--2-col-desktop{% endif %} align-items-center position-relative">
+      {%- if section.settings.show_collection_image -%}
+        <div class="grid__item">
+          <div class="mx-n1.5 mx-0--desk">
+            <div class="media media--square media--lazy-animation">
+              {% if section_collection.image != blank %}
+                {%- liquid
+                  assign loading = 'lazy'
+                  assign preload = false
+                  if section.settings.enable_lazy
+                    assign loading = 'eager'
+                    assign preload = true
+                  endif
+                -%}
+                {{
+                  section_collection.image
+                  | image_url: width: 1280
+                  | image_tag:
+                    loading: loading,
+                    preload: preload,
+                    sizes: '(min-width: 750px) calc((100vw - 8rem) / 2), (min-width: 1440px) calc((var(--page-width) - 8rem) / 2 ), 100vw',
+                    widths: '550, 720, 990, 1100, 1280'
+                }}
+              {% else %}
+                {{- 'collection-1' | placeholder_svg_tag: 'absolute-fill placeholder-svg' -}}
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+      <div class="grid__item">
+        <header class="pt-2 pt-4--desk pb-1 pt-10--xxl pb-10--desk position-relative">
+          <{{ section.settings.heading_tag }} class="h1{% if section.settings.show_collection_image %} article__header__title{% endif %}">
+            <span class="visually-hidden">
+              {{- 'collection.title' | t -}}
+              :
+            </span>
+            {{ section_collection.title | escape | default: 'Featured collection' }}
+          </{{ section.settings.heading_tag }}>
+
+          {%- if section_collection.description and section.settings.show_description -%}
+            <p class="rte rte--narrow text-1.23 text-1.85--desk mt-2--desk">
+              {{ section.settings.section_collection.description }}
+            </p>
+          {%- endif -%}
+
+          <div class="d-flex mt-2 mt-3--desk">
+            <a
+              {% if section_collection == blank %}
+                role="link" aria-disabled="true"
+              {% else %}
+                href="{{ section_collection.url }}"
+              {% endif %}
+              class="btn btn--secondary"
+            >
+              {{- section.settings.button_label -}}
+            </a>
+
+            {% if section.settings.show_button_arrow %}
+              <a
+                {% if section_collection == blank %}
+                  role="link" aria-disabled="true"
+                {% else %}
+                  href="{{ section_collection.url }}"
+                {% endif %}
+                class="link link--with-icon ml-2--desk"
+                tabindex="-1"
+              >
+                <span class="visually-hidden">{{ section.settings.button_label }}</span>
+                {% render 'icon' with 'arrow', class: 'link__icon' %}
+              </a>
+            {% endif %}
+          </div>
+        </header>
+      </div>
+      <div class="grid__item grid__item--full-width">
+        <div class="position-relative mx-n10{% if section.settings.show_collection_image %} mx-0--xl{% else %} mx-n5--desk{% endif %} events-none">
+          {% if section.settings.show_ellipse != blank %}
+            <div
+              class="article__header__ellipse{% unless section.settings.show_collection_image %} no-image{% endunless %} rounded-ellipse position-absolute w-100"
+            ></div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.single-collection.name",
+  "class": "single-collection",
+  "settings": [
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "t:sections.single-collection.settings.heading_tag.label",
+      "options": [
+        {
+          "value": "h1",
+          "label": "H1"
+        },
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        }
+      ],
+      "default": "h1",
+      "info": "t:sections.single-collection.settings.heading_tag.info"
+    },
+    {
+      "type": "collection",
+      "id": "section_collection",
+      "label": "t:sections.single-collection.settings.section_collection.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "t:sections.single-collection.settings.show_description.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_image",
+      "label": "t:sections.single-collection.settings.show_collection_image.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_lazy",
+      "label": "t:sections.single-collection.settings.enable_lazy.label",
+      "default": true,
+      "info": "t:sections.single-collection.settings.enable_lazy.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_ellipse",
+      "label": "t:sections.single-collection.settings.show_ellipse.label",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:sections.single-collection.settings.button_label.label",
+      "default": "Shop now"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button_arrow",
+      "label": "t:sections.single-collection.settings.show_button_arrow.label",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:sections.common.heading_general"
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_top_margin",
+      "label": "t:sections.common.remove_margin.top",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_bottom_margin",
+      "label": "t:sections.common.remove_margin.bottom",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.single-collection.name"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,153 @@
+{% comment %}
+  ------
+  Global Font Settings
+  ------
+{% endcomment %}
+
+{%- case settings.font_type -%}
+  {%- when 'shopify' -%}
+    {%- unless settings.type_header_font.system? and settings.type_body_font.system? -%}
+      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    {%- endunless -%}
+
+    {%- liquid
+      assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = settings.type_body_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    %}
+
+    {%- style -%}
+      {{ settings.type_body_font | font_face: font_display: 'swap' | preload_tag: as: 'font' }}
+      {{ body_font_bold | font_face: font_display: 'swap' | preload_tag: as: 'font' }}
+      {{ body_font_italic | font_face: font_display: 'swap' | preload_tag: as: 'font' }}
+      {{ body_font_bold_italic | font_face: font_display: 'swap' | preload_tag: as: 'font' }}
+      {{ settings.type_header_font | font_face: font_display: 'swap' | preload_tag: as: 'font' }}
+
+      :root {
+        --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+        --font-body-style: {{ settings.type_body_font.style }};
+        --font-body-weight: {{ settings.type_body_font.weight }};
+
+        --font-heading-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
+        --font-heading-style: {{ settings.type_header_font.style }};
+        --font-heading-weight: {{ settings.type_header_font.weight }};
+      }
+    {%- endstyle -%}
+  {%- when 'google' -%}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    {%- capture heading_font_formated_string -%}
+      {{ settings.header_font_google | replace: ' ', '+' }}
+      {%- if settings.google_font_style == 'reg' -%}
+        :wght@{{ settings.google_font_weight }}
+      {%- elsif settings.google_font_style == 'ital' -%}
+        :ital,wght@0,{{ settings.google_font_weight | minus: 100 }};0,{{ settings.google_font_weight }};1,{{ settings.google_font_weight | minus: 100 }};1,{{ settings.google_font_weight }}
+      {%- endif -%}
+    {%- endcapture -%}
+
+    {%- capture body_font_formated_string -%}
+      {{ settings.body_font_google | replace: ' ', '+' }}:wght@{{- settings.google_font_weight_body | minus: 100 -}};{{- settings.google_font_weight_body -}};{{- settings.google_font_weight_body | plus: 100 -}};{{- settings.google_font_weight_body | plus: 300 -}}
+    {%- endcapture -%}
+
+    {% comment %}theme-check-disable RemoteAsset{% endcomment %}
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family={{ heading_font_formated_string | strip_newlines }}&family={{ body_font_formated_string | strip_newlines }}&display=swap"
+      media="print"
+      onload="this.media='all'"
+    >
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family={{ heading_font_formated_string | strip_newlines }}&family={{ body_font_formated_string | strip_newlines }}&display=swap"
+      >
+    </noscript>
+    {% comment %}theme-check-enable RemoteAsset{% endcomment %}
+
+    {% style %}
+      :root {
+        --font-heading-family: {{ settings.header_font_google }}, sans-serif;
+        --font-heading-style: {{ settings.google_font_style }};
+        --font-heading-weight: {{ settings.google_font_weight }};
+
+        --font-body-family: {{ settings.body_font_google }}, sans-serif;
+        --font-body-style: normal;
+        --font-body-weight: {{ settings.google_font_weight_body }};
+      }
+    {% endstyle %}
+{%- endcase -%}
+
+{% comment %}
+  ------
+  Global CSS Variables and Critical Styles
+  ------
+{% endcomment %}
+
+{% style %}
+  :root {
+    --duration-short: 100ms;
+    --duration-default: 200ms;
+    --duration-long: 500ms;
+
+    --font-body-scale: 1.3;
+    --font-heading-scale: 0.7692307692307693;
+
+    --btn-border-width: {{ settings.border_width }}px;
+    --btn-border-radius: {{ settings.border_radius }}{%- if settings.border_radius == 50 -%}%{%- else -%}px{%- endif -%};
+    --animation-duration: {%- case settings.button_animation_duration -%}{%- when 'short' -%}var(--duration-short){%- when 'default' -%}var(--duration-default){%- when 'long' -%}var(--duration-long){%- endcase -%};
+
+    --color-base-text: {{ settings.colors_text.red }}, {{ settings.colors_text.green }}, {{ settings.colors_text.blue }};
+    --color-primary: {{ settings.colors_primary.red }}, {{ settings.colors_primary.green }}, {{ settings.colors_primary.blue }};
+    --color-secondary: {{ settings.colors_secondary.red }}, {{ settings.colors_secondary.green }}, {{ settings.colors_secondary.blue }};
+    --color-light: {{ settings.colors_light.red }}, {{ settings.colors_light.green }}, {{ settings.colors_light.blue }};
+    --color-body: {{ settings.body_color.red }}, {{ settings.body_color.green }}, {{ settings.body_color.blue }};
+
+    --bg-secondary: {{ settings.bg_secondary.red }}, {{ settings.bg_secondary.green }}, {{ settings.bg_secondary.blue }};
+    --bg-loading: {{ settings.bg_loading }};
+    --bg-tertiary: {{ settings.colors_tertiary.red }}, {{ settings.colors_tertiary.green }}, {{ settings.colors_tertiary.blue }};
+
+    --drawer-background: {{ settings.sidebar_bg_color.red }}, {{ settings.sidebar_bg_color.green }}, {{ settings.sidebar_bg_color.blue }};
+    --drawer-overlay-background: {{ settings.sidebar_overlay_bg_color.red }}, {{ settings.sidebar_overlay_bg_color.green }}, {{ settings.sidebar_overlay_bg_color.blue }};
+    --drawer-overlay-opacity: {{ settings.sidebar_opacity | divided_by: 100.0 }};
+    --drawer-grain: url('{{ settings.sidebar_grain | image_url: width: 25 }}');
+
+    --page-width: 1440px;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
+  }
+
+  html {
+    box-sizing: border-box;
+    font-size: calc(var(--font-body-scale) * 62.5%);
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    width: 100%;
+    font-size: 1.25rem;
+    letter-spacing: normal;
+    color: rgb(var(--color-base-text));
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    background-color: rgb(var(--color-body));
+  }
+
+  @media screen and (min-width: 750px) {
+    body {
+      font-size: 1.4rem;
+    }
+  }
+
+  @media screen and (min-width: 992px) {
+    body {
+      font-size: 1.55rem;
+    }
+  }
+{% endstyle %}

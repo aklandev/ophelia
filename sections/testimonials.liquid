@@ -1,0 +1,125 @@
+{{ 'section-testimonials.css' | asset_url | stylesheet_tag }}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+  }
+</style>
+
+<div class="section-space{% if section.settings.remove_top_margin %} mt-0{% endif %}{% if section.settings.remove_bottom_margin %} mb-0{% endif %} overflow-hidden">
+  <div
+    class="testimonials"
+    {% if section.settings.grain != blank %}
+      style="background-image: url('{{ section.settings.grain | image_url: width: 1000 }}')"
+    {% endif %}
+  >
+    <div class="page-width">
+      <testimonials-slider class="testimonials__slider d-block position-relative">
+        {% if section.blocks.size > 1 %}
+          <button
+            class="testimonials__slider__btn testimonials__slider__prev-btn link link--with-icon small-hide medium-hide"
+            aria-label="{{ 'accessibility.previous_slide' | t }}"
+            data-prev
+          >
+            {%- render 'icon' with 'arrow', class: 'link__icon' -%}
+          </button>
+        {% endif %}
+        <div class="testimonials__slider__inner w-100" data-slider>
+          {% for block in section.blocks %}
+            <div class="testimonials__slider__slide w-100">
+              {%- render 'single-testimonial',
+                content: block.settings.content,
+                author: block.settings.title,
+                avatar: block.settings.avatar
+              %}
+            </div>
+          {% endfor %}
+        </div>
+        {% if section.blocks.size > 1 %}
+          <div class="text-right pr-3.5 pr-0--desk">
+            <button
+              class="testimonials__slider__btn testimonials__slider__next-btn link link--with-icon"
+              aria-label="{{ 'accessibility.next_slide' | t }}"
+              data-next
+            >
+              {%- render 'icon' with 'arrow', class: 'link__icon' -%}
+            </button>
+          </div>
+        {% endif %}
+      </testimonials-slider>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.testimonials.name",
+  "tag": "section",
+  "class": "overflow-hidden no-js-hidden",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.testimonials.settings.header_1"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "t:sections.testimonials.settings.bg_color.label",
+      "default": "#ffffff"
+    },
+    {
+      "type": "image_picker",
+      "id": "grain",
+      "label": "t:sections.testimonials.settings.grain.label",
+      "info": "t:sections.testimonials.settings.grain.info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.common.heading_general"
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_top_margin",
+      "label": "t:sections.common.remove_margin.top",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_bottom_margin",
+      "label": "t:sections.common.remove_margin.bottom",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "t:sections.testimonials.blocks.testimonial.name",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "t:sections.common.text",
+          "default": "<p><em>Text content</em></p>"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.testimonials.blocks.testimonial.settings.title.label",
+          "default": "Author"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "t:sections.testimonials.blocks.testimonial.settings.avatar.label",
+          "info": "t:sections.testimonials.blocks.testimonial.settings.avatar.info"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.testimonials.name"
+    }
+  ]
+}
+{% endschema %}

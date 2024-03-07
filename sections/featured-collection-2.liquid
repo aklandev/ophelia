@@ -1,0 +1,128 @@
+{% liquid
+  if section.settings.collection != blank
+    assign current_collection = section.settings.collection
+  else
+    assign current_collection = collection
+  endif
+
+  if section.settings.title != blank
+    assign title = section.settings.title | remove: '<p>' | remove: '</p>'
+  else
+    assign title = current_collection.title | escape
+  endif
+
+  if section.settings.description != blank
+    assign description = section.settings.description
+  else
+    assign description = current_collection.description
+  endif
+%}
+
+{% if current_collection %}
+  <div class="section-space{% if section.settings.remove_top_margin %} mt-0{% endif %}{% if section.settings.remove_bottom_margin %} mb-0{% endif %}">
+    <div class="page-width d-flex flex-wrap align-items-start">
+      <div class="collection__info mb-3.5">
+        <h2 class="collection__title text-primary">
+          <span class="visually-hidden">{{ 'collection.title' | t }}: </span>
+          {{- title -}}
+        </h2>
+        <div class="rte text-secondary">{{ description }}</div>
+
+        {%- if section.settings.menu != blank -%}
+          <ul class="collection__menu mt-2.5 mr-n1.5 pb-3 d-flex align-items-start align-items-start--desk list-unstyled text-nowrap lh-133">
+            {% for link in section.settings.sidebar_menu.links %}
+              <li class="collection__menu__item mb-1.5--desk">
+                <a
+                  href="{{ link.url }}"
+                  class="link focus-inset d-flex align-items-center"
+                  {% if link.current %}
+                    aria-current="page"
+                  {% endif %}
+                >
+                  <span>{{ link.title | escape }}</span>
+                  <span>{%- render 'icon' with 'arrow', class: 'link__icon' -%}</span>
+                  <span class="mobile-icon">{%- render 'icon' with 'arrow-short', class: 'link__icon' -%}</span>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+
+      <div class="collection__product-list w-100 mb-n2--desk">
+        <div id="product-grid" data-id="{{ section.id }}" class="grid grid--2-col">
+          {%- for product in current_collection.products limit: section.settings.products_per_page -%}
+            <div class="grid__item mb-2--desk">
+              {% render 'card-product', card_product: product %}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "t:sections.featured-collection-2.name",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.featured-collection-2.settings.header.content"
+    },
+    {
+      "type": "richtext",
+      "id": "title",
+      "label": "t:sections.featured-collection-2.settings.title.label",
+      "info": "t:sections.featured-collection-2.settings.title.info"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "t:sections.featured-collection-2.settings.description.label",
+      "info": "t:sections.featured-collection-2.settings.description.info"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "t:sections.featured-collection-2.settings.collection.label"
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "default": 4,
+      "label": "t:sections.main-collection.settings.products_per_page.label"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "t:sections.featured-collection-2.settings.menu.label",
+      "info": "t:sections.featured-collection-2.settings.menu.info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.common.heading_general"
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_top_margin",
+      "label": "t:sections.common.remove_margin.top",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_bottom_margin",
+      "label": "t:sections.common.remove_margin.bottom",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.featured-collection-2.name"
+    }
+  ]
+}
+{% endschema %}

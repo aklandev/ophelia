@@ -1,0 +1,236 @@
+{{ 'section-rich-text.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  #shopify-section-{{ section.id }}.section-space {
+  {% if section.settings.remove_top_margin %}
+    margin-top: 0;
+  {% endif %}
+  {% if section.settings.remove_bottom_margin %}
+    margin-bottom: 0;
+  {% endif %}
+  }
+  #shopify-section-{{ section.id }} .page-width--narrow {
+    {% if section.settings.box_width %}
+      max-width: 100rem;
+    {% endif %}
+  }
+{%- endstyle -%}
+
+<div class="page-width{% unless section.settings.box_limited %} page-width--narrow{% endunless %} text-{{ section.settings.text_align }}">
+  <div>
+    {%- for block in section.blocks -%}
+      <div class="rich-text__block--{{ block.type }}{% unless forloop.last %} mb-2{% endunless %}">
+        {%- case block.type -%}
+          {%- when 'heading' -%}
+            <h2
+              class="rich-text__heading {{ block.settings.heading_size }} text-{{ block.settings.heading_color }}"
+              {{ block.shopify_attributes }}
+            >
+              {{ block.settings.heading | remove: '<p>' | remove: '</p>' }}
+            </h2>
+          {%- when 'text' -%}
+            <div class="rich-text__text rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+          {%- when 'button' -%}
+            <a
+              {% if block.settings.button_link == blank %}
+                role="link" aria-disabled="true"
+              {% else %}
+                href="{{ block.settings.button_link }}"
+              {% endif %}
+              class="{% if block.settings.button_style == 'primary' %}btn btn--primary{% elsif block.settings.button_style == 'secondary' %}btn btn--secondary{% else %}link link--with-icon font-medium{% endif %} lh-125 lh-133--desk"
+              {{ block.shopify_attributes }}
+              {% if block.settings.button_target == 'target' %}
+                target="_blank"
+              {% endif %}
+            >
+              {{ block.settings.title | escape }}
+              {% if block.settings.button_style == 'link' %}
+                {%- render 'icon' with 'arrow', class: 'link__icon' -%}
+              {% elsif block.settings.button_style == 'link-short' %}
+                {%- render 'icon' with 'arrow-short', class: 'link__icon' -%}
+              {% endif %}
+            </a>
+          {%- when 'separator' -%}
+            <hr class="rich-text__separator{% if forloop.last %} mb-0{% endif %}" {{ block.shopify_attributes }}>
+          {%- when 'custom_liquid' -%}
+            <div {{ block.shopify_attributes }}>
+              {{ block.settings.custom_liquid }}
+            </div>
+        {%- endcase -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.rich-text.name",
+  "tag": "section",
+  "class": "rich-text section-space",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "box_width",
+      "label": "t:sections.rich-text.settings.full_width",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "options": [
+        { "label": "t:sections.rich-text.settings.text_align.option_1", "value": "left" },
+        { "label": "t:sections.rich-text.settings.text_align.option_2", "value": "center" },
+        { "label": "t:sections.rich-text.settings.text_align.option_3", "value": "right" }
+      ],
+      "default": "center",
+      "label": "t:sections.rich-text.settings.text_align.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.common.heading_general"
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_top_margin",
+      "label": "t:sections.common.remove_margin.top",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_bottom_margin",
+      "label": "t:sections.common.remove_margin.bottom",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "t:sections.rich-text.blocks.heading.name",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "heading",
+          "default": "<p>Talk about your <i>brand</i></p>",
+          "label": "t:sections.rich-text.blocks.heading.settings.heading"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "options": [
+            {
+              "value": "h3",
+              "label": "t:sections.rich-text.blocks.heading.settings.heading_size.option_1"
+            },
+            {
+              "value": "h2",
+              "label": "t:sections.rich-text.blocks.heading.settings.heading_size.option_2"
+            },
+            {
+              "value": "h1",
+              "label": "t:sections.rich-text.blocks.heading.settings.heading_size.option_3"
+            }
+          ],
+          "default": "h2",
+          "label": "t:sections.rich-text.blocks.heading.settings.heading_size.label"
+        },
+        {
+          "type": "select",
+          "id": "heading_color",
+          "options": [
+            { "label": "t:sections.common.color.primary", "value": "primary" },
+            { "label": "t:sections.common.color.secondary", "value": "secondary" }
+          ],
+          "default": "secondary",
+          "label": "t:sections.rich-text.blocks.heading.settings.heading_color"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "t:sections.rich-text.blocks.text.name",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "default": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>",
+          "label": "t:sections.rich-text.blocks.text.settings.text"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "t:sections.rich-text.blocks.button.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Button label",
+          "label": "t:sections.common.button.label"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "t:sections.common.button.url"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "options": [
+            { "label": "t:sections.common.button.style.option_1", "value": "primary" },
+            { "label": "t:sections.common.button.style.option_2", "value": "secondary" },
+            { "label": "t:sections.common.button.style.option_4", "value": "link" },
+            { "label": "t:sections.common.button.style.option_5", "value": "link-short" }
+          ],
+          "default": "primary",
+          "label": "t:sections.common.button.style.label"
+        },
+        {
+          "type": "select",
+          "id": "button_target",
+          "options": [
+            { "label": "t:sections.common.button.target.option_1", "value": "normal" },
+            { "label": "t:sections.common.button.target.option_2", "value": "target" }
+          ],
+          "default": "normal",
+          "label": "t:sections.common.button.target.label"
+        }
+      ]
+    },
+    {
+      "type": "separator",
+      "name": "t:sections.rich-text.blocks.separator.name"
+    },
+    {
+      "type": "custom_liquid",
+      "name": "t:sections.rich-text.blocks.liquid.name",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "t:sections.rich-text.blocks.liquid.settings.custom_liquid.label",
+          "info": "t:sections.rich-text.blocks.liquid.settings.custom_liquid.info"
+        }
+      ]
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.rich-text.name",
+      "blocks": [
+        {
+          "type": "heading"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "button"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,24 @@
+.testimonial {
+  border: 1px solid c_rgb(var(--color-secondary));
+  border-radius: 160% 50%;
+  padding: 9.23rem 7.7rem 3.46rem;
+  background-repeat: repeat repeat;
+
+  @include media-breakpoint-down(sm) {
+    background-image: none !important;
+  }
+
+  @include media-breakpoint-up(sm) {
+    border-radius: 100% 50%;
+  }
+  @include media-breakpoint-up(lg) {
+    border-radius: 50% 68%;
+    padding: 10.77rem 7.3rem;
+  }
+  &__content-wrapper {
+    max-width: 709px;
+  }
+  &__avatar {
+    width: 76px;
+  }
+}

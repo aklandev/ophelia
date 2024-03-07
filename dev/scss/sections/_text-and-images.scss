@@ -1,0 +1,100 @@
+.text-and-images {
+  &__content {
+    z-index: 2;
+
+    @include media-breakpoint-up(lg) {
+      max-width: 385px;
+      margin: 0 auto;
+    }
+    @include media-breakpoint-down(md) {
+      padding: 0 !important;
+    }
+    //@media (max-width: 991.98px) and (min-width: 768px) {
+    //  padding-top: 2rem !important;
+    //  padding-bottom: 2rem !important;
+    //}
+    &.extra-space {
+      @include media-breakpoint-up(lg) {
+        &--1 {
+          padding-left: 6.15rem;
+          max-width: calc(385px + 6.15rem);
+
+          padding-top: 7.7rem;
+        }
+        &--3 {
+          padding-bottom: 18.4rem;
+        }
+      }
+    }
+  }
+  &__image {
+    @media screen and (max-width: 1199.98px) and (min-width: 992px) {
+      transform: scale(0.8);
+    }
+    @include media-breakpoint-up(lg) {
+      position: absolute;
+      &--1 {
+        width: 31%;
+        left: 0;
+        top: 0;
+        img {
+          height: auto;
+        }
+      }
+      &--2 {
+        right: 0;
+        top: 5.5rem;
+      }
+      &--3 {
+        right: 163px;
+        top: 264px;
+      }
+      &--4 {
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+    @include media-breakpoint-down(md) {
+      width: calc(50% + 20px);
+      img {
+        height: auto;
+        max-width: none;
+        width: 100%;
+      }
+      &--1 {
+        margin-right: -20px;
+        z-index: 1;
+      }
+      &--4 {}
+      &--2 {}
+      &--3 {
+        margin-left: -20px;
+      }
+    }
+  }
+  &__ellipse {
+    border: 1px solid c_rgb(var(--color-primary));
+    border-radius: 160% 50%;
+    padding-bottom: 70%;
+
+    &__wrapper {
+      top: 50%;
+      left: -300px;
+      right: -300px;
+      transform: translateY(-50%);
+      pointer-events: none;
+      z-index: -1;
+
+      @include media-breakpoint-up(lg) {
+        left: 60px;
+        right: 60px;
+        z-index: 1;
+      }
+
+      @media screen and (max-width: 1199.98px) and (min-width: 992px) {
+        top: 35%;
+      }
+    }
+  }
+}

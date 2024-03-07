@@ -1,0 +1,16 @@
+{{ 'section-main-404.css' | asset_url | stylesheet_tag }}
+
+<div class="page-width">
+  <h1 class="template-404__title">{{ 'sections.main_404.title' | t }}</h1>
+  <p class="rte">{{ 'sections.main_404.subtext' | t }}</p>
+  <a href="{{ routes.all_products_collection_url }}" class="template-404__btn btn btn--primary">
+    {{ 'sections.main_404.button' | t }}
+  </a>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main-404.name",
+  "class": "template-404__inner text-center"
+}
+{% endschema %}

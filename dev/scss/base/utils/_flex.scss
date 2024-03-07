@@ -1,0 +1,55 @@
+// Flex Utils
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.flex-column {
+  flex-direction: column;
+}
+.flex-fill {
+  flex-grow: 1;
+}
+.align-items-start {
+  align-items: start;
+}
+.align-items-center {
+  align-items: center;
+}
+.align-items-baseline {
+  align-items: baseline;
+}
+.justify-content-start {
+  justify-content: start;
+}
+.justify-content-center {
+  justify-content: center;
+}
+.justify-content-between {
+  justify-content: space-between;
+}
+.justify-content-end {
+  justify-content: flex-end;
+}
+
+.flex-center {
+  @extend .d-flex, .align-items-center, .justify-content-center;
+}
+@include media-breakpoint-up(md) {
+  .flex-column--desk {
+    flex-direction: column;
+  }
+  .justify-content-between--desk {
+    justify-content: space-between;
+  }
+  .align-items-center--desk {
+    align-items: center;
+  }
+  .align-items-start--desk {
+    align-items: start;
+  }
+  .flex-row--desk {
+    flex-direction: row;
+  }
+}
+.flex-shrink-0 {
+  flex-shrink: 0;
+}

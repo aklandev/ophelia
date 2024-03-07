@@ -1,0 +1,18 @@
+.rich-text {
+  &__separator {
+    margin: 3.85rem -1.5rem;
+
+    @include media-breakpoint-up(md) {
+      margin: 6.15rem 0;
+    }
+  }
+}
+
+.main-page + .rich-text {
+  .rich-text__block--button:first-child {
+    margin-top: -1rem;
+    @include media-breakpoint-up(md) {
+      margin-top: -3.85rem;
+    }
+  }
+}

@@ -1,0 +1,205 @@
+{% assign gift_card_value = gift_card.initial_value | money %}
+{% assign gift_card_balance = gift_card.balance | money %}
+{% if settings.currency_code == 'with_currency_code' %}
+  {% assign gift_card_value = gift_card.initial_value | money_with_currency %}
+  {% assign gift_card_balance = gift_card.balance | money_with_currency %}
+{% elsif settings.currency_code == 'without_trailing_zeros' %}
+  {% assign gift_card_value = gift_card.initial_value | money_without_trailing_zeros %}
+  {% assign gift_card_balance = gift_card.balance | money_without_trailing_zeros %}
+{% endif %}
+
+<style>
+  .header__heading-logo svg,
+  img.header__heading-logo {
+    max-width: {{ section.settings.logo_width_mobile }}px;
+  }
+
+  @media screen and (min-width: 767px) {
+    .header__heading-logo svg,
+    img.header__heading-logo {
+      max-width: {{ section.settings.logo_width }}px;
+    }
+  }
+  .rounded-ellipse {
+    transform: translateY(-22%);
+  }
+</style>
+
+<header class="header">
+  <div class="header__logo flex-center text-center">
+    <a href="{{ routes.root_url }}" class="d-block focus-inset position-relative text-primary">
+      {%- case section.settings.logo_type -%}
+      {%- when 'vector' -%}
+        {%- if section.settings.logo_code != blank -%}
+          <span class="header__heading-logo d-block">{{ section.settings.logo_code }}</span>
+        {%- else -%}
+          <span class="header__heading-logo h2">{{ shop.name }}</span>
+        {%- endif -%}
+      {%- when 'raster' -%}
+        {%- if section.settings.logo != blank -%}
+          {%- assign image_size = section.settings.logo_width | append: 'x' -%}
+          <img srcset="{{ section.settings.logo | img_url: image_size }} 1x, {{ section.settings.logo | img_url: image_size, scale: 2 }} 2x"
+               src="{{ section.settings.logo | img_url: image_size }}"
+               loading="lazy"
+               class="header__heading-logo"
+               width="{{ section.settings.logo.width }}"
+               height="{{ section.settings.logo.height }}"
+               alt="{{ section.settings.logo.alt | default: shop.name | escape }}"
+          >
+        {%- else -%}
+          <span class="header__heading-logo h2">{{ shop.name }}</span>
+        {%- endif -%}
+      {% endcase %}
+    </a>
+  </div>
+</header>
+
+<main class="pt-3 pt-5--desk pb-3 pb-4--desk">
+  <h1 class="mb-2--desk">{{ 'gift_cards.issued.heading_html' | t: value: gift_card_value, shop: shop.domain }}</h1>
+
+  <div class="rte">
+    <p>{{ 'gift_cards.issued.value_html' | t: value: gift_card_value }}</p>
+
+    {%- if gift_card.enabled == false or gift_card.expired -%}
+      <p class="text-tertiary">{{ 'gift_cards.issued.expired' | t }}</p>
+    {%- endif -%}
+
+    {%- if gift_card.balance != gift_card.initial_value -%}
+      <p class="text-tertiary">{{ 'gift_cards.issued.remaining_html' | t: balance: gift_card_balance }}</p>
+    {%- endif -%}
+  </div>
+
+  <div class="mt-4 mt-13--desk">
+    <div class="position-relative mx-n5 z-behind small-hide medium-hide">
+      <div class="rounded-ellipse position-absolute w-100"> </div>
+    </div>
+    <div class="flex-center mb-1.5 mb-3--desk" data-gift-qr data-identifier="{{ gift_card.qr_identifier }}"></div>
+    <input
+      type="text"
+      class="mb-1.5 mb-3--desk w-100 border-none bg-transparent text-secondary font-medium text-2.3 text-3.07--desk text-center"
+      value="{{ gift_card.code | format_code }}"
+      aria-label="{{ 'gift_cards.issued.gift_card_code' | t }}"
+      data-gift-number
+      readonly
+    >
+    <div>
+      <button class="btn btn--secondary" data-copy-link>{{ 'gift_cards.issued.copy_code' | t }}</button>
+      <span class="d-block mt-1" role="status" data-copy-success></span>
+      <template>
+        {{ 'gift_cards.issued.copy_code_success' | t }}
+      </template>
+    </div>
+  </div>
+
+  <div class="mt-4 mt-13--desk pt-3--desk">
+    <div>
+      <a href="{{ section.settings.button_url | default: shop.url }}" class="btn btn--primary" target="_blank" rel="noopener" aria-describedby="a11y-new-window-message">
+        {{ section.settings.button_label }}
+      </a>
+    </div>
+    <div class="mt-1.5 mt-3--desk">
+      <button class="link" onclick="window.print();">
+        {{ 'gift_cards.issued.print_gift_card' | t }}
+      </button>
+    </div>
+  </div>
+</main>
+
+<div hidden>
+  <span id="a11y-new-window-message">{{ 'accessibility.link_messages.new_window' | t }}</span>
+</div>
+
+<script>
+    var string = { qrImageAlt: {{ 'gift_cards.issued.qr_image_alt' | t | json }} };
+    document.addEventListener('DOMContentLoaded', function() {
+        new QRCode( document.querySelector('[data-gift-qr]'), {
+            text: document.querySelector('[data-gift-qr]').dataset.identifier,
+            width: 120,
+            height: 120,
+            imageAltText: string.qrImageAlt
+        });
+    });
+
+    var template = document.getElementsByTagName("template")[0];
+    var clonedTemplate = template.content.cloneNode(true);
+
+    var isMessageDisplayed = false
+    document
+        .querySelector('[data-copy-link]')
+        .addEventListener('click', () => {
+            navigator.clipboard.writeText(document.querySelector('[data-gift-number]').value).then(function () {
+                if (!isMessageDisplayed) {
+                    document.querySelector('[data-copy-success]').appendChild(clonedTemplate);
+                    isMessageDisplayed = true
+                }
+            });
+        });
+</script>
+
+{% schema %}
+{
+  "name": "Gift card",
+  "class": "page-width page-width--narrow text-center min-vh-100",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Logo settings"
+    },
+    {
+      "type": "select",
+      "id": "logo_type",
+      "options": [
+        {"label": "Raster image", "value": "raster"},
+        {"label": "Vector image", "value": "vector"}
+      ],
+      "default": "raster",
+      "label": "Logo Type"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Raster image"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 250,
+      "step": 10,
+      "default": 100,
+      "unit": "t:sections.header.settings.logo_width.unit",
+      "label": "Custom logo width | Desktop"
+    },
+    {
+      "type": "range",
+      "id": "logo_width_mobile",
+      "min": 50,
+      "max": 250,
+      "step": 10,
+      "default": 100,
+      "unit": "t:sections.header.settings.logo_width.unit",
+      "label": "Custom logo width | Mobile"
+    },
+    {
+      "type": "text",
+      "id": "logo_code",
+      "label": "Vector image"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.common.button.continue_shopping_header"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:sections.common.button.label",
+      "default": "Shop now"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "t:sections.common.button.url"
+    }
+  ]
+}
+{% endschema %}

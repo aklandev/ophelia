@@ -1,0 +1,24 @@
+@keyframes placeholder-shimmer {
+  0% {
+    background-position: -150% 0;
+  }
+  100% {
+    background-position: 150% 0;
+  }
+}
+html:not(.no-js) {
+  .media {
+    img {
+      opacity: 1;
+      transition: opacity var(--animation-duration);
+    }
+  }
+  .media--lazy-animation {
+    background-size: 300% 100%;
+    animation: placeholder-shimmer 2s linear 0.5s infinite;
+
+    img {
+      opacity: 0;
+    }
+  }
+}

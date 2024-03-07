@@ -1,0 +1,36 @@
+{% comment %}
+    Renders a set of links for paginated results. Must be used within paginate tags.
+
+    Usage:
+    {% paginate results by 2 %}
+      {% render 'pagination', paginate: paginate, anchor: '#yourID' %}
+    {% endpaginate %}
+
+    Accepts:
+    - paginate: {Object}
+    - anchor: {String} (optional) This can be added so that on page reload it takes you to wherever you've placed your anchor tag.
+{% endcomment %}
+
+{%- if paginate.parts.size > 0 -%}
+  <nav class="pagination mt-3.85 mt-7.7--desk text-1.23 text-1.85--desk" role="navigation" aria-label="{{ 'pagination.label' | t }}">
+      <ul class="d-flex flex-wrap justify-content-center list-unstyled" role="list">
+      {%- for part in paginate.parts -%}
+        <li class="pagination__item">
+          {%- if part.is_link -%}
+            <a href="{{ part.url }}{{ anchor }}" class="no-underline text-secondary" aria-label="{{ 'pagination.page' | t: number: part.title }}">
+              {{ part.title }}</a>
+          {%- else -%}
+            {%- if part.title == paginate.current_page -%}
+              <span class="position-relative text-secondary" aria-current="page" aria-label="{{ 'pagination.page' | t: number: part.title }}">
+                {{- part.title -}}
+                <svg class="absolute-center" aria-hidden="true" width="56" height="30" viewBox="0 0 56 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M54.8409 17.8696c-.3682 3.7263-3.5832 6.9348-8.7448 9.0399-5.1378 2.0954-12.0772 3.0349-19.5938 2.2922-7.5166-.7428-14.1379-3.0223-18.76623-6.0827C3.08628 20.0444.561477 16.2687.929693 12.5424 1.29791 8.81606 4.51285 5.60759 9.67446 3.5025 14.8123 1.40711 21.7517.467598 29.2683 1.21035c7.5166.74275 14.1379 3.02225 18.7662 6.08268 4.6498 3.07457 7.1746 6.85027 6.8064 10.57657Z" stroke="currentColor"/></svg>
+              </span>
+            {%- else -%}
+              <span class="text-secondary">{{ part.title }}</span>
+            {%- endif -%}
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+      </ul>
+    </nav>
+{%- endif -%}

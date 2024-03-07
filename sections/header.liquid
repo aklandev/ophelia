@@ -1,0 +1,286 @@
+{{ 'section-header.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  .header__heading-logo svg,
+  img.header__heading-logo {
+    max-width: {{ section.settings.logo_width_mobile }}px;
+  }
+
+  @media screen and (min-width: 767px) {
+    .header__heading-logo svg,
+    img.header__heading-logo {
+      max-width: {{ section.settings.logo_width }}px;
+    }
+  }
+  {% if section.settings.enable_sticky_header and request.page_type != 'cart' %}
+    #shopify-section-{{ section.id }} {
+      position: sticky;
+      position: -webkit-sticky;
+      width: 100%;
+      top: 0;
+      background-color: transparent;
+      z-index: 1000;
+      transition: var(--animation-duration);
+    }
+    #shopify-section-{{ section.id }}.shopify-section-header-sticky,
+    #shopify-section-{{ section.id }}.shopify-section-header-hidden {
+      background-color: rgb(var(--color-{{section.settings.bg_color}}));
+    }
+    .no-js #shopify-section-{{ section.id }} {
+      background-color: #FFFEF9;
+    }
+  {% elsif request.page_type == 'cart'  %}
+    #shopify-section-{{ section.id }} {
+      background-color: transparent;
+    }
+  {% else %}
+    #shopify-section-{{ section.id }} {
+      background-color: rgb(var(--color-{{section.settings.bg_color}}));
+    }
+  {% endif %}
+{% endstyle %}
+
+<{% if section.settings.enable_sticky_header and request.page_type != 'cart' %}sticky-header class="d-block"{% else %}div{% endif %}>
+  <header class="header pt-0.85 pb-0.85 pt-1.5--desk pb-1.5--desk">
+    <div class="page-width">
+      <div class="grid grid--gapless grid--3-col align-items-center ml-0 mb-0-!">
+
+        {% if request.page_type != 'cart' %}
+          {%- render 'header-menu-drawer' -%}
+        {% else %}
+          <div class="grid__item">
+            <button class="header__link-back link link--with-icon no-js-hidden" onclick="window.history.back()">{%- render 'icon' with 'arrow-short', class: 'link__icon ml-0' -%}</button>
+
+            <noscript>
+              <a href="{{- routes.all_products_collection_url -}}" class="header__link-back link link--with-icon">{%- render 'icon' with 'arrow-short', class: 'link__icon ml-0' -%}</a>
+            </noscript>
+          </div>
+        {%- endif -%}
+
+        <div class="grid__item">
+          <div class="header__logo flex-center text-center">
+            <a href="{{ routes.root_url }}" class="d-block focus-inset position-relative text-primary" aria-label="{{ shop.name }} logo">
+              {%- case section.settings.logo_type -%}
+                {%- when 'vector' -%}
+                  {%- if section.settings.logo_code != blank -%}
+                    <span class="header__heading-logo d-block">{{ section.settings.logo_code }}</span>
+                  {%- else -%}
+                    <span class="header__heading-logo h2">{{ shop.name }}</span>
+                  {%- endif -%}
+                {%- when 'raster' -%}
+                  {%- if section.settings.logo != blank -%}
+                    {%- assign image_size = section.settings.logo_width -%}
+                    <img srcset="{{ section.settings.logo | image_url: width: image_size }} 1x, {{ section.settings.logo | image_url: width: image_size }} 2x"
+                         src="{{ section.settings.logo | image_url: width: image_size }}"
+                         loading="lazy"
+                         class="header__heading-logo"
+                         width="{{ section.settings.logo.width }}"
+                         height="{{ section.settings.logo.height }}"
+                         alt="{{ section.settings.logo.alt | default: shop.name | escape }}"
+                    >
+                  {%- else -%}
+                    <span class="header__heading-logo h2">{{ shop.name }}</span>
+                  {%- endif -%}
+                {% endcase %}
+
+                {%- if request.page_type == 'cart' -%}
+                  <span class="header__logo__ellipse absolute-center"> </span>
+                {%- endif -%}
+              </a>
+          </div>
+        </div>
+
+        {%- if request.page_type != 'cart' -%}
+          {%- render 'header-cart-drawer' -%}
+        {%- else -%}
+          {% comment %} Empty Grid Cell to save the position of other elements in Grid {% endcomment %}
+          <div class="grid__item"> </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </header>
+</{% if section.settings.enable_sticky_header and request.page_type != 'cart' %}sticky-header{% else %}div{% endif %}>
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Organization",
+    "name": {{ shop.name | json }},
+    {% if section.settings.logo %}
+      {% assign image_size = section.settings.logo.width %}
+      "logo": {{ section.settings.logo | image_url: width: image_size | prepend: "https:" | json }},
+    {% endif %}
+    "sameAs": [
+      {{ settings.social_twitter_link | json }},
+      {{ settings.social_facebook_link | json }},
+      {{ settings.social_pinterest_link | json }},
+      {{ settings.social_instagram_link | json }},
+      {{ settings.social_tiktok_link | json }},
+      {{ settings.social_tumblr_link | json }},
+      {{ settings.social_snapchat_link | json }},
+      {{ settings.social_youtube_link | json }},
+      {{ settings.social_vimeo_link | json }}
+    ],
+    "url": {{ shop.url | append: page.url | json }}
+  }
+</script>
+
+{%- if request.page_type == 'index' -%}
+  {% assign potential_action_target = shop.url | append: routes.search_url | append: "?q={search_term_string}" %}
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "name": {{ shop.name | json }},
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {{ potential_action_target | json }},
+        "query-input": "required name=search_term_string"
+      },
+      "url": {{ shop.url | append: page.url | json }}
+    }
+  </script>
+{%- endif -%}
+
+<script src="{{ 'header-drawer.js' | asset_url }}" defer="defer"></script>
+
+{% if section.settings.enable_sticky_header and request.page_type != 'cart'  %}
+  <script src="{{ 'sticky-header.js' | asset_url }}" defer="defer"></script>
+{% endif %}
+
+{%- if settings.cart_type == 'ajax' or request.page_type != 'cart' -%}
+  <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.header.name",
+  "class": "section-header",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_header",
+      "default": true,
+      "label": "t:sections.header.settings.enable_sticky_header.label",
+      "info": "t:sections.header.settings.enable_sticky_header.info"
+    },
+    {
+      "type": "select",
+      "id": "bg_color",
+      "options": [
+        {
+          "value": "primary",
+          "label": "t:sections.header.settings.bg_color.options__1.label"
+        },
+        {
+          "value": "secondary",
+          "label": "t:sections.header.settings.bg_color.options__2.label"
+        },
+        {
+          "value": "light",
+          "label": "t:sections.header.settings.bg_color.options__3.label"
+        },
+        {
+          "value": "body",
+          "label": "t:sections.header.settings.bg_color.options__4.label"
+        }
+      ],
+      "default": "body",
+      "label": "t:sections.header.settings.bg_color.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.header.settings.header__2.content"
+    },
+    {
+      "type": "select",
+      "id": "logo_type",
+      "options": [
+        {"label": "t:sections.header.settings.logo_type.options__1.label", "value": "raster"},
+        {"label": "t:sections.header.settings.logo_type.options__2.label", "value": "vector"}
+      ],
+      "default": "raster",
+      "label": "t:sections.header.settings.logo_type.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "t:sections.header.settings.logo.label"
+    },
+    {
+      "type": "text",
+      "id": "logo_code",
+      "label": "t:sections.header.settings.logo_code.label",
+      "info": "t:sections.header.settings.logo_code.info"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 250,
+      "step": 10,
+      "default": 100,
+      "unit": "t:sections.header.settings.logo_width.unit",
+      "label": "t:sections.header.settings.logo_width.label"
+    },
+    {
+      "type": "range",
+      "id": "logo_width_mobile",
+      "min": 50,
+      "max": 250,
+      "step": 10,
+      "default": 100,
+      "unit": "t:sections.header.settings.logo_width_mobile.unit",
+      "label": "t:sections.header.settings.logo_width_mobile.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.header.settings.header__3.content"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "default": "main-menu",
+      "label": "t:sections.header.settings.menu.label"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_secondary",
+      "label": "t:sections.header.settings.menu_secondary.label",
+      "info": "t:sections.header.settings.menu_secondary.info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.header.settings.header_4.content"
+    },
+    {
+      "type": "text",
+      "id": "sidebar_footer_title",
+      "label": "t:sections.header.settings.sidebar_footer_title.label",
+      "default": "Questions?"
+    },
+    {
+      "type": "text",
+      "id": "sidebar_footer_label",
+      "label": "t:sections.header.settings.sidebar_footer_label.label",
+      "default": "Contact Us"
+    },
+    {
+      "type": "url",
+      "id": "sidebar_footer_url",
+      "label": "t:sections.header.settings.sidebar_footer_url.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.header.settings.header__5.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_social_header",
+      "default": true,
+      "label": "t:sections.header.settings.enable_social_header.label"
+    }
+  ]
+}
+{% endschema %}

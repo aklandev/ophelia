@@ -1,0 +1,104 @@
+{{ 'section-social-links.css' | asset_url | stylesheet_tag }}
+
+<div class="section-space{% if section.settings.remove_top_margin %} mt-0{% endif %}{% if section.settings.remove_bottom_margin %} mb-0{% endif %}">
+  <div class="page-width page-width--{{ section.settings.container }}">
+    <h2 class="mb-2">
+      {{ section.settings.title }}
+    </h2>
+
+    <div class="instafeed__heading__links d-flex justify-content-start ml-auto h3 text-primary text-1.23 text-1.85--desk font-inherit lh-150 font-regular">
+      <ul class="d-flex instafeed__heading__links-list list-unstyled links-list" role="list">
+        {%- if settings.social_instagram_link != blank -%}
+          <li class="links-list__item">
+            <a href="{{ settings.social_instagram_link }}" class="link links-list__link">
+              {%- render 'icon-instagram' -%}
+              <span class="visually-hidden">{{ 'general.social.links.instagram' | t }}</span>
+            </a>
+          </li>
+        {%- endif -%}
+        {%- if settings.social_tiktok_link != blank -%}
+          <li class="links-list__item">
+            <a href="{{ settings.social_tiktok_link }}" class="link links-list__link">
+              {%- render 'icon-tiktok' -%}
+              <span class="visually-hidden">{{ 'general.social.links.tiktok' | t }}</span>
+            </a>
+          </li>
+        {%- endif -%}
+        {%- if settings.social_youtube_link != blank -%}
+          <li class="links-list__item">
+            <a href="{{ settings.social_youtube_link }}" class="link links-list__link">
+              {%- render 'icon-youtube' -%}
+              <span class="visually-hidden">{{ 'general.social.links.youtube' | t }}</span>
+            </a>
+          </li>
+        {%- endif -%}
+        {%- if settings.social_pinterest_link != blank -%}
+          <li class="links-list__item">
+            <a href="{{ settings.social_pinterest_link }}" class="link links-list__link">
+              {%- render 'icon-pinterest' -%}
+              <span class="visually-hidden">{{ 'general.social.links.pinterest' | t }}</span>
+            </a>
+          </li>
+        {%- endif -%}
+        {%- if settings.social_facebook_link != blank -%}
+          <li class="links-list__item">
+            <a href="{{ settings.social_facebook_link }}" class="link links-list__link">
+              {%- render 'icon-facebook' -%}
+              <span class="visually-hidden">{{ 'general.social.links.facebook' | t }}</span>
+            </a>
+          </li>
+        {%- endif -%}
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Social Links",
+  "tag": "section",
+  "class": "social-links-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Spacings"
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_top_margin",
+      "label": "Remove Top Margin",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_bottom_margin",
+      "label": "Remove Bottom Margin",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "options": [
+        { "label": "Normal", "value": "normal" },
+        { "label": "Narrow", "value": "narrow" }
+      ],
+      "label": "Container Width"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Your heading"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Social Links"
+    }
+  ]
+}
+{% endschema %}

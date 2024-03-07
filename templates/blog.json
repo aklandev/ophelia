@@ -1,0 +1,81 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-blog",
+      "settings": {
+        "paginate_articles": 2
+      }
+    },
+    "d3edc627-1005-487b-bbe5-4f66848aa830": {
+      "type": "image-banner",
+      "blocks": {
+        "template--18430248124761__d3edc627-1005-487b-bbe5-4f66848aa830-1679565763eca7bf5c-0": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p><em>My skin feels tremendously<br\/> better since I started using<br\/> Ophélia night cream.<\/em><\/p>",
+            "hide_line_breaks": true,
+            "heading_size": "text-2.3 text-3.5--desk",
+            "heading_tag": "h2",
+            "heading_color": "primary",
+            "heading_weight": "light"
+          }
+        },
+        "template--18430248124761__d3edc627-1005-487b-bbe5-4f66848aa830-1679565763eca7bf5c-1": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Anna, 32<\/p>",
+            "text_size": "text-1.23 text-1.85--desk"
+          }
+        }
+      },
+      "block_order": [
+        "template--18430248124761__d3edc627-1005-487b-bbe5-4f66848aa830-1679565763eca7bf5c-0",
+        "template--18430248124761__d3edc627-1005-487b-bbe5-4f66848aa830-1679565763eca7bf5c-1"
+      ],
+      "settings": {
+        "image": "shopify:\/\/shop_images\/pexels-sora-shimazaki-5938601_1_581ecab2-f136-4f51-89a5-79accd9d55af.jpg",
+        "image_position_y_desktop": "center",
+        "image_position_x_desktop": "center",
+        "image_height_desktop": "min-vh-100",
+        "image_height_value_desktop": "px",
+        "image_height_custom_desktop": 750,
+        "desktop_text_align": "left",
+        "desktop_text_box_position": "left-middle",
+        "image_mobile": "shopify:\/\/shop_images\/img_full_M.jpg",
+        "image_position_y_mobile": "center",
+        "image_position_x_mobile": "center",
+        "image_height_mobile": "min-vh-100",
+        "image_height_value_mobile": "px",
+        "image_height_custom_mobile": 600,
+        "mobile_text_align": "left",
+        "mobile_text_box_position": "left-middle",
+        "mobile_box": false,
+        "remove_top_margin": true,
+        "remove_bottom_margin": true,
+        "image_overlay_opacity": 0,
+        "image_lazy": "lazy",
+        "image_overlay_color": "primary",
+        "additional_arrow_type": "none",
+        "additional_link_label": "Button label",
+        "additional_link_url": ""
+      }
+    },
+    "1643977088db27c582": {
+      "type": "featured-collection-2",
+      "settings": {
+        "title": "<p><em>Our<\/em> bestsellers<br\/><\/p>",
+        "description": "<p>Manage blemishes effectively with our organic transparent skin-calming gels.<\/p>",
+        "collection": "frontpage",
+        "products_per_page": 4,
+        "menu": "",
+        "remove_top_margin": false,
+        "remove_bottom_margin": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "d3edc627-1005-487b-bbe5-4f66848aa830",
+    "1643977088db27c582"
+  ]
+}

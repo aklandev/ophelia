@@ -1,0 +1,51 @@
+<div class="section-space{% if section.settings.remove_top_margin %} mt-0{% endif %}{% if section.settings.remove_bottom_margin %} mb-0{% endif %}">
+  <div
+    {% if section.settings.enable_container %}
+      class="page-width"
+    {% endif %}
+  >
+    {%- for block in section.blocks -%}
+      {% render block %}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.apps.name",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.common.heading_general"
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_top_margin",
+      "label": "t:sections.common.remove_margin.top",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_bottom_margin",
+      "label": "t:sections.common.remove_margin.bottom",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_container",
+      "label": "t:sections.common.container.enable"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.apps.presets.name"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,121 @@
+{{ 'section-list-collections.css' | asset_url | stylesheet_tag }}
+
+{% capture additional_button %}
+  {% if section.settings.enable_button %}
+    <div class="mt-3.85 mt-6--desk text-center">
+      <a href="{{ section.settings.button_url }}" class="btn btn--secondary">{{ section.settings.button_label }}</a>
+    </div>
+  {% endif %}
+{% endcapture %}
+
+<div class="section-space{% if section.settings.remove_top_margin %} mt-0{% endif %}{% if section.settings.remove_bottom_margin %} mb-0{% endif %}">
+  <div class="page-width">
+    {%- if section.settings.override_with_blocks -%}
+      <ul class="grid grid--2-col" role="list">
+        {%- for block in section.blocks -%}
+          {% assign collection = block.settings.collection %}
+
+          {% capture cycle %}{% cycle '1', '2', '3', '4' %}{% endcapture %}
+          <li class="grid__item grid__item--{{ cycle }}">
+            {%- render 'card-collection', collection: collection, cycle: cycle -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      {{ additional_button }}
+    {% else %}
+      {%- paginate collections by section.settings.paginate_collections -%}
+        <ul class="grid grid--2-col" role="list">
+          {%- for collection in collections -%}
+            {% capture cycle %}{% cycle '1', '2', '3', '4' %}{% endcapture %}
+            <li class="grid__item grid__item--{{ cycle }}">
+              {%- render 'card-collection', collection: collection, cycle: cycle -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+
+        {{ additional_button }}
+
+        {%- if paginate.pages > 1 -%}
+          {%- render 'pagination', paginate: paginate -%}
+        {%- endif -%}
+      {%- endpaginate -%}
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main-list-collections.name",
+  "class": "list-collections",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "override_with_blocks",
+      "label": "t:sections.main-list-collections.settings.override_with_blocks",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "paginate_collections",
+      "min": 4,
+      "max": 48,
+      "step": 4,
+      "default": 4,
+      "label": "t:sections.main-list-collections.settings.paginate.label",
+      "info": "t:sections.main-list-collections.settings.paginate.info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.common.button.heading"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_button",
+      "label": "t:sections.common.button.enable",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:sections.common.button.label",
+      "default": "Shop all"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "t:sections.common.button.url",
+      "default": "/collections/all"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.common.heading_general"
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_top_margin",
+      "label": "t:sections.common.remove_margin.top",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_bottom_margin",
+      "label": "t:sections.common.remove_margin.bottom",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "t:sections.main-list-collections.blocks.collection.name",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "t:sections.main-list-collections.blocks.collection.settings.collection.label"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

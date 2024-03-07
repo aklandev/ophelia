@@ -1,0 +1,85 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "remove_content_padding": false,
+        "visually_hidden": false,
+        "page_width": "narrow",
+        "content_size": "text-1.85--desk"
+      }
+    },
+    "main-faq": {
+      "type": "main-faq-accordions",
+      "blocks": {
+        "eae4e1c0-aa1f-4c0c-9a02-7019b752fc4a": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Where is my order?",
+            "content": "<p>Our shipments are sent to most locations via<a href=\"https:\/\/ophelia-theme-dev.myshopify.com\/#\">FedEx International Priority<\/a>. We do this to ensure the best possible shipping experience.<\/p><p>Orders typically take 2-4 Business days to reach domestic destinations, but FedEx can sometimes have unexpected delays, resulting in up to 2 weeks for some destinations. Orders may also require up to 1 day to process, especially if you are located in a different timezone than the warehouse we are shipping from.<\/p>",
+            "page": ""
+          }
+        },
+        "15e7ffd0-f4d2-4526-a014-229c3b924c07": {
+          "type": "accordion",
+          "settings": {
+            "heading": "How to use your products?",
+            "content": "<p>Morning and evening, massage into freshly cleansed and toned skin. Alternatively, blend with your preferred hydrating cream, serum or gel to intensify hydration.<\/p>",
+            "page": ""
+          }
+        },
+        "6941442c-ba3a-4986-af1c-9cf40659ee4f": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Do you have rapidly absorbed formulation that delivers lightweight hydration with a matte finish?",
+            "content": "<p>Yes! Morning and evening, massage into freshly cleansed and toned skin. Alternatively, blend with your preferred hydrating cream, serum or gel to intensify hydration.<\/p>",
+            "page": ""
+          }
+        },
+        "271635ea-8b80-490d-95cd-f43acc702e82": {
+          "type": "accordion",
+          "settings": {
+            "heading": "How do you ship my products?",
+            "content": "<p>Orders typically take 2-4 Business days to reach domestic destinations, but FedEx can sometimes have unexpected delays, resulting in up to 2 weeks for some destinations. Orders may also require up to 1 day to process, especially if you are located in a different timezone than the warehouse we are shipping from.<\/p>",
+            "page": ""
+          }
+        },
+        "33c84305-86dd-41f3-ad20-1515f866404c": {
+          "type": "accordion",
+          "settings": {
+            "heading": "What is your returns policy?",
+            "content": "<p>Our shipments are sent to most locations via FedEx International Priority. We do this to ensure the best possible shipping experience.<\/p>",
+            "page": ""
+          }
+        },
+        "0dabbb8d-9d14-4062-a399-82c8fc63be0a": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Is Ophélia a sustainable brand?",
+            "content": "<p>Natural beauty brands are making more of a proactive, transparent effort to protect our health and the planet’s by investing in responsibly derived ingredients. However, it remains vital for customers to make thoughtful purchases, regardless of the labels beauty products boast. <\/p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "eae4e1c0-aa1f-4c0c-9a02-7019b752fc4a",
+        "15e7ffd0-f4d2-4526-a014-229c3b924c07",
+        "6941442c-ba3a-4986-af1c-9cf40659ee4f",
+        "271635ea-8b80-490d-95cd-f43acc702e82",
+        "33c84305-86dd-41f3-ad20-1515f866404c",
+        "0dabbb8d-9d14-4062-a399-82c8fc63be0a"
+      ],
+      "settings": {
+        "util_heading_desktop": "Do you have any questions?",
+        "util_heading_mobile": "Any questions?",
+        "heading_color": "primary",
+        "util_label": "Contact us",
+        "util_url": "shopify:\/\/pages\/contact"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "main-faq"
+  ]
+}

@@ -1,0 +1,20 @@
+.blog {
+  &__heading {
+    @include media-breakpoint-up(lg) {
+      top: calc(var(--header-height) + 2rem);
+    }
+    &__arrow {
+      @include media-breakpoint-down(md) {
+        transform: translateY(-75%);
+      }
+    }
+  }
+}
+
+.no-js {
+  .blog__heading {
+    @include media-breakpoint-up(lg) {
+      top: 11rem;
+    }
+  }
+}

@@ -1,0 +1,36 @@
+.header {
+  &__link-back {
+    transform: rotate(180deg);
+  }
+
+  &__cart-icon {
+    padding-right: 0.77rem;
+    &__bubble {
+      right: 0;
+      top: 0;
+      font-size: 0.5em;
+    }
+  }
+  &__logo {
+    h1 {
+      line-height: normal;
+    }
+    svg {
+      display: block;
+    }
+    &__ellipse {
+      border: 1px solid currentColor;
+      width: 245px;
+      height: 136px;
+      border-radius: 75% 160%;
+      @include media-breakpoint-up(md) {
+        width: 588px;
+        height: 326px;
+      }
+      @include media-breakpoint-up(lg) {
+        width: 788px;
+        height: 440px;
+      }
+    }
+  }
+}

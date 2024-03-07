@@ -1,0 +1,8 @@
+{
+  "editor.codeActionsOnSave": {},
+  "shopifyLiquid.formatterDevPreview": true,
+  "[liquid]": {
+    "editor.defaultFormatter": "Shopify.theme-check-vscode",
+    "editor.formatOnSave": true
+  }
+}

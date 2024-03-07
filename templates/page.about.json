@@ -1,0 +1,150 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "remove_content_padding": true,
+        "visually_hidden": true,
+        "page_width": "",
+        "content_size": "text-1.85--desk"
+      }
+    },
+    "164191228631e38a1f": {
+      "type": "image-banner",
+      "blocks": {
+        "75814f72-3751-4e18-964c-437b2648757b": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>We reinvented organic <br\/>skincare from ground up. <br\/><em>Because we do care.<\/em><\/p>",
+            "hide_line_breaks": true,
+            "heading_size": "h1",
+            "heading_tag": "h2",
+            "heading_color": "secondary",
+            "heading_weight": "regular"
+          }
+        },
+        "1641912286104252ce-2": {
+          "type": "button",
+          "settings": {
+            "button_label": "Read on",
+            "button_link": "#shopify-section-template--14294734536837__16420646370e21f2f3",
+            "button_style": "secondary"
+          }
+        }
+      },
+      "block_order": [
+        "75814f72-3751-4e18-964c-437b2648757b",
+        "1641912286104252ce-2"
+      ],
+      "settings": {
+        "image": "shopify:\/\/shop_images\/about-us.jpg",
+        "image_position_y_desktop": "center",
+        "image_position_x_desktop": "center",
+        "image_height_desktop": "min-vh-100",
+        "image_height_value_desktop": "px",
+        "image_height_custom_desktop": 750,
+        "desktop_text_align": "left",
+        "desktop_text_box_position": "left-middle",
+        "image_mobile": "shopify:\/\/shop_images\/about-us-hero-mob.jpg",
+        "image_position_y_mobile": "center",
+        "image_position_x_mobile": "center",
+        "image_height_mobile": "min-vh-100",
+        "image_height_value_mobile": "px",
+        "image_height_custom_mobile": 600,
+        "mobile_text_align": "left",
+        "mobile_text_box_position": "left-top",
+        "mobile_box": false,
+        "remove_top_margin": true,
+        "remove_bottom_margin": true,
+        "image_overlay_opacity": 0,
+        "image_lazy": "lazy",
+        "image_overlay_color": "primary",
+        "additional_arrow_type": "scroll",
+        "additional_link_label": "Link",
+        "additional_link_url": ""
+      }
+    },
+    "16420646370e21f2f3": {
+      "type": "image-with-text",
+      "settings": {
+        "content_1": "<p>Our objective has always been to formulate skin, hair and body care products of the finest quality; we investigate widely to source plant-based and laboratory-made ingredients, and use only those with a proven record of safety and efficacy.<\/p>",
+        "image_1": "shopify:\/\/shop_images\/stack-3-square-vertical.jpg",
+        "content_2": "<p>In each of our unique stores, informed consultants are pleased to introduce the Ophélia range and to guide your selections.<\/p>",
+        "image_2": "shopify:\/\/shop_images\/hands-cream_d4992ebd-e24a-4ad3-a4ed-44a4d9ef9893.jpg",
+        "enable_ellipse": true,
+        "enable_parallax": false,
+        "remove_top_margin": true,
+        "remove_bottom_margin": true
+      }
+    },
+    "1642007197017cf88d": {
+      "type": "full-width-image",
+      "settings": {
+        "heading": "<p>We are on a mission to treat your skin with Mother Nature’s little secrets. <\/p>",
+        "image": "shopify:\/\/shop_images\/about-us-try_e904f8e9-94a3-4ea0-9fc6-58190d0ce181.jpg",
+        "image_mobile": "shopify:\/\/shop_images\/about-us-try-mob.jpg",
+        "image_height_desktop": "custom",
+        "image_height_mobile": "custom",
+        "image_height_desktop_custom": 860,
+        "image_height_mobile_custom": 550,
+        "heading_bottom": "<p><em>Give it a try.<\/em><\/p>",
+        "url": "shopify:\/\/collections\/all",
+        "enable_custom_cursor": true,
+        "custom_cursor_text": "Shop all",
+        "remove_top_margin": true,
+        "remove_bottom_margin": true
+      }
+    },
+    "1641914283149f44f3": {
+      "type": "testimonials",
+      "blocks": {
+        "87fadf14-b6d8-469e-9ecf-96a448b3d25e": {
+          "type": "testimonial",
+          "settings": {
+            "content": "<p><em>Ophélia botanical scrubs are some of the best I've ever tried. Oh that smell!<\/em><\/p>",
+            "title": "Marie, 32",
+            "avatar": "shopify:\/\/shop_images\/model-cream-7-square-small.jpg"
+          }
+        },
+        "c1b3c85f-6184-462e-918b-fe61b8847f2b": {
+          "type": "testimonial",
+          "settings": {
+            "content": "<p><em>I came across Ophélia a year ago, and my skin really got better since then.<\/em><\/p>",
+            "title": "Val, 24",
+            "avatar": "shopify:\/\/shop_images\/model-cream-3.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "87fadf14-b6d8-469e-9ecf-96a448b3d25e",
+        "c1b3c85f-6184-462e-918b-fe61b8847f2b"
+      ],
+      "settings": {
+        "bg_color": "#fcf9ec",
+        "grain": "shopify:\/\/shop_images\/grain_2_e096af63-4b7c-420a-9c9c-4dd8c03f8522.png",
+        "remove_top_margin": true,
+        "remove_bottom_margin": true
+      }
+    },
+    "16419956999b35b985": {
+      "type": "featured-collection-2",
+      "settings": {
+        "title": "<p><em>Pure organic<\/em> wisdom<br\/><\/p>",
+        "description": "<p>Manage blemishes effectively with our transparent, skin-calming gels. <\/p>",
+        "collection": "frontpage",
+        "products_per_page": 4,
+        "menu": "",
+        "remove_top_margin": false,
+        "remove_bottom_margin": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "164191228631e38a1f",
+    "16420646370e21f2f3",
+    "1642007197017cf88d",
+    "1641914283149f44f3",
+    "16419956999b35b985"
+  ]
+}

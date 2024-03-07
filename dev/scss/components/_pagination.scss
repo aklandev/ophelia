@@ -1,0 +1,9 @@
+.pagination {
+  &__item {
+    margin: 0 0.6rem;
+    a, span {
+      display: block;
+      padding: 0 1rem;
+    }
+  }
+}

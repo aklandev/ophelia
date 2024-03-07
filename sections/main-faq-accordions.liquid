@@ -1,0 +1,108 @@
+<style>
+  .main-faq-accordions {
+    margin-top: -4.6rem;
+  }
+  @media screen and (max-width: 768px) {
+    .main-faq-accordions {
+      margin-top: -1.54rem;
+    }
+  }
+</style>
+
+<div class="main-faq-accordions mb-3.5--desk">
+  <div class="page-width page-width--narrow">
+    {% for block in section.blocks %}
+      {%- render 'single-accordion', block: block, section: section -%}
+    {% endfor %}
+    {% if section.settings.util_heading != blank or section.settings.util_label %}
+      <div class="accordion">
+        <div class="pt-3 pb-2.8 pt-3.5--desk pb-3--desk d-flex align-items-center justify-content-between">
+          <h3 class="d-inline-block pr-2 mb-0 h5 font-regular lh-255 text-{{ section.settings.heading_color }} break">
+            <i class="small-hide">{{ section.settings.util_heading_desktop | escape }}</i>
+            <i class="medium-hide large-up-hide">{{ section.settings.util_heading_mobile | escape }}</i>
+          </h3>
+
+          {% if section.settings.util_label != blank %}
+            <a
+              {% if section.settings.util_url == blank %}
+                role="link" aria-disabled="true"
+              {% else %}
+                href="{{ section.settings.util_url }}"
+              {% endif %}
+              class="link link--with-icon font-medium text-1.54 lh-125 lh-133--desk"
+            >
+              {{ section.settings.util_label | escape }}
+              {%- render 'icon' with 'arrow-short', class: 'link__icon' -%}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main-faq.name",
+  "settings": [
+    {
+      "type": "text",
+      "id": "util_heading_desktop",
+      "label": "t:sections.main-faq.settings.util_heading_desktop.label",
+      "default": "Do you have any questions?"
+    },
+    {
+      "type": "text",
+      "id": "util_heading_mobile",
+      "label": "t:sections.main-faq.settings.util_heading_mobile.label",
+      "default": "Any questions?"
+    },
+    {
+      "type": "select",
+      "id": "heading_color",
+      "options": [
+        { "label": "t:sections.main-faq.settings.heading_color.option_1", "value": "primary" },
+        { "label": "t:sections.main-faq.settings.heading_color.option_2", "value": "secondary" }
+      ],
+      "default": "primary",
+      "label": "t:sections.main-faq.settings.heading_color.label"
+    },
+    {
+      "type": "text",
+      "id": "util_label",
+      "label": "t:sections.common.button.label",
+      "default": "Contact us"
+    },
+    {
+      "type": "url",
+      "id": "util_url",
+      "label": "t:sections.common.button.url"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "accordion",
+      "name": "t:sections.main-faq.blocks.accordion.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:sections.main-faq.blocks.accordion.settings.heading.label",
+          "default": "FAQ title here as an example"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "t:sections.common.text",
+          "default": "<p>FAQ text content here as an example</p>"
+        },
+        {
+          "type": "page",
+          "id": "page",
+          "label": "t:sections.main-faq.blocks.accordion.settings.page.label"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,28 @@
+.icon {
+  display: inline-block;
+  &--arrow {
+    width: 54px;
+    @include media-breakpoint-up(md) {
+      width: 92px;
+    }
+    &--desk {
+      width: 92px;
+    }
+  }
+  &__arrow--down {
+    transform: rotate(90deg);
+  }
+  &--star {
+    @include media-breakpoint-down(sm) {
+      width: 21px;
+    }
+  }
+  &--arrow-short {
+    @include media-breakpoint-down(sm) {
+      width: 18px;
+    }
+  }
+  &--tertiary {
+    color: c_rgb(var(--bg-tertiary));
+  }
+}

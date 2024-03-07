@@ -1,0 +1,117 @@
+<div class="page-width{% if cart == empty %} is-empty{% endif %}" id="main-cart-footer" data-id="{{ section.id }}">
+  <div>
+    <div class="text-1.85--desk lh-150">
+      <div class="drawer__footer__row d-flex justify-content-between mb-0.5--desk">
+        <p class="drawer__footer__title mb-0">{{ 'cart.shipping_label' | t }}</p>
+        <p class="mb-0 text-right text-secondary">{{ 'cart.shipping_value' | t }}</p>
+      </div>
+      <div class="drawer__footer__row d-flex justify-content-between">
+        <p class="drawer__footer__title mb-0">{{ 'cart.subtotal_label' | t }}</p>
+        <p class="mb-0 text-right text-secondary">
+          <span class="js-contents" data-cart-subtotal>
+            {%- if settings.currency_code == 'with_currency_code' -%}
+              {{- cart.total_price | money_with_currency -}}
+            {%- elsif settings.currency_code == 'without_trailing_zeros' -%}
+              {{- cart.total_price | money_without_trailing_zeros -}}
+            {%- else -%}
+              {{- cart.total_price | money -}}
+            {%- endif -%}
+          </span>
+        </p>
+      </div>
+      {% form 'cart', cart, class: 'mt-1 text-md-right text-1.23' %}
+        {{ form | payment_terms }}
+      {% endform %}
+    </div>
+
+    <div class="template-cart__note-ctas">
+      {%- if settings.show_cart_note -%}
+        <cart-note class="cart__note field">
+          <textarea
+            class="text-area field__input"
+            rows="1"
+            name="note"
+            form="cart"
+            id="Cart-note"
+            placeholder="{{ 'cart.note_placeholder' | t }}"
+          >
+            {{- cart.note -}}
+          </textarea>
+        </cart-note>
+      {%- endif -%}
+
+      <div class="template-cart__ctas d-flex align-items-center">
+        <noscript>
+          <button type="submit" class="btn btn--secondary" form="cart">
+            {{ 'cart.update' | t }}
+          </button>
+        </noscript>
+
+        <button
+          type="submit"
+          id="checkout"
+          class="btn btn--primary"
+          name="checkout"
+          {% if cart == empty %}
+            disabled
+          {% endif %}
+          form="cart"
+        >
+          {{ 'cart.checkout' | t }}
+        </button>
+        <button
+          type="submit"
+          class="link link--with-icon"
+          name="checkout"
+          {% if cart == empty %}
+            disabled
+          {% endif %}
+          form="cart"
+        >
+          {%- render 'icon' with 'arrow-regular', class: 'link__icon' -%}
+        </button>
+      </div>
+    </div>
+
+    {% for block in section.blocks %}
+      {%- case block.type -%}
+        {%- when '@app' -%}
+          {% render block %}
+      {%- endcase -%}
+    {% endfor %}
+    <div id="cart-errors"></div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    function isIE() {
+      const ua = window.navigator.userAgent;
+      const msie = ua.indexOf('MSIE ');
+      const trident = ua.indexOf('Trident/');
+
+      return msie > 0 || trident > 0;
+    }
+
+    if (!isIE()) return;
+
+    const cartSubmitInput = document.createElement('input');
+    cartSubmitInput.setAttribute('name', 'checkout');
+    cartSubmitInput.setAttribute('type', 'hidden');
+    document.querySelector('#cart').appendChild(cartSubmitInput);
+    document.querySelector('#checkout').addEventListener('click', function (event) {
+      document.querySelector('#cart').submit();
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.main-cart-footer.name",
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ]
+}
+{% endschema %}

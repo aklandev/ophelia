@@ -1,0 +1,80 @@
+{%- if predictive_search.performed -%}
+  <div id="predictive-search-results">
+    <h2 class="h4" id="predictive-search-products">
+      {%- if predictive_search.resources.products.size > 0 -%}
+        {{ 'search.products' | t }}
+      {% else %}
+        {{ 'search.no_results' | t: terms: predictive_search.terms }}
+      {%- endif -%}
+    </h2>
+
+    <ul
+      id="predictive-search-results-list"
+      class="list-unstyled"
+      role="listbox"
+      aria-labelledby="predictive-search-products"
+    >
+      {%- for product in predictive_search.resources.products -%}
+        <li class="mb-2" id="predictive-search-option-{{ forloop.index }}" role="option" aria-selected="false">
+          <div class="d-flex align-items-center">
+            {% if product.featured_image %}
+              <div class="cart-drawer__item__media position-relative">
+                <a
+                  href="{{ product.url }}"
+                  class="d-block media--lazy-animation"
+                  aria-hidden="true"
+                  tabindex="-1"
+                >
+                  <img
+                    class="cart-item__image d-block"
+                    src="{{ product.featured_image | image_url: width: 240 }}"
+                    alt="{{ product.featured_image.alt | escape }}"
+                    loading="lazy"
+                    width="120"
+                    height="{{ 120 | divided_by: product.featured_image.aspect_ratio | ceil }}"
+                  >
+                </a>
+              </div>
+            {% endif %}
+            <div class="w-100">
+              <div class="cart-drawer__item__details">
+                {%- if settings.predictive_search_show_vendor -%}
+                  <div class="mb-1 text-secondary text-1.07">
+                    <span class="visually-hidden">{{ 'accessibility.vendor' | t }}</span>
+                    {{ product.vendor }}
+                  </div>
+                {%- endif -%}
+
+                <a href="{{ product.url }}" class="d-block no-underline h5 lh-100 break text-primary">
+                  {{- product.title | escape -}}
+                </a>
+
+                {%- if settings.predictive_search_show_price -%}
+                  <div class="mt-1">
+                    {% render 'price', product: product %}
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        </li>
+      {%- endfor -%}
+      <li id="predictive-search-option-search-keywords" role="option">
+        <button class="btn btn--secondary" tabindex="-1">
+          {{ 'search.search_for' | t: terms: predictive_search.terms }}
+        </button>
+      </li>
+    </ul>
+  </div>
+
+  <span class="hidden" data-predictive-search-live-region-count-value>
+    {%- if search.results_count == 0 -%}
+      {{ 'search.no_results' | t: terms: predictive_search.terms }}
+    {%- else -%}
+      {{
+        'search.results_with_count'
+        | t: terms: predictive_search.terms, count: predictive_search.resources.products.size
+      }}
+    {%- endif -%}
+  </span>
+{%- endif -%}

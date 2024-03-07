@@ -1,0 +1,19 @@
+<div class="accordion mx-n1.5 mx-0--desk px-1.5 px-0--desk position-relative" {{ block.shopify_attributes }}>
+  <details id="Details-{{ block.id }}-{{ section.id }}">
+    <summary class="pt-3 pb-2.8 pt-3.5--desk pb-3--desk">
+      <div class="d-flex position-relative">
+        <h2 class="accordion__title d-inline-block mb-0 pr-1 text-2.3--desk lh-125--desk break">
+          {{- block.settings.heading | default: block.settings.page.title -}}
+        </h2>
+        {% render 'icon' with 'arrow', class: 'accordion__arrow accordion__arrow--open position-absolute' %}
+        {% render 'icon' with 'arrow-short', class: 'accordion__arrow accordion__arrow--close position-absolute' %}
+      </div>
+    </summary>
+
+    <div class="accordion__content rte" id="Accordion-{{ block.id }}-{{ section.id }}">
+      {{ block.settings.content }}
+      {{ block.settings.page.content }}
+      {{ block.settings.custom_liquid }}
+    </div>
+  </details>
+</div>

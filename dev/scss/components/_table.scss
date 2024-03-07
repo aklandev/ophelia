@@ -1,0 +1,8 @@
+.table,
+.rte table {
+  border-collapse: collapse;
+  & th,
+  & td {
+    border: 1px solid c_rgb(var(--bg-tertiary));
+  }
+}

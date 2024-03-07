@@ -1,0 +1,189 @@
+<style>
+  #shopify-section-{{ section.id }} .banner {
+    {% case section.settings.image_height_mobile %}
+      {% when 'full' %}
+        min-height: 100vh;
+      {% when 'half' %}
+        min-height: 50vh;
+      {% when 'custom' %}
+        min-height: {{ section.settings.image_height_mobile_custom }}px;
+    {% endcase %}
+    }
+    @media screen and (min-width: 768px) {
+      #shopify-section-{{ section.id }} .banner {
+        {% case section.settings.image_height_desktop %}
+          {% when 'full' %}
+            min-height: 100vh;
+          {% when 'half' %}
+            min-height: 50vh;
+          {% when 'custom' %}
+            min-height: {{ section.settings.image_height_desktop_custom }}px;
+        {% endcase %}
+      }
+    }
+</style>
+
+<div
+  class="section-space{% if section.settings.remove_top_margin %} mt-0{% endif %}{% if section.settings.remove_bottom_margin %} mb-0{% endif %}"
+  {% if section.settings.enable_custom_cursor %}
+    data-enable-custom-cursor
+  {% endif %}
+>
+  <div class="banner d-flex position-relative">
+    <div class="media absolute-fill{% if settings.enable_lazy_animation and section.settings.image != blank %} media--lazy-animation{% endif %}">
+      {%- if section.settings.image != blank -%}
+        {%- render 'image' with section.settings.image, image_mobile: section.settings.image_mobile -%}
+      {%- elsif section.settings.image == blank -%}
+        {{ 'image' | placeholder_svg_tag: 'absolute-fill bg-light placeholder-svg' }}
+      {%- endif -%}
+    </div>
+
+    <div class="page-width text-center">
+      <div class="banner__content banner__content--narrow mx-auto pt-4 pb-4 pt-5--desk pb-5--desk d-flex flex-column h-100 position-relative">
+        <h2 class="w-100 text-1.85 text-4.6--desk lh-133 lh-117--desk">
+          {{ section.settings.heading | remove: '<p>' | remove: '</p>' }}
+        </h2>
+
+        {% if section.settings.heading_bottom != blank %}
+          <div class="w-100 mt-auto">
+            <h2 class="text-1.85 text-4.6--desk lh-133 lh-117--desk">
+              {{ section.settings.heading_bottom | remove: '<p>' | remove: '</p>' }}
+            </h2>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    {%- if section.settings.url != blank -%}
+      <a href="{{ section.settings.url }}" class="link--full"></a>
+    {%- endif -%}
+  </div>
+  {% if section.settings.enable_custom_cursor %}
+    {%- render 'custom-cursor', text: section.settings.custom_cursor_text, class: 'btn btn-secondary' -%}
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.full-width-image.name",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.full-width-image.settings.header.content"
+    },
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "t:sections.full-width-image.settings.heading.label",
+      "default": "<p>Your <em>rich</em> heading</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:sections.full-width-image.settings.image.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "t:sections.full-width-image.settings.image_mobile.label",
+      "info": "t:sections.full-width-image.settings.image_mobile.info."
+    },
+    {
+      "type": "select",
+      "id": "image_height_desktop",
+      "options": [
+        {
+          "value": "custom",
+          "label": "t:sections.full-width-image.settings.image_height_desktop.options__1.label"
+        },
+        {
+          "value": "half",
+          "label": "t:sections.full-width-image.settings.image_height_desktop.options__2.label"
+        },
+        {
+          "value": "full",
+          "label": "t:sections.full-width-image.settings.image_height_desktop.options__3.label"
+        }
+      ],
+      "default": "full",
+      "label": "t:sections.full-width-image.settings.image_height_desktop.label",
+      "info": "t:sections.image-banner.settings.image_height.info"
+    },
+    {
+      "type": "select",
+      "id": "image_height_mobile",
+      "options": [
+        {
+          "value": "custom",
+          "label": "t:sections.full-width-image.settings.image_height_mobile.options__1.label"
+        },
+        {
+          "value": "half",
+          "label": "t:sections.full-width-image.settings.image_height_mobile.options__2.label"
+        },
+        {
+          "value": "full",
+          "label": "t:sections.full-width-image.settings.image_height_mobile.options__3.label"
+        }
+      ],
+      "default": "full",
+      "label": "t:sections.full-width-image.settings.image_height_mobile.label"
+    },
+    {
+      "type": "number",
+      "id": "image_height_desktop_custom",
+      "label": "t:sections.full-width-image.settings.image_height_desktop_custom.label"
+    },
+    {
+      "type": "number",
+      "id": "image_height_mobile_custom",
+      "label": "t:sections.full-width-image.settings.image_height_mobile_custom.label"
+    },
+    {
+      "type": "richtext",
+      "id": "heading_bottom",
+      "label": "t:sections.full-width-image.settings.heading_bottom.label",
+      "info": "t:sections.full-width-image.settings.heading_bottom.info"
+    },
+    {
+      "type": "url",
+      "id": "url",
+      "label": "t:sections.full-width-image.settings.url.label",
+      "info": "t:sections.full-width-image.settings.url.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_cursor",
+      "label": "t:sections.full-width-image.settings.enable_custom_cursor.label",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "custom_cursor_text",
+      "label": "t:sections.full-width-image.settings.custom_cursor_text.label",
+      "default": "Cursor name"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.common.heading_general"
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_top_margin",
+      "label": "t:sections.common.remove_margin.top",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_bottom_margin",
+      "label": "t:sections.common.remove_margin.bottom",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.full-width-image.name"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "remove_content_padding": false,
+        "visually_hidden": false,
+        "page_width": "",
+        "content_size": ""
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

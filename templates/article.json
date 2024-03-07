@@ -1,0 +1,86 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-article",
+      "settings": {
+        "show_date": true,
+        "show_ellipse": true,
+        "button_display": "small-hide",
+        "button_style": "secondary",
+        "button_label": "Shop all",
+        "button_url": "shopify:\/\/collections\/all"
+      }
+    },
+    "1644327428113ed126": {
+      "type": "image-banner",
+      "blocks": {
+        "6a1b3d66-c133-49fb-aa46-6fe87b590c84": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p><em>My skin feels tremendously<br\/> better since I started using<br\/> Ophélia night cream.<\/em><\/p>",
+            "hide_line_breaks": true,
+            "heading_size": "h1",
+            "heading_tag": "h2",
+            "heading_color": "secondary",
+            "heading_weight": "regular"
+          }
+        },
+        "4c515ae1-e1e6-4bec-87b3-6cae2e1c4ffd": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Anna, 32<\/p>",
+            "text_size": "font-inherit"
+          }
+        }
+      },
+      "block_order": [
+        "6a1b3d66-c133-49fb-aa46-6fe87b590c84",
+        "4c515ae1-e1e6-4bec-87b3-6cae2e1c4ffd"
+      ],
+      "settings": {
+        "image": "shopify:\/\/shop_images\/pexels-sora-shimazaki-5938601_1_581ecab2-f136-4f51-89a5-79accd9d55af.jpg",
+        "image_position_y_desktop": "center",
+        "image_position_x_desktop": "center",
+        "image_height_desktop": "height-custom",
+        "image_height_value_desktop": "px",
+        "image_height_custom_desktop": 750,
+        "desktop_text_align": "left",
+        "desktop_text_box_position": "left-middle",
+        "image_mobile": "shopify:\/\/shop_images\/img_full_M.jpg",
+        "image_position_y_mobile": "center",
+        "image_position_x_mobile": "center",
+        "image_height_mobile": "height-custom",
+        "image_height_value_mobile": "px",
+        "image_height_custom_mobile": 600,
+        "mobile_text_align": "left",
+        "mobile_text_box_position": "left-bottom",
+        "mobile_box": true,
+        "remove_top_margin": true,
+        "remove_bottom_margin": true,
+        "image_overlay_opacity": 0,
+        "image_lazy": "lazy",
+        "image_overlay_color": "primary",
+        "additional_arrow_type": "none",
+        "additional_link_label": "Link",
+        "additional_link_url": ""
+      }
+    },
+    "164432737749894e05": {
+      "type": "featured-collection-2",
+      "settings": {
+        "title": "<p><em>Our<\/em> bestsellers<\/p>",
+        "description": "<p>To prepare the skin thoroughly for hydration, preface with gentle Ophélia Facial Cleanser and mildly astringent Nightly Facial Toner. Manage blemishes effectively with Kontrol, a transparent, skin-calming gel. <\/p>",
+        "collection": "frontpage",
+        "products_per_page": 4,
+        "menu": "",
+        "remove_top_margin": false,
+        "remove_bottom_margin": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "1644327428113ed126",
+    "164432737749894e05"
+  ]
+}

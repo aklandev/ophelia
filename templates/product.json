@@ -1,0 +1,220 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "{{ product.vendor }}",
+            "text_style": "body"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {
+          }
+        },
+        "subtitle": {
+          "type": "text",
+          "settings": {
+            "text": "{{ product.metafields.descriptors.subtitle.value }}",
+            "text_style": "subtitle"
+          }
+        },
+        "21d38f24-821e-499b-9029-e9be7c1b7af3": {
+          "type": "rating",
+          "settings": {
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "show_tax_label": false
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "variant_type": "dropdown"
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_qty_selector": true,
+            "show_dynamic_checkout": true
+          }
+        },
+        "0ba5a55c-9288-4104-86e9-eb14c9e7f67d": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "What it is",
+            "content": "<p>A clarifying formulation that removes surface impurities and offers mild exfoliation from Lactic Acid. Ideal for maintaining immaculately clean skin in urban environments.<\/p>",
+            "page": ""
+          }
+        },
+        "6052704c-793e-4237-b85e-05287f305502": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "How to use",
+            "content": "<p>Morning and evening, pour into clean hands and lather. Massage over face and neck, then rinse thoroughly with warm water.<\/p>",
+            "page": ""
+          }
+        },
+        "4c4c9c6c-8925-41e2-bb09-3c56514e6565": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Ingredients",
+            "content": "",
+            "page": "ingridients"
+          }
+        },
+        "9a4dc15b-1a15-48d7-85a0-03b0b3c9994b": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<div id=\"shopify-product-reviews\" data-id=\"{{ product.id }}\"><\/div>",
+            "wrap_with_accordion": true,
+            "heading": "Reviews"
+          }
+        },
+        "bbb37724-357e-41fc-8155-f1a166b3318c": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Shipping",
+            "content": "",
+            "page": "shipping-tab"
+          }
+        },
+        "5fc52934-5e58-4421-8f32-c2370e1afcb9": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Returns",
+            "content": "",
+            "page": "returns-tab"
+          }
+        },
+        "d64e9f04-ddb8-41cb-9219-e8f7743d9907": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Sustainability",
+            "content": "",
+            "page": "sustainability-tab"
+          }
+        },
+        "726e6bc0-762e-4c12-a9d6-991eff0e64fc": {
+          "type": "utils_tab",
+          "settings": {
+            "util_heading_desktop": "Do you have any questions?",
+            "util_heading_mobile": "Any questions?",
+            "heading_color": "primary",
+            "util_label": "Contact us",
+            "util_url": "shopify:\/\/pages\/contact"
+          }
+        }
+      },
+      "block_order": [
+        "vendor",
+        "title",
+        "subtitle",
+        "21d38f24-821e-499b-9029-e9be7c1b7af3",
+        "price",
+        "description",
+        "variant_picker",
+        "buy_buttons",
+        "0ba5a55c-9288-4104-86e9-eb14c9e7f67d",
+        "6052704c-793e-4237-b85e-05287f305502",
+        "4c4c9c6c-8925-41e2-bb09-3c56514e6565",
+        "9a4dc15b-1a15-48d7-85a0-03b0b3c9994b",
+        "bbb37724-357e-41fc-8155-f1a166b3318c",
+        "5fc52934-5e58-4421-8f32-c2370e1afcb9",
+        "d64e9f04-ddb8-41cb-9219-e8f7743d9907",
+        "726e6bc0-762e-4c12-a9d6-991eff0e64fc"
+      ],
+      "settings": {
+        "enable_header_layering": true,
+        "enable_sticky_info": true,
+        "skip_first_media": false,
+        "enable_mobile_arrow": true,
+        "enable_video_looping": false
+      }
+    },
+    "db5cbf9c-74d8-4a3f-a602-842a4e67f23d": {
+      "type": "image-banner",
+      "blocks": {
+        "template--18430248190297__db5cbf9c-74d8-4a3f-a602-842a4e67f23d-1679565763eca7bf5c-0": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p><em>My skin feels tremendously<br\/> better since I started using<br\/> Ophélia organic products.<\/em><\/p>",
+            "hide_line_breaks": true,
+            "heading_size": "text-2.3 text-3.5--desk",
+            "heading_tag": "h2",
+            "heading_color": "secondary",
+            "heading_weight": "light"
+          }
+        },
+        "template--18430248190297__db5cbf9c-74d8-4a3f-a602-842a4e67f23d-1679565763eca7bf5c-1": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Anna, 32<\/p>",
+            "text_size": "text-1.23 text-1.85--desk"
+          }
+        }
+      },
+      "block_order": [
+        "template--18430248190297__db5cbf9c-74d8-4a3f-a602-842a4e67f23d-1679565763eca7bf5c-0",
+        "template--18430248190297__db5cbf9c-74d8-4a3f-a602-842a4e67f23d-1679565763eca7bf5c-1"
+      ],
+      "settings": {
+        "image": "shopify:\/\/shop_images\/pexels-sora-shimazaki-5938601_1_581ecab2-f136-4f51-89a5-79accd9d55af.jpg",
+        "image_position_y_desktop": "center",
+        "image_position_x_desktop": "center",
+        "image_height_desktop": "min-vh-100",
+        "image_height_value_desktop": "px",
+        "image_height_custom_desktop": 750,
+        "desktop_text_align": "left",
+        "desktop_text_box_position": "left-middle",
+        "image_mobile": "shopify:\/\/shop_images\/homepage-testimonial.jpg",
+        "image_position_y_mobile": "center",
+        "image_position_x_mobile": "center",
+        "image_height_mobile": "min-vh-100",
+        "image_height_value_mobile": "px",
+        "image_height_custom_mobile": 600,
+        "mobile_text_align": "left",
+        "mobile_text_box_position": "left-middle",
+        "mobile_box": false,
+        "remove_top_margin": true,
+        "remove_bottom_margin": true,
+        "image_overlay_opacity": 0,
+        "image_lazy": "lazy",
+        "image_overlay_color": "primary",
+        "additional_arrow_type": "none",
+        "additional_link_label": "Button label",
+        "additional_link_url": ""
+      }
+    },
+    "164206892769d040b3": {
+      "type": "featured-collection-2",
+      "settings": {
+        "title": "<p><em>Accompany<\/em> with<\/p>",
+        "description": "<p>To prepare the skin thoroughly for hydration, preface with gentle Ophélia Facial Cleanser and mildly astringent Night Cream.<\/p>",
+        "collection": "frontpage",
+        "products_per_page": 4,
+        "menu": "",
+        "remove_top_margin": false,
+        "remove_bottom_margin": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "db5cbf9c-74d8-4a3f-a602-842a4e67f23d",
+    "164206892769d040b3"
+  ]
+}

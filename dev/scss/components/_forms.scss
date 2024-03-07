@@ -1,0 +1,98 @@
+@import "partials/select";
+@import "partials/quantity";
+@import "partials/disclosure";
+
+/* Field */
+.field {
+  // TODO: #1 check that forms are not broken after rework
+  // TODO: #2 remove .field class across the website
+  // TODO: #3 check if all colors available
+  // TODO: #4 error messages what color?
+  position: relative;
+
+  &__button {
+    align-items: center;
+    background-color: transparent;
+    border: 0;
+    color: currentColor;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  &__input {
+    width: 100%;
+    font-family: inherit;
+    color: c_rgb(var(--color-base-text));
+    border-bottom: 1.5px solid c_rgba(var(--color-secondary), 0.4);
+    border-radius: 0;
+    transition: borderColor var(--animation-duration);
+    &:focus {
+      outline: 0;
+      border-color: c_rgba(var(--color-secondary), 1);
+    }
+    &:not(.field__input--custom-size) {
+      font-size: 1.85rem;
+      @include media-breakpoint-down(sm) {
+        font-size: 1.23rem;
+      }
+    }
+  }
+  &__currency {
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 1;
+    transition: opacity var(--animation-duration);
+  }
+}
+
+.field__input,
+.customer .field input {
+  text-align: left;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+
+  font-family: inherit;
+
+  @include media-breakpoint-up(md) {
+    padding-top: 1.3rem;
+    padding-bottom: 1.3rem;
+  }
+}
+
+.field__input::-webkit-search-cancel-button,
+.customer .field input::-webkit-search-cancel-button {
+  display: none;
+}
+//* Hide arrows for number type
+.field__input::-webkit-outer-spin-button,
+.customer .field input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.field__input,
+.customer .field input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.field__input::placeholder,
+.customer .field input::placeholder {
+  font-size: inherit;
+  font-family: inherit;
+  color: inherit;
+
+  opacity: 0.6;
+}
+.grecaptcha-badge {
+  z-index: 2;
+}
+.field__input:placeholder-shown {
+  + .field__currency {
+    opacity: 0.6;
+  }
+}

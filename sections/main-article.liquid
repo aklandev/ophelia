@@ -1,0 +1,397 @@
+<article itemscope itemtype="http://schema.org/BlogPosting" class="overflow-hidden overflow-visible--lg">
+  <div class="page-width{% unless article.image %} page-width--narrow position-relative{% endunless %}">
+    <div class="grid grid--1-col{% if article.image %} grid--2-col-desktop{% endif %} align-items-center position-relative">
+      {%- if article.image -%}
+        <div class="grid__item">
+          <div class="mx-n1.5 mx-0--desk">
+            <div class="media media--square media--lazy-animation" itemprop="image">
+              {{
+                article.image
+                | image_url: width: 1280
+                | image_tag:
+                  loading: 'eager',
+                  preload: true,
+                  sizes: '(min-width: 750px) calc((100vw - 8rem) / 2), (min-width: 1440px) calc((var(--page-width) - 8rem) / 2 ), 100vw',
+                  widths: '550, 720, 990, 1100, 1280'
+              }}
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+      <div class="grid__item z-stack-2">
+        <header class="article__header pt-4 pb-3 pt-10--desk pb-10--desk position-relative{% unless article.image %} article__header--narrow mt-4 mt-2--desk mx-auto text-center{% endunless %}">
+          <h1
+            class="lh-125 lh-117--desk{% if article.image %} article__header__title{% endif %}"
+            itemprop="headline"
+          >
+            {{ article.title | escape }}
+          </h1>
+
+          {%- if section.settings.show_date -%}
+            <p class="text-1.23 text-1.85--desk mt-2--desk" itemprop="dateCreated pubdate datePublished">
+              {{ article.published_at | date: '%B %Y' }}
+            </p>
+          {%- endif -%}
+
+          <scroll-to
+            class="link article__header__arrow position-absolute{% unless article.image %} medium-hide large-up-hide{% endunless %}"
+            data-target="#article-body"
+            data-offset="true"
+            tabindex="0"
+          >
+            {%- render 'icon' with 'arrow', class: 'icon__arrow--down' -%}
+          </scroll-to>
+        </header>
+      </div>
+
+      {% if section.settings.show_ellipse != blank %}
+        {% if article.image %}
+          <div class="grid__item grid__item--full-width">
+            <div class="article__header__ellipse-wrapper position-relative mx-n8 {% if article.image %}mx-0--desk{% else %}mx-n5--desk{% endif %}">
+              <div
+                class="article__header__ellipse d-block{% unless article.image %} no-image{% endunless %} rounded-ellipse position-absolute w-100"
+              ></div>
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+
+    {% unless article.image %}
+      <div class="absolute-fill rounded-ellipse pb-0 z-behind mx-n8 mx-0--desk mt-n3.85--desk"></div>
+    {% endunless %}
+  </div>
+
+  <div class="section-space mb-0">
+    <div class="page-width page-width--narrow">
+      <div id="article-body" class="rte" itemprop="articleBody" data-adjust-images>
+        {{ article.content }}
+      </div>
+
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when '@app' -%}
+            <div class="page-width page-width--narrow">
+              {% render block %}
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+
+      <hr class="mx-n1.5 mx-0--desk">
+
+      <div class="d-flex align-items-center{% if section.settings.button_display != 'hide' or section.settings.button_display != 'medium-hide large-up-hide' %} justify-content-center justify-content-between--desk{% endif %}">
+        <a href="{{ blog.url }}" class="link link--with-icon font-medium text-1.54">
+          {%- render 'icon' with 'arrow-short', class: 'link__icon--reverse' -%}
+          {{ 'article.back' | t: blog: blog.title }}
+        </a>
+
+        {%- unless section.settings.button_display == 'hide' -%}
+          <a
+            {% if section.settings.button_url == blank %}
+              role="link" aria-disabled="true"
+            {% else %}
+              href="{{ section.settings.button_url }}"
+            {% endif %}
+            class="btn btn--{{ section.settings.button_style }} {{ section.settings.button_display }} ml-2"
+          >
+            {{ section.settings.button_label | escape }}
+          </a>
+        {%- endunless -%}
+      </div>
+    </div>
+  </div>
+
+  {%- if blog.comments_enabled? -%}
+    <div>
+      <div id="comments" class="page-width page-width--narrow">
+        {%- if article.comments_count > 0 -%}
+          <hr class="mx-n1.5 mx-0--desk">
+
+          {%- assign anchorId = '#Comments-' | append: article.id -%}
+
+          <h2 class="h3 mb-2.5--desk mt-6--desk lh-100" id="Comments-{{ article.id }}" tabindex="-1">
+            {{ 'article.comments' | t: count: article.comments_count }}
+          </h2>
+          {% paginate article.comments by 5 %}
+            <div>
+              {%- if comment.status == 'pending' and comment.content -%}
+                <article id="{{ comment.id }}" class="rte">
+                  {{ comment.content }}
+                  <footer class="mt-1.5 mt-2--desk text-secondary text-1.23 lh-150">
+                    <span>{{ comment.author }}</span>
+                  </footer>
+                </article>
+              {%- endif -%}
+
+              {%- for comment in article.comments -%}
+                <article id="{{ comment.id }}" class="rte{% unless forloop.last %} mb-3 mb-4.5--desk{% endunless %}">
+                  {{ comment.content }}
+                  <footer class="mt-1.5 mt-2--desk text-secondary text-1.23 lh-150">
+                    <span>{{ comment.author }}</span> • <span>{{ comment.created_at | time_tag: format: 'date' }}</span>
+                  </footer>
+                </article>
+              {%- endfor -%}
+              {% render 'pagination', paginate: paginate, anchor: anchorId %}
+            </div>
+          {% endpaginate %}
+        {%- endif -%}
+
+        {% form 'new_comment', article %}
+          {%- liquid
+            assign post_message = 'blogs.article.success'
+            if blog.moderated? and comment.status == 'unapproved'
+              assign post_message = 'blogs.article.success_moderated'
+            endif
+          -%}
+          <hr class="mx-n1.5 mx-0--desk">
+
+          <h2 class="h3 mb-2.5--desk mt-6--desk lh-100">{{ 'article.comment_form_title' | t }}</h2>
+          {%- if form.errors -%}
+            <div role="alert">
+              <h3 tabindex="-1" autofocus>
+                {{ 'form.error_heading' | t }}
+              </h3>
+            </div>
+            <ul>
+              {%- for field in form.errors -%}
+                <li>
+                  <a href="#CommentForm-{{ field }}" class="link">
+                    {%- if form.errors.translated_fields[field] contains 'author' -%}
+                      {{ 'article.name' | t }}
+                    {%- elsif form.errors.translated_fields[field] contains 'body' -%}
+                      {{ 'article.message' | t }}
+                    {%- else -%}
+                      {{ form.errors.translated_fields[field] }}
+                    {%- endif -%}
+                    {{ form.errors.messages[field] }}
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- elsif form.posted_successfully? -%}
+            <div role="status">
+              <h3 tabindex="-1" autofocus>{{ post_message | t }}</h3>
+            </div>
+          {%- endif -%}
+
+          <div>
+            <div>
+              <input
+                type="text"
+                name="comment[author]"
+                id="CommentForm-author"
+                class="field__input"
+                autocomplete="name"
+                value="{{ form.author }}"
+                aria-required="true"
+                required
+                {% if form.errors contains 'author' %}
+                  aria-invalid="true"
+                  aria-describedby="CommentForm-author-error"
+                {% endif %}
+                placeholder="{{ 'article.name' | t }}"
+              >
+              <label class="visually-hidden" for="CommentForm-author">
+                {{- 'article.name' | t }}
+                <span aria-hidden="true">*</span>
+              </label>
+              {%- if form.errors contains 'author' -%}
+                <small id="CommentForm-author-error">
+                  <span>
+                    {{- 'article.name' | t }}
+                    {{ form.errors.messages.author }}.
+                  </span>
+                </small>
+              {%- endif -%}
+            </div>
+            <div class="mt-1">
+              <input
+                type="email"
+                name="comment[email]"
+                id="CommentForm-email"
+                autocomplete="email"
+                class="field__input"
+                value="{{ form.email }}"
+                autocorrect="off"
+                autocapitalize="off"
+                aria-required="true"
+                required
+                {% if form.errors contains 'email' %}
+                  aria-invalid="true"
+                  aria-describedby="CommentForm-email-error"
+                {% endif %}
+                placeholder="{{ 'article.email' | t }}"
+              >
+              <label class="visually-hidden" for="CommentForm-email">
+                {{- 'article.email' | t }}
+                <span aria-hidden="true">*</span>
+              </label>
+              {%- if form.errors contains 'email' -%}
+                <small class="mt-0.5" id="CommentForm-email-error">
+                  <span>
+                    {{- 'article.email' | t }}
+                    {{ form.errors.messages.email }}.
+                  </span>
+                </small>
+              {%- endif -%}
+            </div>
+            <div class="mt-1">
+              <textarea
+                name="comment[body]"
+                id="CommentForm-body"
+                class="field__input"
+                aria-required="true"
+                required
+                {% if form.errors contains 'body' %}
+                  aria-invalid="true"
+                  aria-describedby="CommentForm-body-error"
+                {% endif %}
+                placeholder="{{ 'article.message' | t }}"
+              ></textarea>
+              <label class="visually-hidden" for="CommentForm-body">
+                {{- 'article.message' | t }}
+                <span aria-hidden="true">*</span>
+              </label>
+            </div>
+            {%- if form.errors contains 'body' -%}
+              <small class="mt-0.5" id="CommentForm-body-error">
+                <span>
+                  {{- 'article.message' | t }}
+                  {{ form.errors.messages.body }}.
+                </span>
+              </small>
+            {%- endif -%}
+          </div>
+          {%- if blog.moderated? -%}
+            <p class="mt-1 mt-1.5--desk mb-0 text-secondary text-1.07 lh-140">{{ 'article.moderated' | t }}</p>
+          {%- endif -%}
+
+          <button type="submit" class="btn btn--secondary mt-2 mt-3.85--desk">{{ 'article.post' | t }}</button>
+        {% endform %}
+      </div>
+    </div>
+  {%- endif -%}
+</article>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    function imgOnLoadHandle(img) {
+      img.naturalWidth > img.clientWidth ? img.classList.add('extended') : null;
+    }
+
+    document.querySelectorAll('[data-adjust-images] img').forEach((img) => {
+      let isLoaded = img.complete && img.naturalHeight !== 0;
+
+      if (isLoaded) {
+        imgOnLoadHandle(img);
+      } else {
+        img.onload = () => {
+          imgOnLoadHandle(img);
+        };
+      }
+    });
+  });
+</script>
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "articleBody": {{ article.content | strip_html | json }},
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": {{ request.origin | append: page.url | json }}
+    },
+    "headline": {{ article.title | json }},
+    {% if article.excerpt != blank %}
+      "description": {{ article.excerpt | strip_html | json }},
+    {% endif %}
+    {% if article.image %}
+      "image": [
+        {{ article | image_url: width: article.image.width | prepend: "https:" | json }}
+      ],
+    {% endif %}
+    "datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+    "dateCreated": {{ article.created_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+    "author": {
+      "@type": "Person",
+      "name": {{ article.author | json }}
+    },
+    "publisher": {
+      "@type": "Organization",
+      {% if settings.share_image %}
+        "logo": {
+          "@type": "ImageObject",
+          "height": {{ settings.share_image.height | json }},
+          "url": {{ settings.share_image | image_url: width: settings.share_image.width | prepend: "https:" | json }},
+          "width": {{ settings.share_image.width | json }}
+        },
+      {% endif %}
+      "name": {{ shop.name | json }}
+    }
+  }
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.main-article.name",
+  "class": "pb-5",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "t:sections.main-article.settings.show_date",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_ellipse",
+      "label": "t:sections.main-article.settings.show_ellipse",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-article.settings.header_1"
+    },
+    {
+      "type": "select",
+      "id": "button_display",
+      "options": [
+        { "label": "t:sections.main-article.settings.button_display.option_1", "value": "small-hide" },
+        { "label": "t:sections.main-article.settings.button_display.option_2", "value": "medium-hide large-up-hide" },
+        { "label": "t:sections.main-article.settings.button_display.option_3", "value": "" },
+        { "label": "t:sections.main-article.settings.button_display.option_4", "value": "hide" }
+      ],
+      "default": "small-hide",
+      "label": "t:sections.main-article.settings.button_display.label"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "options": [
+        { "label": "t:sections.common.button.style.option_1", "value": "primary" },
+        { "label": "t:sections.common.button.style.option_2", "value": "secondary" }
+      ],
+      "default": "secondary",
+      "label": "t:sections.common.button.style.label"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:sections.common.button.label",
+      "default": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "t:sections.common.button.url"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ]
+}
+{% endschema %}

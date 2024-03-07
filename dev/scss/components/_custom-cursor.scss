@@ -1,0 +1,25 @@
+// Prevent working when JS is disabled
+html:not(.no-js) {
+  @media (hover: hover) {
+    [data-enable-custom-cursor] * {
+      cursor: none;
+    }
+  }
+
+  .custom-cursor {
+    // Interesting glitch here! On safari Y -50% would leave "stains"
+    // on the screen... Thus we are using -49.99%.
+    display: none;
+    transform: translate(-50%, -49.99%);
+    pointer-events: none;
+    transition: none;
+    @media (hover: hover) {
+      display: inline-block;
+    }
+    &.btn {
+      padding: 0.75rem 1.5rem;
+      font-size: 1.25rem;
+      min-width: 131px;
+    }
+  }
+}

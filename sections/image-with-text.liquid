@@ -1,0 +1,145 @@
+{{ 'section-image-with-text.css' | asset_url | stylesheet_tag }}
+
+<div class="section-space position-relative{% if section.settings.remove_top_margin %} mt-0{% endif %}{% if section.settings.remove_bottom_margin %} mb-0{% endif %}">
+  <div class="page-width">
+    <div class="image-with-text">
+      <div
+        class="image-with-text__content first pb-0--desk text-1.85--desk position-relative z-stack-2"
+        {% if section.settings.enable_parallax %}
+          data-parallax
+        {% endif %}
+      >
+        <div class="rte">{{ section.settings.content_1 }}</div>
+      </div>
+      <div
+        class="image-with-text__image second ml-n1.5 ml-0--desk mr-4.5 mr-0--desk position-relative z-stack-2"
+        {% if section.settings.enable_parallax %}
+          data-parallax data-parallax-amplifier="0.5"
+        {% endif %}
+      >
+        {%- if section.settings.image_1 != blank -%}
+          <div
+            class="media{% if settings.enable_lazy_animation %} media--lazy-animation{% endif %}"
+            style="padding-bottom: {{ 1 | divided_by: section.settings.image_1.aspect_ratio | times: 100 }}%;"
+          >
+            {%- render 'image' with section.settings.image_1 -%}
+          </div>
+        {%- elsif section.settings.image_1 == blank -%}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </div>
+      {% if section.settings.enable_ellipse %}
+        <div class="image-with-text__ellipse__wrapper z-stack">
+          <div>
+            <div class="image-with-text__ellipse d-block"></div>
+          </div>
+        </div>
+      {% endif %}
+      <div
+        class="image-with-text__image third mt-n3.85 mt-0--desk mr-n1.5 ml-4.5 ml-0--desk position-relative z-stack-2"
+        {% if section.settings.enable_parallax %}
+          data-parallax data-parallax-amplifier="0.5"
+        {% endif %}
+      >
+        {%- if section.settings.image_2 != blank -%}
+          <div
+            class="media{% if settings.enable_lazy_animation %} media--lazy-animation{% endif %}"
+            style="padding-bottom: {{ 1 | divided_by: section.settings.image_2.aspect_ratio | times: 100 }}%;"
+          >
+            {%- render 'image' with section.settings.image_2 -%}
+          </div>
+        {%- elsif section.settings.image_2 == blank -%}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </div>
+      <div
+        class="image-with-text__content fourth text-1.85--desk position-relative z-stack-2"
+        {% if section.settings.enable_parallax %}
+          data-parallax
+        {% endif %}
+      >
+        <div class="rte">{{ section.settings.content_2 }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+{%- if section.settings.enable_ellipse -%}
+  <script>
+    document.querySelector('.main-content').style.overflowX = 'clip';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (detectBrowser() === 'safari') {
+        document
+          .querySelector('#shopify-section-{{ section.id }} .image-with-text__ellipse__wrapper')
+          .classList.add('large-up-hide');
+      }
+    });
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.image-with-text.name",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.image-with-text.settings.header.content"
+    },
+    {
+      "type": "richtext",
+      "id": "content_1",
+      "label": "t:sections.image-with-text.settings.content_1.label",
+      "default": "<p>Text content</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "t:sections.image-with-text.settings.image_1.label"
+    },
+    {
+      "type": "richtext",
+      "id": "content_2",
+      "label": "t:sections.image-with-text.settings.content_2.label",
+      "default": "<p>Text content</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "t:sections.image-with-text.settings.image_2.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_ellipse",
+      "label": "t:sections.image-with-text.settings.enable_ellipse.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_parallax",
+      "label": "t:sections.image-with-text.settings.enable_parallax.label",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:sections.common.heading_general"
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_top_margin",
+      "label": "t:sections.common.remove_margin.top",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_bottom_margin",
+      "label": "t:sections.common.remove_margin.bottom",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.image-with-text.name"
+    }
+  ]
+}
+{% endschema %}

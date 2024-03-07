@@ -1,0 +1,338 @@
+{%- liquid
+  if collection.handle == 'all' and section.settings.page_title != blank
+    assign title = section.settings.page_title | remove: '<p>' | remove: '</p>'
+  else
+    assign title = collection.title | escape
+  endif
+
+  if collection.handle == 'all' and section.settings.page_description != blank
+    assign description = section.settings.page_description
+  else
+    assign description = collection.description
+  endif
+
+  if collection.handle == 'all' and section.settings.page_collection != blank
+    assign section_collection = section.settings.page_collection
+  else
+    assign section_collection = collection
+  endif
+-%}
+
+{%- if collection.featured_image != blank and section.settings.show_collection_image == true -%}
+  <style>
+    .main-content {
+      overflow-x: hidden;
+    }
+    @media (max-width: 767px) {
+      .template-collection .main-content {
+        padding-top: 0;
+      }
+    }
+  </style>
+  <div class="section-space mt-0">
+    <div class="page-width">
+      <div class="grid grid--1-col grid--2-col-tablet grid--2-col-desktop align-items-center position-relative">
+        <div class="grid__item">
+          <div class="mx-n1.5 mx-0--desk">
+            <div class="media media--square{% if settings.enable_lazy_animation %} media--lazy-animation{% endif %}">
+              {{
+                collection.featured_image
+                | image_url: width: 850
+                | image_tag:
+                  loading: 'auto',
+                  sizes: '(min-width: 751px) calc((1336px - 1rem) / 2), 100vw',
+                  widths: '150, 300, 520, 750, 850, 1040'
+              }}
+            </div>
+          </div>
+        </div>
+        <div class="grid__item">
+          <header class="pt-2 pt-4--desk pb-1 pt-10--xxl pb-10--desk position-relative mb-3 mb-0--desk">
+            <h1 class="article__header__title">{{ collection.title | escape }}</h1>
+
+            {%- if collection.description and section.settings.show_collection_description -%}
+              <p class="rte rte--narrow text-1.23 text-1.85--desk mt-2--desk">{{ collection.description }}</p>
+            {%- endif -%}
+          </header>
+        </div>
+        <div class="grid__item grid__item--full-width">
+          <div class="position-relative mx-n10 mx-0--xl events-none">
+            {% if section.settings.show_ellipse != blank %}
+              <div class="article__header__ellipse d-block rounded-ellipse position-absolute w-100"></div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+<div class="page-width d-flex flex-wrap align-items-start">
+  <div class="collection__info w-100{% unless collection.featured_image != blank and section.settings.show_collection_image == true %} pt-2--desk{% else %} mt-0{% endunless %} pb-2">
+    {%- unless collection.featured_image != blank and section.settings.show_collection_image == true -%}
+      <h1 class="collection__title mb-2 lh-133 lh-117--desk text-primary">
+        {% if title == collection.title %}
+          <span class="visually-hidden"> {{ 'collection.title' | t }}: </span>
+        {% endif %}
+        {{- title -}}
+      </h1>
+
+      {%- if collection.description and section.settings.show_collection_description -%}
+        <div class="rte text-secondary">{{ description }}</div>
+      {%- endif -%}
+    {%- endunless -%}
+
+    {%- if section.settings.sidebar_menu -%}
+      <ul class="collection__menu mt-2.5 mr-n1.5 pb-3 d-flex align-items-start align-items-start--desk list-unstyled text-nowrap lh-133">
+        {% for link in section.settings.sidebar_menu.links %}
+          <li class="collection__menu__item text-1.54 mb-1.5--desk">
+            <a
+              href="{{ link.url }}"
+              class="link focus-inset position-relative d-flex align-items-center"
+              {% if link.current %}
+                aria-current="page"
+              {% endif %}
+            >
+              <span>
+                {{- link.title | escape -}}
+              </span>
+              {%- render 'icon' with 'arrow', class: 'link__icon' -%}
+              {%- render 'icon' with 'arrow-short', class: 'link__icon mobile-icon ml-0-! position-absolute mt-3' -%}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
+      <menu-drawer class="d-block{% unless collection.featured_image != blank and section.settings.show_collection_image == true %} mt-2{% endunless %}">
+        <details class="drawer--right d-flex">
+          <summary
+            aria-expanded="false"
+            role="button"
+            aria-controls="main-collection-filters"
+          >
+            <span class="btn btn--secondary focus-inset motion-reduce">
+              {%- if section.settings.enable_filtering and section.settings.enable_sorting -%}
+                {{ 'facets.filter_and_sort' | t }}
+              {%- elsif section.settings.enable_filtering -%}
+                {{ 'facets.filter_button' | t }}
+              {%- elsif section.settings.enable_sorting -%}
+                {{ 'facets.sort_button' | t }}
+              {%- endif -%}
+            </span>
+          </summary>
+
+          <div
+            id="main-collection-filters"
+            data-id="{{ section.id }}"
+            class="drawer{% if settings.sidebar_grain != blank %} drawer--grain{% endif %} bg-secondary overflow-hidden position-fixed"
+            tabindex="-1"
+          >
+            <div class="d-flex flex-column vh-100">
+              {% render 'facets',
+                results: section_collection,
+                enable_filtering: section.settings.enable_filtering,
+                enable_sorting: section.settings.enable_sorting
+              %}
+            </div>
+          </div>
+
+          <button
+            class="drawer__overlay {% if settings.sidebar_grain != blank %}drawer--grain{% endif %} position-fixed no-js-hidden h-100 w-100"
+            tabindex="-1"
+          >
+            <span class="drawer__overlay__inner flex-center position-absolute text-1.6 font-medium">
+              <span class="link link--with-icon text-{{ settings.sidebar_overlay_text }}" tabindex="0">
+                {%- render 'icon' with 'arrow-short', class: 'link__icon--reverse' -%}
+                {{- 'cart.continue_shopping' | t -}}
+              </span>
+            </span>
+          </button>
+        </details>
+      </menu-drawer>
+    {%- endif -%}
+  </div>
+
+  <div class="collection__product-list w-100">
+    <div id="ProductGridContainer">
+      {%- paginate section_collection.products by section.settings.products_per_page -%}
+        {%- if section_collection.products.size == 0 -%}
+          <div class="collection collection--empty" id="product-grid" data-id="{{ section.id }}">
+            <div class="loading-overlay"></div>
+            <div class="title-wrapper text-center">
+              <h2>
+                {{ 'collection.empty' | t }}
+              </h2>
+            </div>
+          </div>
+        {%- else -%}
+          <div class="collection pb-2 pb-0--desk">
+            <h2 class="visually-hidden">{{ 'collection.products' | t }}</h2>
+            <ul id="product-grid" data-id="{{ section.id }}" class="grid grid--2-col">
+              {%- for product in section_collection.products -%}
+                <li class="grid__item mb-1.5--desk">
+                  {% render 'card-product', card_product: product %}
+                </li>
+
+                {% assign current_product_iteration = forloop.index %}
+                {%- for block in section.blocks -%}
+                  {% if current_product_iteration == block.settings.review_position %}
+                    <li class="grid__item no-js-hidden" style="max-width: none; width: 100%;">
+                      {% render 'single-testimonial',
+                        content: block.settings.review_content,
+                        author: block.settings.review_author,
+                        grain: block.settings.review_grain,
+                        avatar: block.settings.review_avatar
+                      %}
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              {%- endfor -%}
+            </ul>
+
+            {%- if paginate.pages > 1 -%}
+              {% render 'pagination', paginate: paginate, anchor: '' %}
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endpaginate -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main-collection.name",
+  "class": "section-space mt-0",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:sections.main-collection.settings.paragraph.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_image",
+      "default": false,
+      "label": "t:sections.main-collection.settings.show_collection_image.label",
+      "info": "t:sections.main-collection.settings.show_collection_image.info"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.main-collection.settings.paragraph_1"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_ellipse",
+      "label": "t:sections.main-collection.settings.show_ellipse.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_description",
+      "default": true,
+      "label": "t:sections.main-collection.settings.show_collection_description.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-collection.settings.header_1"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "default": true,
+      "label": "t:sections.main-collection.settings.enable_filtering.label",
+      "info": "t:sections.main-collection.settings.enable_filtering.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "default": true,
+      "label": "t:sections.main-collection.settings.enable_sorting.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-collection.settings.header_2"
+    },
+    {
+      "type": "link_list",
+      "id": "sidebar_menu",
+      "label": "t:sections.main-collection.settings.sidebar_menu.label",
+      "info": "t:sections.main-collection.settings.sidebar_menu.info"
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "default": 16,
+      "label": "t:sections.main-collection.settings.products_per_page.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-collection.settings.header_3"
+    },
+    {
+      "type": "richtext",
+      "id": "page_title",
+      "label": "t:sections.main-collection.settings.page_title.label",
+      "default": "<p>Title</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "page_description",
+      "label": "t:sections.main-collection.settings.page_description.label",
+      "default": "<p>Add collection description</p>"
+    },
+    {
+      "type": "collection",
+      "id": "page_collection",
+      "label": "t:sections.main-collection.settings.page_collection.label",
+      "info": "t:sections.main-collection.settings.page_collection.info"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "t:sections.main-collection.blocks.review.name",
+      "settings": [
+        {
+          "type": "range",
+          "id": "review_position",
+          "min": 2,
+          "max": 24,
+          "step": 2,
+          "default": 4,
+          "label": "t:sections.main-collection.blocks.review.settings.review_position.label",
+          "info": "t:sections.main-collection.blocks.review.settings.review_position.info"
+        },
+        {
+          "type": "richtext",
+          "id": "review_content",
+          "label": "t:sections.main-collection.blocks.review.settings.review_content.label",
+          "default": "<p>Text content</p>"
+        },
+        {
+          "type": "text",
+          "id": "review_author",
+          "label": "t:sections.main-collection.blocks.review.settings.review_author.label",
+          "default": "Author"
+        },
+        {
+          "type": "image_picker",
+          "id": "review_avatar",
+          "label": "t:sections.main-collection.blocks.review.settings.review_avatar.label",
+          "info": "t:sections.main-collection.blocks.review.settings.review_avatar.info"
+        },
+        {
+          "type": "image_picker",
+          "id": "review_grain",
+          "label": "t:sections.main-collection.blocks.review.settings.review_grain.label",
+          "info": "t:sections.main-collection.blocks.review.settings.review_grain.info"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,143 @@
+{
+  "type": "footer",
+  "name": "t:sections.footer-group.name",
+  "sections": {
+    "images-scroll": {
+      "type": "images-scroll",
+      "blocks": {
+        "1943562d-d397-44a5-9090-e97e76ec49a2": {
+          "type": "image-and-text",
+          "settings": {
+            "title": "Vegan",
+            "url": "",
+            "image": "shopify:\/\/shop_images\/cream-on-face.jpg"
+          }
+        },
+        "5a5b0415-e091-40eb-b558-cb6ac77b909c": {
+          "type": "image-and-text",
+          "settings": {
+            "title": "Cruelty-free",
+            "url": "",
+            "image": "shopify:\/\/shop_images\/mirror-front.jpg"
+          }
+        },
+        "911882ba-04f3-4340-9aa8-b36d13949e98": {
+          "type": "image-and-text",
+          "settings": {
+            "title": "Shop All",
+            "url": "shopify:\/\/collections\/all",
+            "image": "shopify:\/\/shop_images\/stack-3-square-vertical.jpg"
+          }
+        },
+        "7b93c11f-e88c-4c80-a23d-4ffe7e4aebf9": {
+          "type": "image-and-text",
+          "settings": {
+            "title": "No parabens",
+            "url": ""
+          }
+        }
+      },
+      "block_order": [
+        "1943562d-d397-44a5-9090-e97e76ec49a2",
+        "5a5b0415-e091-40eb-b558-cb6ac77b909c",
+        "911882ba-04f3-4340-9aa8-b36d13949e98",
+        "7b93c11f-e88c-4c80-a23d-4ffe7e4aebf9"
+      ],
+      "settings": {
+        "hide_on_cart_page": true,
+        "bg_color": "#fcf9ec",
+        "text_speed": 1,
+        "image_speed": 0.8
+      }
+    },
+    "instafeed": {
+      "type": "instafeed",
+      "blocks": {
+        "91c3473f-1dee-4c32-85ae-84dbb9459841": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/model-cream-7-square.jpg"
+          }
+        },
+        "89e9e71a-dd47-4688-99e3-74c0d8a4f3ed": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/cremes-front.jpg"
+          }
+        },
+        "a94b05bc-1824-4aed-b0ba-62dfd00a5c68": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/model-cream-3.jpg"
+          }
+        },
+        "81032dc7-a878-41a5-85b3-adf53543d8da": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/mirror-front.jpg"
+          }
+        },
+        "e62f2640-6d65-42c1-906a-c3957cb9dffa": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/model-cream.jpg"
+          }
+        },
+        "02b18a44-67bc-49c9-8fe5-81fe43c90b45": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/gel-square-top.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "91c3473f-1dee-4c32-85ae-84dbb9459841",
+        "89e9e71a-dd47-4688-99e3-74c0d8a4f3ed",
+        "a94b05bc-1824-4aed-b0ba-62dfd00a5c68",
+        "81032dc7-a878-41a5-85b3-adf53543d8da",
+        "e62f2640-6d65-42c1-906a-c3957cb9dffa",
+        "02b18a44-67bc-49c9-8fe5-81fe43c90b45"
+      ],
+      "settings": {
+        "title": "@ophelia_skincare",
+        "link_url": "",
+        "enable_social": true,
+        "links_title": "Follow Ophélia:"
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "8adb254c-fc21-46f2-834e-3832cc1a4bbf": {
+          "type": "newsletter",
+          "settings": {
+            "heading": "Sign up to Ophélia vibe and get 15% off your first order. Easy!",
+            "placeholder": "your@email.com"
+          }
+        },
+        "ef52a0cc-5dfc-4528-9864-2aa124495502": {
+          "type": "link_list",
+          "settings": {
+            "menu": "main-menu",
+            "menu-secondary": "footer"
+          }
+        }
+      },
+      "block_order": [
+        "8adb254c-fc21-46f2-834e-3832cc1a4bbf",
+        "ef52a0cc-5dfc-4528-9864-2aa124495502"
+      ],
+      "settings": {
+        "enable_country_selector": true,
+        "payment_enable": true,
+        "enable_copyrights": true,
+        "copyrights_editable": "All rights reserved."
+      }
+    }
+  },
+  "order": [
+    "images-scroll",
+    "instafeed",
+    "footer"
+  ]
+}

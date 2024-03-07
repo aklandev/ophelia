@@ -1,0 +1,89 @@
+{% comment %}
+  Renders a article card
+
+  Accepts:
+  - card_article: {Object} Product Liquid object
+  - card_spaced: {Boolean}
+  - lazy: {String} 'lazy' or 'auto'
+  - custom_cusror: {Boolean}
+
+  Usage:
+  {% render 'card_article', card_article: article %}
+{% endcomment %}
+
+{% liquid
+  if custom_cursor == null
+    assign custom_cursor = false
+  endif
+  if card_spaced == null
+    assign card_spaced = true
+  endif
+%}
+
+<article
+  aria-labelledby="Article-{{ card_article.id }}"
+  {% if settings.product_card_enable_hover_text and custom_cursor %}
+    data-enable-custom-cursor
+  {% endif %}
+>
+  <div class="position-relative">
+    {%- if card_article.image -%}
+      <div
+        {% if card_spaced %}
+          class="mx-n1.5 mx-0--desk"
+        {% endif %}
+      >
+        <div class="media media--square{% if settings.enable_lazy_animation %} media--lazy-animation{% endif %}">
+          {{
+            card_article.image
+            | image_url: width: 1100
+            | image_tag:
+              loading: lazy,
+              sizes: '(min-width: 992px) calc((var(--page-width) - 8rem) / 2), (min-width: 751) calc((100vw - 8rem), 100vw',
+              widths: '360, 550, 720, 990, 1100'
+          }}
+        </div>
+      </div>
+    {%- endif -%}
+
+    <div class="pt-2.5{% if card_spaced %} pb-2 px-4--desk py-3.5--desk{% endif %}">
+      <header class="mb-2 mb-2.5--desk">
+        <h2>{{- card_article.title | escape -}}</h2>
+      </header>
+
+      {%- if card_article.excerpt.size > 0 or card_article.content.size > 0 -%}
+        <p class="rte text-1.85--desk">
+          {%- if card_article.excerpt.size > 0 -%}
+            {{ card_article.excerpt | strip_html | truncatewords: 30 }}
+          {%- else -%}
+            {{ card_article.content | strip_html | truncatewords: 30 }}
+          {%- endif -%}
+        </p>
+      {%- endif -%}
+
+      <a
+        href="{{ card_article.url }}"
+        id="Article-{{ card_article.id }}"
+        class="link link--full link--with-icon mt-1.5 mt-2.5--desk font-medium"
+      >
+        {% capture card_link %}
+          {{ 'blog.read_more' | t }}
+          {%- render 'icon' with 'arrow-short', class: 'link__icon' -%}
+        {% endcapture %}
+
+        {% if card_spaced %}
+          {{ card_link }}
+        {% else %}
+          <span class="visually-hidden">{{ card_link }}</span>
+        {% endif %}
+      </a>
+    </div>
+  </div>
+
+  {% liquid
+    if settings.product_card_enable_hover_text and custom_cursor
+      assign custom_cursor_text = 'blog.read_more' | t
+      render 'custom-cursor', class: 'btn btn--primary font-regular', text: custom_cursor_text
+    endif
+  %}
+</article>

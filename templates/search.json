@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-search",
+      "settings": {
+        "recommended_list_title": "<p><em>Try these:<\/em><\/p>",
+        "recommended_list": "search-page-navigation",
+        "collection_title": "Our bestsellers",
+        "collection_title_align": "left",
+        "collection": "frontpage",
+        "collection_limit": 24
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

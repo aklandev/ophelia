@@ -1,0 +1,14 @@
+{
+  "name": "ophelia-theme",
+  "version": "1.1.0",
+  "scripts": {
+    "dev": "shopify theme dev -s `cat var.store.env`",
+    "serve": "shopify theme dev -s `cat var.store.env` -t `cat var.theme.env` -e",
+    "push": "shopify theme push -s `cat var.store.env` -t `cat var.theme.env`",
+    "pull": "shopify theme pull",
+    "dev-init": "cd dev && yarn install",
+    "gulp": "cd dev && gulp"
+  },
+  "repository": "git@github.com:split-dev/shopify-ophelia.git",
+  "author": "split <vkravchenko@splitdev.pro>"
+}

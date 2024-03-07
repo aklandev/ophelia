@@ -1,0 +1,173 @@
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+
+<div class="pb-5 pb-8.5--desk">
+  <div class="page-width page-width--narrow">
+    <div id="recover">
+      <div class="rounded-ellipse--desk pt-8--desk mt-n3.85--desk mb-5 mb-7--desk pb-0">
+        <div class="rte--narrow mx-auto pb-10--desk">
+          <h1 tabindex="-1">
+            {{ 'customer.recover_password.title' | t }}
+          </h1>
+          <div class="rte mb-2 mb-1--desk">
+            <p>
+              {{ 'customer.recover_password.subtext' | t }}
+            </p>
+          </div>
+
+          {%- form 'recover_customer_password' -%}
+            <div class="field">
+              <label for="RecoverEmail" class="visually-hidden">
+                {{ 'customer.login_page.email' | t }}
+              </label>
+              <input
+                type="email"
+                class="field__input pr-5 pr-8--desk"
+                value=""
+                name="email"
+                id="RecoverEmail"
+                autocorrect="off"
+                autocapitalize="off"
+                autocomplete="email"
+                {% if form.errors %}
+                  aria-invalid="true"
+                  aria-describedby="RecoverEmail-email-error"
+                  autofocus
+                {% endif %}
+                placeholder="{{ 'customer.login_page.email' | t }}"
+              >
+              <button
+                type="submit"
+                class="field__button link link--with-icon"
+                name="commit"
+                aria-label="{{ 'customer.login_page.sign_in' | t }}"
+              >
+                {% render 'icon' with 'arrow', class: 'link__icon' %}
+              </button>
+            </div>
+            {%- if form.errors -%}
+              <small id="RecoverEmail-email-error">
+                {{ form.errors.messages.form }}
+              </small>
+            {%- endif -%}
+          {%- endform -%}
+        </div>
+      </div>
+      <div class="rte--narrow mx-auto">
+        <div class="d-flex align-items-center justify-content-between">
+          <h5 class="mb-0 pr-1 text-1.38 text-1.7--desk lh-111 lh-255--desk text-primary">
+            <i>{{ 'customer.recover_password.login_heading' | t }}</i>
+          </h5>
+          <a href="#login" class="link link--with-icon font-medium">
+            {{ 'customer.recover_password.login' | t }}
+            {% render 'icon' with 'arrow-short', class: 'link__icon' %}
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div id="login">
+      <div class="rounded-ellipse--desk pt-8--desk mt-n3.85--desk mb-5 mb-7--desk pb-0">
+        <div class="rte--narrow mx-auto pb-10--desk">
+          <h1 tabindex="-1">
+            {{ 'customer.login_page.sign_in' | t }}
+          </h1>
+          <div class="rte mb-2 mb-1--desk">
+            <p>{{ 'customer.login_page.description' | t }}</p>
+          </div>
+          {%- form 'customer_login', novalidate: 'novalidate' -%}
+            {%- if form.errors -%}
+              <p tabindex="-1" autofocus>
+                <span class="visually-hidden">{{ 'accessibility.error' | t }} </span>
+                {{ 'form.error_heading' | t }}
+              </p>
+              <div class="mb-1">
+                {{ form.errors | default_errors }}
+              </div>
+            {%- endif -%}
+
+            <div class="field">
+              <label for="CustomerEmail" class="visually-hidden">
+                {{ 'customer.login_page.email' | t }}
+              </label>
+              <input
+                type="email"
+                class="field__input{% unless form.password_needed %} pr-5 pr-8--desk{% endunless %}"
+                name="customer[email]"
+                id="CustomerEmail"
+                autocomplete="email"
+                autocorrect="off"
+                autocapitalize="off"
+                {% if form.errors contains 'form' %}
+                  aria-invalid="true"
+                {% endif %}
+                placeholder="{{ 'customer.login_page.email_placeholder' | t }}"
+              >
+              {%- unless form.password_needed -%}
+                <button
+                  type="submit"
+                  class="field__button link link--with-icon"
+                  name="commit"
+                  aria-label="{{ 'customer.login_page.sign_in' | t }}"
+                >
+                  {% render 'icon' with 'arrow', class: 'link__icon' %}
+                </button>
+              {%- endunless -%}
+            </div>
+
+            {%- if form.password_needed -%}
+              {%- assign isPassword = true -%}
+              <div class="field mt-0.5">
+                <label for="CustomerPassword" class="visually-hidden">
+                  {{ 'customer.login_page.password' | t }}
+                </label>
+                <input
+                  type="password"
+                  class="field__input pr-5 pr-8--desk"
+                  value=""
+                  name="customer[password]"
+                  id="CustomerPassword"
+                  autocomplete="current-password"
+                  {% if form.errors contains 'form' %}
+                    aria-invalid="true"
+                  {% endif %}
+                  placeholder="{{ 'customer.login_page.password' | t }}"
+                >
+                <button
+                  type="submit"
+                  class="field__button link link--with-icon"
+                  name="commit"
+                  aria-label="{{ 'customer.login_page.sign_in' | t }}"
+                >
+                  {% render 'icon' with 'arrow', class: 'link__icon' %}
+                </button>
+              </div>
+            {%- endif -%}
+          {%- endform -%}
+        </div>
+      </div>
+      <div class="rte--narrow mx-auto">
+        {%- if isPassword -%}
+          <div class="d-flex align-items-center justify-content-between mb-1 mb-0--desk">
+            <h5 class="mb-0 pr-1 text-1.38 text-1.7--desk lh-111 lh-255--desk text-primary">
+              <i>{{ 'customer.login_page.forgot_password_heading' | t }}</i>
+            </h5>
+            <a href="#recover" class="link link--with-icon font-medium">
+              {{ 'customer.login_page.forgot_password' | t }}
+              {% render 'icon' with 'arrow-short', class: 'link__icon' %}
+            </a>
+          </div>
+        {%- endif -%}
+
+        <div class="d-flex align-items-center justify-content-between">
+          <h5 class="mb-0 pr-1 text-1.38 text-1.7--desk lh-111 lh-255--desk text-primary">
+            <i>{{ 'customer.login_page.create_account_heading' | t }}</i>
+          </h5>
+          <a href="{{ routes.account_register_url }}" class="link link--with-icon font-medium">
+            {{ 'customer.login_page.create_account' | t }}
+            {% render 'icon' with 'arrow-short', class: 'link__icon' -%}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

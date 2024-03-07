@@ -1,0 +1,112 @@
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+
+<div class="page-width page-width--narrow pb-5 pb-8.5--desk">
+  <div class="rte--narrow mx-auto">
+    <h1>
+      {{ 'customer.register.title' | t }}
+    </h1>
+    {%- form 'create_customer', novalidate: 'novalidate' -%}
+      {%- if form.errors -%}
+        <p tabindex="-1" autofocus>
+          {{ 'templates.contact.form.error_heading' | t }}
+        </p>
+        <ul class="list-unstyled rte"> 
+          {%- for field in form.errors -%}
+            <li>
+              {%- if field == 'form' -%}
+                {{ form.errors.messages[field] }}
+              {%- else -%}
+                <a href="#RegisterForm-{{ field }}">
+                  {{ form.errors.translated_fields[field] | capitalize }}
+                  {{ form.errors.messages[field] }}
+                </a>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      <div class="field mb-0.5">   
+        <label for="RegisterForm-FirstName" class="visually-hidden">
+          {{ 'customer.register.first_name' | t }}
+        </label>
+        <input
+          type="text"
+          class="field__input"
+          name="customer[first_name]"
+          id="RegisterForm-FirstName"
+          {% if form.first_name %}value="{{ form.first_name }}"{% endif %}
+          autocomplete="given-name"
+          placeholder="{{ 'customer.register.first_name' | t }}"
+        >
+      </div>
+      <div class="field mb-0.5">
+        <label for="RegisterForm-LastName" class="visually-hidden">
+          {{ 'customer.register.last_name' | t }}
+        </label>
+        <input
+          type="text"
+          class="field__input"
+          name="customer[last_name]"
+          id="RegisterForm-LastName"
+          {% if form.last_name %}value="{{ form.last_name }}"{% endif %}
+          autocomplete="family-name"
+          placeholder="{{ 'customer.register.last_name' | t }}"
+        >
+      </div>
+      <div class="field mb-0.5">    
+        <label for="RegisterForm-email" class="visually-hidden">
+          {{ 'customer.register.email' | t }}
+        </label>
+        <input
+          type="email"
+          class="field__input"
+          name="customer[email]"
+          id="RegisterForm-email"
+          {% if form.email %} value="{{ form.email }}"{% endif %}
+          spellcheck="false"
+          autocapitalize="off"
+          autocomplete="email"
+          aria-required="true"
+          {% if form.errors contains 'email' %}
+            aria-invalid="true"
+            aria-describedby="RegisterForm-email-error"
+          {% endif %}
+          placeholder="{{ 'customer.register.email' | t }}"
+        >
+      </div>
+      {%- if form.errors contains 'email' -%}
+        <span id="RegisterForm-email-error">
+          {{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}.
+        </span>
+      {%- endif -%}
+      <div class="field mb-0.5">     
+        <input
+          type="password"
+          class="field__input"
+          name="customer[password]"
+          id="RegisterForm-password"
+          aria-required="true"
+          {% if form.errors contains 'password' %}
+            aria-invalid="true"
+            aria-describedby="RegisterForm-password-error"
+          {% endif %}
+          placeholder="{{ 'customer.register.password' | t }}"
+        >
+        <label for="RegisterForm-password" class="visually-hidden">
+          {{ 'customer.register.password' | t }}
+        </label>
+      </div>
+      {%- if form.errors contains 'password' -%}
+        <span id="RegisterForm-password-error">
+          {{ form.errors.translated_fields['password'] | capitalize }} {{ form.errors.messages['password'] }}.
+        </span>
+      {%- endif -%}
+      <div class="text-center mt-2 mt-4--desk">
+        <button type="submit" class="btn btn--primary">
+          {{ 'customer.register.submit' | t }}
+        </button>
+      </div>
+    {%- endform -%}
+  </div>
+</div>

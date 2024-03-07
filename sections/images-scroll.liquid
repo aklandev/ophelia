@@ -1,0 +1,214 @@
+{{ 'section-image-scroll.css' | asset_url | stylesheet_tag }}
+
+{% unless request.page_type == 'cart' and section.settings.hide_on_cart_page %}
+  <style>
+    #shopify-section-{{ section.id }} {
+      background-color: {{ section.settings.bg_color }};
+    }
+  </style>
+
+  <div class="image-scroll overflow-hidden position-relative">
+    <image-scroll class="image-scroll__inner d-block h-100">
+      <div class="d-flex h-100 align-items-center" data-text-speed="{{ section.settings.text_speed }}">
+        {% for block in section.blocks %}
+          {% liquid
+            assign isLink = false
+            if block.settings.url != blank
+              assign isLink = true
+            endif
+          %}
+
+          {%- if isLink -%}
+            <a
+              href="{{ block.settings.url }}"
+              class="image-scroll__block__text flex-center position-relative no-underline"
+              {{ block.shopify_attributes }}
+            >
+              <span class="h1 text-1.85 text-4.6--desk lh-133 lh-117--desk position-relative">
+                <i>{{ block.settings.title }}</i>
+                <span class="image-scroll__block__ellipse absolute-center"></span>
+              </span>
+              {%- render 'icon' with 'arrow', class: 'image-scroll__block__arrow text-primary' -%}
+            </a>
+          {%- else -%}
+            <div class="image-scroll__block__text flex-center" {{ block.shopify_attributes }}>
+              <span class="h1 text-1.85 text-4.6--desk lh-133 lh-117--desk position-relative">
+                {{- block.settings.title -}}
+              </span>
+              {%- render 'icon' with 'arrow', class: 'image-scroll__block__arrow' -%}
+            </div>
+          {%- endif -%}
+        {% endfor %}
+        {% for block in section.blocks %}
+          {% liquid
+            assign isLink = false
+            if block.settings.url != blank
+              assign isLink = true
+            endif
+          %}
+
+          {%- if isLink -%}
+            <a
+              href="{{ block.settings.url }}"
+              class="image-scroll__block__text flex-center position-relative no-underline"
+              {{ block.shopify_attributes }}
+            >
+              <span class="h1 text-1.85 text-4.6--desk lh-133 lh-117--desk position-relative">
+                <i>{{ block.settings.title }}</i>
+                <span class="image-scroll__block__ellipse absolute-center"></span>
+              </span>
+
+              {%- unless forloop.last -%}
+                {%- render 'icon' with 'arrow', class: 'image-scroll__block__arrow text-primary' -%}
+              {%- endunless -%}
+            </a>
+          {%- else -%}
+            <div class="image-scroll__block__text flex-center" {{ block.shopify_attributes }}>
+              <span class="h1 text-1.85 text-4.6--desk lh-133 lh-117--desk position-relative">
+                {{- block.settings.title -}}
+              </span>
+              {%- unless forloop.last -%}
+                {%- render 'icon' with 'arrow', class: 'image-scroll__block__arrow' -%}
+              {%- endunless -%}
+            </div>
+          {%- endif -%}
+        {% endfor %}
+      </div>
+      <div
+        class="image-scroll__images-container position-absolute d-flex h-100"
+        data-image-speed="{{ section.settings.image_speed }}"
+      >
+        {% for block in section.blocks %}
+          {%- if block.settings.image != blank -%}
+            <div
+              class="image-scroll__block__image{% if settings.enable_lazy_animation %} media--lazy-animation{% endif %}"
+              {{ block.shopify_attributes }}
+            >
+              {{
+                block.settings.image
+                | image_url: width: 520
+                | image_tag:
+                  loading: 'lazy',
+                  sizes: '(min-width: 751px) 520px, 150px',
+                  widths: '150, 175, 300, 520, 1040'
+              }}
+            </div>
+          {% endif %}
+        {% endfor %}
+        {% for block in section.blocks %}
+          {%- if block.settings.image != blank -%}
+            <div
+              class="image-scroll__block__image{% if settings.enable_lazy_animation %} media--lazy-animation{% endif %}"
+              {{ block.shopify_attributes }}
+            >
+              {{
+                block.settings.image
+                | image_url: width: 520
+                | image_tag:
+                  loading: 'lazy',
+                  sizes: '(min-width: 751px) 520px, 150px',
+                  widths: '150, 175, 300, 520, 1040'
+              }}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </image-scroll>
+  </div>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "t:sections.images-scroller.name",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "hide_on_cart_page",
+      "label": "t:sections.images-scroller.settings.hide_on_cart_page.label",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "t:sections.images-scroller.settings.bg_color.label",
+      "default": "#FCF9EC"
+    },
+    {
+      "type": "range",
+      "id": "text_speed",
+      "label": "t:sections.images-scroller.settings.text_speed.label",
+      "min": 0.5,
+      "step": 0.1,
+      "max": 2,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "image_speed",
+      "label": "t:sections.images-scroller.settings.image_speed.label",
+      "min": 0.2,
+      "step": 0.1,
+      "max": 1.5,
+      "default": 0.8
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image-and-text",
+      "name": "t:sections.images-scroller.blocks.image-and-text.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.images-scroller.blocks.image-and-text.settings.title.label"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "t:sections.images-scroller.blocks.image-and-text.settings.url.label",
+          "info": "t:sections.images-scroller.blocks.image-and-text.settings.url.info"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.images-scroller.blocks.image-and-text.settings.image.label",
+          "info": "t:sections.images-scroller.blocks.image-and-text.settings.image.info"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.images-scroller.name",
+      "blocks": [
+        {
+          "type": "image-and-text",
+          "settings": {
+            "title": "Text"
+          }
+        },
+        {
+          "type": "image-and-text",
+          "settings": {
+            "title": "Text"
+          }
+        },
+        {
+          "type": "image-and-text",
+          "settings": {
+            "title": "Shop Now",
+            "url": "#"
+          }
+        },
+        {
+          "type": "image-and-text",
+          "settings": {
+            "title": "Text"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,129 @@
+{% comment %}
+  Renders a product card
+
+  Accepts:
+  - card_product: {Object} Product Liquid object
+
+  Usage:
+  {% render 'card-product',  card_product: product %}
+{% endcomment %}
+
+<div
+  class="card-wrapper no-underline"
+  {% if settings.product_card_enable_hover_text %}
+    data-enable-custom-cursor
+  {% endif %}
+>
+  <div class="d-flex flex-column position-relative">
+    <div class="card position-relative" tabindex="-1">
+      {%- if card_product.featured_media -%}
+        {%- liquid
+          assign featured_media_aspect_ratio = card_product.featured_media.aspect_ratio
+
+          if card_product.featured_media.aspect_ratio == null
+            assign featured_media_aspect_ratio = 1
+          endif
+        -%}
+
+        <div>
+          <div
+            class="media media--transparent media--{{ settings.product_card_media_size }} media--hover-effect{% if settings.enable_lazy_animation %} media--lazy-animation{% endif %}"
+            {% if settings.product_card_media_size == 'adapt' and card_product.featured_media %}
+              style="padding-bottom: {{ 1 | divided_by: featured_media_aspect_ratio | times: 100 }}%;"
+            {% endif %}
+          >
+            {{
+              card_product.featured_image
+              | image_url: width: 1280
+              | image_tag:
+                loading: 'lazy',
+                sizes: '(min-width: 768px) calc((var(--page-width) - 8rem) / 3 ), calc((100vw - 4rem) / 2)',
+                widths: '160, 200, 250, 350, 550, 720, 990, 1100, 1280'
+            }}
+          </div>
+        </div>
+      {%- else -%}
+        <div>
+          <div class="media media--square bg-tertiary"></div>
+        </div>
+      {%- endif -%}
+
+      {% if settings.product_card_enable_badge %}
+        <div class="card__badge position-absolute d-flex flex-wrap">
+          {%- if card_product.metafields.descriptors.badge != blank -%}
+            <span class="text-secondary">{{ card_product.metafields.descriptors.badge }}</span>
+          {%- else -%}
+            {%- if card_product.available == false -%}
+              <span class="text-secondary">{{ 'product.badge.sold_out' | t }}</span>
+            {%- elsif card_product.compare_at_price > card_product.price and card_product.available -%}
+              {% liquid
+                assign percent = card_product.price | times: 100.00 | divided_by: card_product.compare_at_price
+                assign discount = 100 | minus: percent | round
+              %}
+              <span class="text-secondary">
+                <span class="visually-hidden">{{ 'product.badge.on_sale' | t }}:</span>
+                {{ 'product.badge.discount' | t: percent: discount }}
+              </span>
+            {%- endif -%}
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {%- if settings.product_card_show_rating and card_product.metafields.reviews.rating.value != blank -%}
+        {% assign rating = card_product.metafields.reviews.rating.value | slice: 0, 3 %}
+        <div class="card__rating d-flex align-items-center position-absolute">
+          <span role="img" aria-label="{{ 'accessibility.star_reviews_info' | t: rating_value: rating }}">
+            {%- render 'icon' with 'star', class: 'd-block' -%}
+          </span>
+          <span aria-hidden="true">{{ rating }}</span>
+        </div>
+      {%- endif -%}
+    </div>
+    <div class="card-information">
+      <div class="card-information__wrapper w-100">
+        {%- if settings.product_card_show_vendor -%}
+          <span class="visually-hidden">{{ 'accessibility.vendor' | t }}</span>
+          <div class="text-0.77 text-1.07--desk mb-0.5 transparent-0.6">{{ card_product.vendor }}</div>
+        {%- endif -%}
+
+        <h3 class="card-information__text mb-0">
+          <a href="{{ card_product.url | within: collection }}" class="link--full no-underline">
+            {{ card_product.title | escape }}
+          </a>
+        </h3>
+
+        {% if card_product.metafields.descriptors.subtitle != blank %}
+          <div class="card-information__text__subtitle">
+            <p>{{ card_product.metafields.descriptors.subtitle }}</p>
+          </div>
+        {% endif %}
+
+        {% render 'price', product: card_product, price_class: '' %}
+
+        {%- if card_product.selected_or_first_available_variant.unit_price_measurement -%}
+          <div class="text-0.92 text-1.23--desk lh-150 text-nowrap">
+            <span class="visually-hidden">{{ 'product.price.unit_price' | t }} </span>
+            <span>
+              {%- if settings.currency_code == 'with_currency_code' -%}
+                {{- card_product.selected_or_first_available_variant.unit_price | money_with_currency -}}
+              {%- elsif settings.currency_code == 'without_trailing_zeros' -%}
+                {{- card_product.selected_or_first_available_variant.unit_price | money_without_trailing_zeros -}}
+              {%- else -%}
+                {{ card_product.selected_or_first_available_variant.unit_price | money }}
+              {%- endif -%}
+            </span>
+            <span> {{ 'product.price.unit_price_separator' | t }} </span>
+            {%- if card_product.selected_or_first_available_variant.unit_price_measurement.reference_value != 1 -%}
+              {{- card_product.selected_or_first_available_variant.unit_price_measurement.reference_value -}}
+            {%- endif -%}
+            {{ card_product.selected_or_first_available_variant.unit_price_measurement.reference_unit }}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  {% if settings.product_card_enable_hover_text %}
+    {%- render 'custom-cursor', class: 'btn btn--primary font-regular', text: settings.product_card_hover_text -%}
+  {% endif %}
+</div>

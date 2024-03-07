@@ -1,0 +1,210 @@
+{{ 'section-instafeed.css' | asset_url | stylesheet_tag }}
+
+{% if request.page_type != 'cart' %}
+{%- liquid
+  assign isLink = false
+  if section.settings.link_url != blank
+    assign isLink = true
+  endif
+-%}
+
+{% capture images %}
+  {% for block in section.blocks %}
+  <div class="instafeed__slider__slide">
+    <div class="instafeed__image">
+      {% if isLink %}
+        <a href="{{ section.settings.link_url }}" class="media media--square{% if settings.enable_lazy_animation and block.settings.image != blank %} media--lazy-animation{% endif %} d-block" target="_blank" tabindex="-1">
+      {% else %}
+        <div class="media media--square{% if settings.enable_lazy_animation and block.settings.image != blank %} media--lazy-animation{% endif %}">
+      {% endif %}
+
+      {%- if block.settings.image != blank -%}
+        {{
+          block.settings.image
+          | image_url: width: 427
+          | image_tag:
+            loading: 'lazy',
+            sizes: '(min-width: 750px) 427px , 250px',
+            widths: '250px, 427px'
+        }}
+      {%- else -%}
+        {{ 'image' | placeholder_svg_tag: 'absolute-fill bg-light placeholder-svg' }}
+      {%- endif -%}
+
+      {% if isLink %}
+        </a>
+      {% else %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+{% endcapture %}
+
+<instagram-feed class="d-block">
+  <div class="page-width">
+    <div class="instafeed__heading d-flex align-items-center">
+      <h2 class="instafeed__heading__title">
+        {%- if isLink -%}
+        <a href="{{ section.settings.link_url }}" target="_blank">
+          {%- endif -%}
+
+          {{ section.settings.title }}
+          {%- if section.settings.title == blank -%}
+            {{ shop.name }}
+          {%- endif -%}
+
+          {%- if isLink -%}
+        </a>
+        {%- endif -%}
+      </h2>
+
+      <div class="instafeed__heading__links d-flex justify-content-center ml-auto h3 text-primary text-1.23 text-1.85--desk font-inherit lh-150 font-regular">
+        {% if section.settings.links_title != blank %}
+          <span class="d-block small-hide medium-hide">{{ section.settings.links_title }}</span>
+        {% endif %}          
+        {% if section.settings.enable_social == true %}
+          <ul class="d-flex instafeed__heading__links-list list-unstyled links-list" role="list">
+            {%- if settings.social_instagram_link != blank -%}
+              <li class="links-list__item">
+                <a href="{{ settings.social_instagram_link }}" class="link links-list__link" >
+                  {%- render 'icon-instagram' -%}
+                  <span class="visually-hidden">{{ 'general.social.links.instagram' | t }}</span>
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if settings.social_tiktok_link != blank -%}
+              <li class="links-list__item">
+                <a href="{{ settings.social_tiktok_link }}" class="link links-list__link" >
+                  {%- render 'icon-tiktok' -%}
+                  <span class="visually-hidden">{{ 'general.social.links.tiktok' | t }}</span>
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if settings.social_youtube_link != blank -%}
+              <li class="links-list__item">
+                <a href="{{ settings.social_youtube_link }}" class="link links-list__link" >
+                  {%- render 'icon-youtube' -%}
+                  <span class="visually-hidden">{{ 'general.social.links.youtube' | t }}</span>
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if settings.social_pinterest_link != blank -%}
+              <li class="links-list__item">
+                <a href="{{ settings.social_pinterest_link }}" class="link links-list__link" >
+                  {%- render 'icon-pinterest' -%}
+                  <span class="visually-hidden">{{ 'general.social.links.pinterest' | t }}</span>
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if settings.social_facebook_link != blank -%}
+              <li class="links-list__item">
+                <a href="{{ settings.social_facebook_link }}" class="link links-list__link" >
+                  {%- render 'icon-facebook' -%}
+                  <span class="visually-hidden">{{ 'general.social.links.facebook' | t }}</span>
+                </a>
+              </li>
+            {%- endif -%}
+          </ul>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="section-space mb-0"{% unless isLink %} data-enable-custom-cursor{% endunless %}>
+    <div class="instafeed__slider" data-slider>
+      {{ images }}
+
+      {% comment %} 
+        Flickity not good in displaying limited number of
+        slides for extra wide screens. Thus we dublicate them
+      {% endcomment %}
+      {% if section.blocks.size < 10 %}
+        {{ images }}
+      {% endif %}
+    </div>
+
+    {%- capture cursor -%}
+      {%- render 'icon' with 'arrow', class: 'link__icon' -%}
+    {%- endcapture -%}
+
+    {% unless isLink %}
+      {%- render 'custom-cursor', class: 'link instafeed__cursor small-hide', text: cursor -%}
+    {% endunless %}
+  </div>
+</instagram-feed>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.instagram-feed.name",
+  "tag": "section",
+  "class": "instafeed overflow-hidden",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.instagram-feed.settings.title.label"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "t:sections.instagram-feed.settings.link_url.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.instagram-feed.settings.header_1"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_social",
+      "default": true,
+      "label": "t:sections.header.settings.enable_social_header.label"
+    },
+    {
+      "type": "text",
+      "id": "links_title",
+      "label": "t:sections.instagram-feed.settings.links_title.label",
+      "info": "t:sections.instagram-feed.settings.links_title.info"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "t:sections.instagram-feed.blocks.image.name",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.instagram-feed.blocks.image.settings.image.label",
+          "info": "t:sections.instagram-feed.blocks.image.settings.image.info"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.instagram-feed.name",
+      "blocks": [
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

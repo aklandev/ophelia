@@ -1,0 +1,13 @@
+.grid__item--3 {
+    margin-top: calc(50% / 4 * -1 + 4px);
+  }
+  @media (min-width: 768px) {
+    .grid__item--3 {
+      margin-top: calc(50% / 4 * -1 + 12px);
+    }
+  }
+  @include media-breakpoint-down(sm) {
+    .list-collections .icon--arrow-short {
+      margin-top: -0.35rem;
+    }
+  }

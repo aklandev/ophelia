@@ -1,0 +1,43 @@
+.social-links {
+  &__links {
+    @include media-breakpoint-down(md) {
+      justify-content: center;
+      margin-bottom: 50px;
+      text-align: center;
+    }
+    a {
+      min-width: 322px;
+      padding: 56px 26px;
+      border: 1px solid c_rgb(var(--color-primary));
+      transition: var(--animation-duration);
+      + a {
+        margin-left: 34px;
+      }
+      @include media-breakpoint-down(md) {
+        min-width: 220px;
+        padding: 25px 11px;
+        span {
+          opacity: 0.5;
+        }
+        &:hover {
+          span {
+            opacity: 1;
+          }
+        }
+        .link__icon {
+          display: none;
+        }
+      }
+      @include media-breakpoint-down(xs) {
+        min-width: calc(50% - 17px);
+      }
+    }
+  }
+}
+.rich-text + .social-links-section {
+  @include media-breakpoint-up(md) {
+    .section-space {
+      margin-top: -2rem;
+    }
+  }
+}

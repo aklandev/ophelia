@@ -1,0 +1,88 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "remove_content_padding": false,
+        "visually_hidden": false,
+        "page_width": "narrow",
+        "content_size": ""
+      }
+    },
+    "164190702692b2fd32": {
+      "type": "rich-text",
+      "blocks": {
+        "102de347-c830-4012-aea5-47a5b706a67a": {
+          "type": "button",
+          "settings": {
+            "title": "Email us",
+            "button_link": "mailto:help@ophelia.com",
+            "button_style": "primary",
+            "button_target": "normal"
+          }
+        },
+        "ed6ed21f-3878-4315-bc8a-b8340bf4983e": {
+          "type": "separator",
+          "settings": {
+          }
+        },
+        "d1ea1f8a-fdc2-4cbe-9af6-ebe8f024c1a4": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>Pay us a visit<\/p>",
+            "heading_size": "h2",
+            "heading_color": "secondary"
+          }
+        },
+        "a633df57-8c6d-4017-988b-a552ccf03a9c": {
+          "type": "text",
+          "settings": {
+            "text": "<p>We’re happy to welcome you at our flagship store located in the heart of London. <\/p><p><br\/>189-197 Old St,<br\/>London EC1V 9JS<br\/>United Kingdom<\/p>"
+          }
+        },
+        "4a92b1bf-47b9-4208-9bd9-70fde67849fd": {
+          "type": "button",
+          "settings": {
+            "title": "Get directions",
+            "button_link": "https:\/\/www.google.com\/maps",
+            "button_style": "link-short",
+            "button_target": "target"
+          }
+        },
+        "5a8758b2-efb0-45be-a06b-756d97d2d53d": {
+          "type": "separator",
+          "settings": {
+          }
+        }
+      },
+      "block_order": [
+        "102de347-c830-4012-aea5-47a5b706a67a",
+        "ed6ed21f-3878-4315-bc8a-b8340bf4983e",
+        "d1ea1f8a-fdc2-4cbe-9af6-ebe8f024c1a4",
+        "a633df57-8c6d-4017-988b-a552ccf03a9c",
+        "4a92b1bf-47b9-4208-9bd9-70fde67849fd",
+        "5a8758b2-efb0-45be-a06b-756d97d2d53d"
+      ],
+      "settings": {
+        "box_width": false,
+        "text_align": "left",
+        "remove_top_margin": true,
+        "remove_bottom_margin": false
+      }
+    },
+    "16419110213f9fadf6": {
+      "type": "social-links",
+      "settings": {
+        "remove_top_margin": false,
+        "remove_bottom_margin": false,
+        "container": "narrow",
+        "title": "Find us on socials"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "164190702692b2fd32",
+    "16419110213f9fadf6"
+  ]
+}

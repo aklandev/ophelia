@@ -1,0 +1,22 @@
+.section-header.isSticky + main {
+  .single-collection {
+    &:first-child {
+      @include media-breakpoint-down(sm) {
+        margin-top: -110px;
+        padding-top: var(--header-height);
+      }
+    }
+  }
+}
+.no-js {
+  .section-header.isSticky + main {
+    .single-collection {
+      &:first-child {
+        @include media-breakpoint-down(sm) {
+          margin-top: -110px;
+          padding-top: 3rem;
+        }
+      }
+    }
+  }
+}

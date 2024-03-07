@@ -1,0 +1,32 @@
+@import "./functions";
+
+@mixin media-breakpoint-up($breakpoint) {
+  @if $breakpoint == "md" {
+    @media screen and (min-width: $md) {
+      @content;
+    }
+  } @else if $breakpoint == "sm" {
+    @media screen and (min-width: $sm) {
+      @content;
+    }
+  } @else {
+    @media screen and (min-width: $lg) {
+      @content;
+    }
+  }
+}
+@mixin media-breakpoint-down($breakpoint) {
+  @if $breakpoint == "xs" {
+    @media screen and (max-width: #{$sm - 0.02}) {
+      @content;
+    }
+  } @else if $breakpoint == "sm" {
+    @media screen and (max-width: #{$md - 0.02}) {
+      @content;
+    }
+  } @else {
+    @media screen and (max-width: #{$lg - 0.02}) {
+      @content;
+    }
+  }
+}

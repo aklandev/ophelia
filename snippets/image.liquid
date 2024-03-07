@@ -1,0 +1,41 @@
+{% comment %}
+  Renders an image
+
+  Accepts:
+  - image: {Object} Image Liquid object
+  - image_mobile: {Object} Image Liquid object (optional)
+  - lazy: {String} lazy type
+  - class: {String} Class name (optional)
+
+  Usage:
+  {% render 'image' with image %}
+{% endcomment %}
+
+{% unless lazy %}
+  {% assign lazy = 'lazy' %}
+{% endunless %}
+
+<picture>
+  {% if image_mobile != blank %}
+    <source
+      media="(max-width: 991.98px)"
+      srcset="
+        {%- if image_mobile.width >= 375 -%}{{ image_mobile | image_url: width: 375 }} 375w,{%- endif -%}
+        {%- if image_mobile.width >= 500 -%}{{ image_mobile | image_url: width: 500 }} 500w,{%- endif -%}
+        {%- if image_mobile.width >= 700 -%}{{ image_mobile | image_url: width: 750 }} 750w,{%- endif -%}
+        {%- if image_mobile.width >= 900 -%}{{ image_mobile | image_url: width: 900 }} 900w{%- endif -%}
+      "
+    >
+  {% endif %}
+  <img
+    srcset="{%- render 'srcset', image: image -%}"
+    src="{{ image | image_url: width: 1500 }}"
+    alt="{{ image.alt | escape }}"
+    loading="{{ lazy }}"
+    width="{{ image.width }}"
+    height="{{ image.height }}"
+    {% if class %}
+      class="{{ class }}"
+    {% endif %}
+  >
+</picture>

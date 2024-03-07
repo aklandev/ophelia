@@ -1,0 +1,119 @@
+.instafeed {
+  padding: 3.85rem 0 3rem;
+  @include media-breakpoint-up(md) {
+    padding: 7.7rem 0 3.85rem;
+  }
+  &__heading {
+    @media only screen and (max-width: 1100px) {
+      display: block;
+      text-align: center;
+    }
+    &__title {
+      margin-bottom: 24px;
+      @media only screen and (min-width: 1099px) {
+        margin-bottom: 0;
+      }
+    }
+    &__links {
+      align-items: center;
+      @media only screen and (max-width: 1100px) {
+        text-align: center;
+      }
+      span {
+        margin-right: 33px;
+      }
+      > * {
+        transition: var(--animation-duration);
+        span {
+          opacity: 0.5;
+        }
+        &:hover {
+          span {
+            opacity: 1;
+          }
+        }
+        @media only screen and (max-width: 1100px) {
+          min-width: 200px;
+          &:is(a) + a {
+            margin-left: 34px;
+          }
+        }
+        @include media-breakpoint-down(xs) {
+          min-width: calc(50% - 17px);
+        }
+      }
+    }
+    &__links-list {
+      .links-list {
+        &__item {
+          margin-right: 33px;
+          width: 100%;
+          max-width: 47px;
+          height: 47px;
+          @include media-breakpoint-down(xs) {
+            max-width: 44px;
+            height: 44px;
+          }
+          &:last-of-type {
+            margin-right: 0;
+          }
+          @include media-breakpoint-down(xs) {
+            margin-right: 30px;
+          }
+          svg {
+            @include media-breakpoint-down(xs) {
+              width: 44px;
+              height: 44px;
+            }
+          }
+        }
+      }
+    }
+  }
+  &__slider {
+    z-index: 1;
+
+    &__btn {
+      margin-bottom: -95px;
+      z-index: 2;
+
+      @include media-breakpoint-down(sm) {
+        display: none;
+      }
+    }
+    &__slide {
+      padding: 0 12px;
+      width: 193px;
+      @include media-breakpoint-up(md) {
+        padding: 0 20px;
+        width: 325px;
+      }
+    }
+  }
+  &__cursor {
+    z-index: 1;
+    &.revert {
+      svg {
+        transform: scaleX(-1);
+      }
+    }
+  }
+  .flickity-viewport {
+    overflow: visible;
+  }
+}
+#shopify-section-instafeed + #shopify-section-footer {
+  @include media-breakpoint-down(sm) {
+    margin-top: -1.53rem;
+  }
+}
+
+.no-js {
+  .instafeed__slider {
+    display: flex;
+    overflow: hidden;
+    &__slide {
+      flex-shrink: 0;
+    }
+  }
+}

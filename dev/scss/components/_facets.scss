@@ -1,0 +1,28 @@
+.facet {
+    &__label {
+        opacity: 1;
+        transition: opacity var(--animation-duration);
+        &__indicator {
+            width: 1.69rem;
+            height: 1.69rem;
+            border: 2px solid rgb(var(--color-primary));
+            background-color: transparent;
+            transition: var(--animation-duration);
+        }
+        &--disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+    }
+}
+input:checked + .facet__label__indicator {
+    background-color: rgb(var(--color-primary));
+}
+price-range {
+    .field__input {
+        padding-top: 0.65rem;
+        padding-bottom: 0.65rem;
+        width: 100px;
+        flex-shrink: 0;
+    }
+}

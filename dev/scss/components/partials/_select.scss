@@ -1,0 +1,43 @@
+/* component-form */
+.field__input,
+.select__select,
+.customer .field input,
+.customer select {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: transparent;
+  border: none;
+  box-sizing: border-box;
+}
+.select {
+  position: relative;
+  z-index: 1;
+
+  svg {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    z-index: -1;
+  }
+
+  &__select {
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    font-size: inherit;
+    padding-right: 3rem;
+
+    color: c_rgb(var(--color-secondary));
+
+    option {
+      color: c_rgb(var(--color-secondary));
+    }
+  }
+}
+
+
+.select__select,
+.customer select {
+  cursor: pointer;
+}

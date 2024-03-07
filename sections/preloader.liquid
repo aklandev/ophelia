@@ -1,0 +1,174 @@
+{%- if section.settings.preloader != 'disable' -%}
+  {{ 'preloader.css' | asset_url | stylesheet_tag }}
+
+  {% style %}
+    .preloader__logo svg,
+    .preloader__logo img {
+      max-width: {{ section.settings.preloader_logo_width_mobile }}px;
+    }
+
+    @media screen and (min-width: 767px) {
+      .preloader__logo svg,
+      .preloader__logo img {
+        max-width: {{ section.settings.preloader_logo_width }}px;
+      }
+    }
+  {% endstyle %}
+
+  <page-preloader
+    class="preloader w-100 h-100 pt-1.5 pb-1.5 pt-3--desk pb-3--desk position-fixed no-js-hidden"
+    style="--color-preloader: {{ section.settings.preloader_bg_color }};"
+    data-id="{{ section.id }}"
+    data-delay="{{ section.settings.preloader_delay }}"
+  >
+    <div class="px-1.5 pl-2--desk pr-2--desk h-100">
+      <div class="preloader__logo absolute-center" data-preloader-logo>
+        {%- if section.settings.image_type == 'upload' -%}
+          <img
+            src="{{ section.settings.preloader_logo_img | image_url: width: section.settings.preloader_logo_width }}"
+            width="{{ section.settings.preloader_logo_width }}"
+            height="{{ section.settings.preloader_logo_width | divided_by: section.settings.preloader_logo_img.aspect_ratio }}"
+            alt="{{ shop.name }}"
+            loading="lazy"
+          >
+        {%- else -%}
+          {% if section.settings.preloader_logo_svg != blank %}
+            {{ section.settings.preloader_logo_svg }}
+          {% else %}
+            {{ shop.name }}
+          {% endif %}
+        {%- endif -%}
+      </div>
+
+      <div class="preloader__circle absolute-center">
+        {%- render 'icon' with 'preloader-circle', class: 'd-block w-100' -%}
+      </div>
+
+      <div class="d-flex flex-column h-100 text-1.07 text-1.54--desk">
+        <div class="d-flex w-100">
+          <div class="pr-0.6--desk pl-0.6--desk">{{ section.settings.preloader_top_left }}</div>
+          <div class="pr-0.6--desk pl-0.6--desk ml-auto">{{ section.settings.preloader_top_right }}</div>
+        </div>
+
+        <div class="d-flex w-100 mt-auto">
+          <div class="pr-0.6--desk pl-0.6--desk">{{ section.settings.preloader_bottom_left }}</div>
+          <div class="pr-0.6--desk pl-0.6--desk ml-auto">{{ section.settings.preloader_bottom_right }}</div>
+        </div>
+      </div>
+    </div>
+  </page-preloader>
+
+  <script src="{{ 'page-loader.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+{% schema %}
+{
+  "name": "t:sections.preloader.name",
+  "settings": [
+    {
+      "type": "select",
+      "id": "preloader",
+      "options": [
+        {
+          "label": "t:sections.preloader.settings.preloader.option_1.label",
+          "value": "enable"
+        },
+        {
+          "label": "t:sections.preloader.settings.preloader.option_2.label",
+          "value": "disable"
+        }
+      ],
+      "label": "t:sections.preloader.settings.preloader.label",
+      "default": "enable"
+    },
+    {
+      "type": "select",
+      "id": "image_type",
+      "options": [
+        {
+          "value": "upload",
+          "label": "t:sections.preloader.settings.image_type.option_1.label"
+        },
+        {
+          "value": "svg_logo",
+          "label": "t:sections.preloader.settings.image_type.option_2.label"
+        }
+      ],
+      "label": "t:sections.preloader.settings.image_type.label",
+      "default": "svg_logo"
+    },
+    {
+      "type": "text",
+      "id": "preloader_logo_svg",
+      "label": "t:sections.preloader.settings.preloader_logo_svg.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "preloader_logo_img",
+      "label": "t:sections.preloader.settings.preloader_logo_img.label"
+    },
+    {
+      "type": "range",
+      "id": "preloader_logo_width",
+      "min": 50,
+      "max": 250,
+      "step": 10,
+      "default": 220,
+      "unit": "t:sections.header.settings.logo_width.unit",
+      "label": "t:sections.preloader.settings.preloader_logo_width.label",
+      "info": "t:sections.preloader.settings.preloader_logo_width.info"
+    },
+    {
+      "type": "range",
+      "id": "preloader_logo_width_mobile",
+      "min": 50,
+      "max": 250,
+      "step": 10,
+      "default": 110,
+      "unit": "t:sections.header.settings.logo_width.unit",
+      "label": "t:sections.preloader.settings.preloader_logo_width_mobile.label",
+      "info": "t:sections.preloader.settings.preloader_logo_width_mobile.info"
+    },
+    {
+      "type": "range",
+      "id": "preloader_delay",
+      "min": 0,
+      "max": 3000,
+      "step": 50,
+      "default": 500,
+      "unit": "t:sections.preloader.settings.preloader_delay.unit",
+      "label": "t:sections.preloader.settings.preloader_delay.label"
+    },
+    {
+      "type": "color",
+      "id": "preloader_bg_color",
+      "label": "t:sections.preloader.settings.preloader_bg_color.label",
+      "info": "t:sections.preloader.settings.preloader_bg_color.info",
+      "default": "#FCF9EC"
+    },
+    {
+      "type": "text",
+      "id": "preloader_top_left",
+      "label": "t:sections.preloader.settings.preloader_top_left.label",
+      "default": "Text"
+    },
+    {
+      "type": "text",
+      "id": "preloader_top_right",
+      "label": "t:sections.preloader.settings.preloader_top_right.label",
+      "default": "is loading"
+    },
+    {
+      "type": "text",
+      "id": "preloader_bottom_left",
+      "label": "t:sections.preloader.settings.preloader_bottom_left.label",
+      "default": "Loading"
+    },
+    {
+      "type": "text",
+      "id": "preloader_bottom_right",
+      "label": "t:sections.preloader.settings.preloader_bottom_right.label",
+      "default": "Loading"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,28 @@
+<div class="card-collection d-block link--with-icon position-relative overflow-hidden z-stack">
+  <div class="media{% if cycle == '1' or cycle == '4' %} media--square{% else %} media--portrait{% endif %}{% if settings.enable_lazy_animation %} media--lazy-animation{% endif %}{% if collection.featured_image == blank %} bg-tertiary{% endif %} z-behind">
+    {% if collection.featured_image != blank %}
+      {{
+        collection.featured_image
+        | image_url: width: 1280
+        | image_tag:
+          loading: 'lazy',
+          sizes: '(min-width: 1440px) calc((var(--page-width) - 8rem) / 2 ), calc((100vw - 8rem) / 2)',
+          widths: '160, 200, 250, 350, 550, 720, 990, 1100, 1280'
+      }}
+    {% else %}
+      {%- assign placeholder_name = 'collection-' | append: cycle -%}
+      {{ placeholder_name | placeholder_svg_tag: 'absolute-fill placeholder-svg' }}
+    {% endif %}
+  </div>
+  <div class="absolute-fill d-flex flex-column--desk z-stack pt-1 pt-3.7--desk pb-2 pl-1 pl-3.85--desk pr-1 pr-3.85--desk">
+    <h2 class="h3 break text-1.38 text-3.07--desk">
+      <a href="{{ collection.url }}" class="link--full">
+        {{- collection.title -}}
+      </a>
+    </h2>
+
+    <div class="ml-auto mt-0.2 mt-auto--desk mr-n1.5--desk">
+      {%- render 'icon' with 'arrow-short', class: 'link__icon icon--arrow-short' -%}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,253 @@
+{{ 'section-search.css' | asset_url | stylesheet_tag }}
+
+<div class="section-main-search section-space mt-0{% unless search.performed and search.results_count > 0 %} section-main-search--empty{% endunless %}">
+  <div class="page-width">
+    <div class="section-main-search__header d-flex mb-3.5 mb-6--desk">
+      <h1 class="section-main-search__title">{{ 'search.search' | t }}</h1>
+
+      <div class="section-main-search__search w-100">
+        {%- if settings.predictive_search_enabled -%}
+        <predictive-search data-loading-text="{{ 'accessibility.loading' | t }}">
+        {%- endif -%}
+          <form action="{{ routes.search_url }}" method="get" role="search" class="search">
+            <div class="field">
+              <label class="visually-hidden" for="Search-In-Template">{{ 'search.search' | t }}</label>
+              <input
+                class="field__input field__input--custom-size text-1.54 text-1.85--desk lh-150"
+                id="Search-In-Template"
+                type="search"
+                name="q"
+                value="{{ search.terms | escape }}"
+                placeholder="{{ section.settings.search_placeholder }}"
+                {%- if settings.predictive_search_enabled -%}
+                  role="combobox"
+                  aria-expanded="false"
+                  aria-owns="predictive-search-results-list"
+                  aria-controls="predictive-search-results-list"
+                  aria-haspopup="listbox"
+                  aria-autocomplete="list"
+                  autocorrect="off"
+                  autocomplete="off"
+                  autocapitalize="off"
+                  spellcheck="false"
+                {%- endif -%}
+              >
+              <button type="submit" class="search__button field__button link link--with-icon" name="commit" id="Subscribe" aria-label="{{ 'search.search' | t }}">
+                {%- render 'icon' with 'arrow', class: 'link__icon' -%}
+              </button>
+              {% comment %} <input type="hidden" name="type" value="product" /> {% endcomment %}
+              <input name="options[prefix]" type="hidden" value="last" />
+
+              {%- if settings.predictive_search_enabled -%}
+                <div class="predictive-search pt-2 pb-2 pl-2 pr-2 bg-light position-absolute w-100 z-stack" tabindex="-1" data-predictive-search></div>
+                <span class="visually-hidden" role="status" aria-hidden="true" data-predictive-search-status></span>
+              {%- endif -%}
+            </div>
+          </form>
+        {%- if settings.predictive_search_enabled -%}
+        </predictive-search>
+        {%- endif -%}
+
+        {% if section.settings.recommended_list != blank %}
+          {% unless search.performed and search.results.size > 0 %}
+            <div class="pt-4.5 pt-2.5--desk">
+            {% if section.settings.recommended_list_title != blank %}
+              <h3 class="mb-1.5 mb-2--desk text-1.85 text-2.6--desk">{{ section.settings.recommended_list_title | remove: '<p>' | remove: '</p>' }}</h3>
+            {% endif %}
+
+            <ul class="text-1.54 text-2--desk lh-125 d-flex flex-column list-unstyled text-nowrap">
+              {% for link in section.settings.recommended_list.links %}
+                <li class="section-main-search__recommended-list__item">
+                  <a href="{{ link.url }}" class="link text-secondary focus-inset d-flex align-items-center">
+                    <span>{{ link.title | escape }}</span>
+                    {%- render 'icon' with 'arrow-short', class: 'link__icon' -%}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endunless %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  {%- if search.performed -%}
+    <div class="page-width">
+      <div class="d-flex flex-column flex-row--desk justify-content-between align-items-center--desk mt-2 mb-3.5 mb-6--desk">
+        <div class="mb-1.5 mb-0--desk" data-search-results>
+          {%- if search.results_count > 0 -%}
+            <p class="mt-0 mb-0" role="status">{{ 'search.results_with_count_and_term' | t: terms: search.terms, count: search.results_count }}</p>
+          {%- endif -%}
+          {%- if search.results_count == 0 and search.filters == empty -%}
+            <p class="mt-0 mb-0" role="status">{{ 'search.no_results' | t: terms: search.terms }}</p>
+          {%- endif -%}
+        </div>
+
+      {%- if settings.search_enable_filtering or settings.search_enable_sorting -%}
+        <menu-drawer class="d-block">
+          <details class="drawer--right d-flex">
+            <summary
+              aria-expanded="false"
+              role="button"
+              aria-controls="main-search-filters"
+            >
+              <span class="btn btn--secondary focus-inset motion-reduce">
+                {%- if settings.search_enable_filtering and settings.search_enable_sorting -%}
+                  {{ 'facets.filter_and_sort' | t }}
+                {%- elsif settings.search_enable_filtering -%}
+                  {{ 'facets.filter_button' | t }}
+                {%- elsif settings.search_enable_sorting -%}
+                  {{ 'facets.sort_button' | t }}
+                {%- endif -%}
+              </span>
+            </summary>
+  
+            <div
+              id="main-search-filters"
+              data-id="{{ section.id }}"
+              class="drawer{% if settings.sidebar_grain != blank %} drawer--grain{% endif %} bg-secondary overflow-hidden position-fixed"
+              tabindex="-1"
+            >
+              <div class="d-flex flex-column vh-100">
+                {% render 'facets',
+                  results: search,
+                  enable_filtering: settings.search_enable_filtering,
+                  enable_sorting: settings.search_enable_sorting
+                %}
+              </div>
+            </div>
+  
+            <button
+              class="drawer__overlay {% if settings.sidebar_grain != blank %}drawer--grain{% endif %} position-fixed no-js-hidden h-100 w-100"
+              tabindex="-1"
+            >
+              <span class="drawer__overlay__inner flex-center position-absolute text-1.6 font-medium">
+                <span class="link link--with-icon text-{{ settings.sidebar_overlay_text }}" tabindex="0">
+                  {%- render 'icon' with 'arrow-short', class: 'link__icon--reverse' -%}
+                  {{- 'cart.continue_shopping' | t -}}
+                </span>
+              </span>
+            </button>
+          </details>
+        </menu-drawer>
+      {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+
+  {%- if search.performed and search.results.size > 0 -%}
+    <div id="ProductGridContainer">
+      {% paginate search.results by 24 %}
+        <div class="section-main-search__results collection page-width">
+          <ul class="grid grid--3-col-tablet grid--2-col" role="list" id="product-grid" data-id="{{ section.id }}">
+            {%- for item in search.results -%}
+              <li class="grid__item">
+                {%- case item.object_type -%}
+                  {%- when 'product' -%}
+                    {% render 'card-product', card_product: item %}
+                  {%- when 'article' -%}
+                    {% render 'card-article', card_article: item, card_spaced: false, custom_cursor: true %}
+                  {%- when 'page' -%}
+                    {% render 'card-article', card_article: item, card_spaced: false, custom_cursor: true %}
+                {%- endcase -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+          <span></span>
+          {%- if paginate.pages > 1 -%}
+            {% render 'pagination', paginate: paginate %}
+          {%- endif -%}
+        </div>
+      {% endpaginate %}
+    </div>
+  {%- else -%}
+
+    <div class="section-space mt-0">
+      <div class="page-width">
+        {% if section.settings.collection_title != blank %}
+          <h2 class="mb-2 text-{{ section.settings.collection_align }}">{{ section.settings.collection_title | escape }}</h2>
+        {% endif %}
+        <ul class="grid grid--2-col grid--3-col-tablet" role="list">
+          {%- for product in section.settings.collection.products limit: section.settings.collection_limit -%}
+            <li class="grid__item">
+              {% render 'card-product', card_product: product %}
+            </li>
+          {%- endfor -%}
+        </ul>
+        <span></span>
+      </div>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main-search.name",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.main-search.settings.header_1"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "t:sections.main-search.settings.search_placeholder.label",
+      "default": "What are you looking for?"
+    },
+    {
+      "type": "richtext",
+      "id": "recommended_list_title",
+      "label": "t:sections.main-search.settings.recommended_list_title.label"
+    },
+    {
+      "type": "link_list",
+      "id": "recommended_list",
+      "label": "t:sections.main-search.settings.recommended_list.label",
+      "info": "t:sections.main-search.settings.recommended_list.info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-search.settings.header_3"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.main-search.settings.paragraph_1"
+    },
+    {
+      "type": "text",
+      "id": "collection_title",
+      "label": "t:sections.main-search.settings.collection_title.label",
+      "default": "Our bestsellers",
+      "info": "t:sections.main-search.settings.collection_title.info"
+    },
+    {
+      "type": "select",
+      "id": "collection_title_align",
+      "options": [
+        {"label": "t:sections.main-search.settings.collection_title_align.option_1", "value": "left"},
+        {"label": "t:sections.main-search.settings.collection_title_align.option_2", "value": "center"},
+        {"label": "t:sections.main-search.settings.collection_title_align.option_3", "value": "right"}
+      ],
+      "default": "left",
+      "label": "t:sections.main-search.settings.collection_title_align.label"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "t:sections.main-search.settings.collection.label"
+    },
+    {
+      "type": "range",
+      "id": "collection_limit",
+      "min": 3,
+      "max": 24,
+      "step": 1,
+      "default": 24,
+      "label": "t:sections.main-search.settings.collection_limit.label"
+    }
+  ]
+}
+{% endschema %}

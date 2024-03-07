@@ -1,0 +1,28 @@
+.predictive-search {
+    display: none;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+
+    max-height: 50vh;
+    max-height: calc(50 * var(--vh));
+}
+
+predictive-search[open] .predictive-search {
+    display: block;
+}
+
+predictive-search[loading] .predictive-search__results-list:first-child {
+    display: none;
+}
+
+.predictive-search__list-item[aria-selected="true"] > *,
+.predictive-search__list-item:hover > * {
+    color: rgb(var(--color-foreground));
+    background-color: rgba(var(--color-foreground), 0.04);
+}
+
+.predictive-search__list-item[aria-selected="true"] .predictive-search__item-heading,
+.predictive-search__list-item:hover .predictive-search__item-heading {
+    text-decoration: underline;
+    text-underline-offset: 0.3rem;
+}

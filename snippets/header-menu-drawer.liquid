@@ -1,0 +1,233 @@
+<header-drawer class="grid__item">
+  <details class="d-flex">
+    <summary
+      class="drawer__toggler link focus-inset text-secondary text-1.07 text-1.54--desk"
+      aria-label="{{ 'sections.header.menu.heading' | t }}"
+      aria-expanded="false"
+      role="button"
+      aria-controls="drawer"
+    >
+      <span class="drawer__toggler__open">{{ 'sections.header.menu.open' | t }}</span>
+      <span class="drawer__toggler__close ">{{ 'sections.header.menu.close' | t }}</span>
+    </summary>
+
+    <div
+      id="menu-drawer"
+      class="drawer{% if settings.sidebar_grain != blank %} drawer--grain{% endif %} overflow-hidden position-fixed"
+      tabindex="-1"
+    >
+      <div class="drawer__inner page-width d-flex flex-column vh-100">
+        <div class="position-relative">
+          <div class="drawer__social d-flex position-absolute text-1.07 text-1.54--desk justify-content-end">
+            <button class="link focus-inset text-secondary text-1.07 text-1.54--desk no-js-hidden mr-auto transparent-0.5">
+              {{ 'sections.header.menu.close' | t }}
+            </button>
+            {% if section.settings.enable_social_header == true %}
+              <ul class="d-flex drawer__links-list list-unstyled links-list" role="list">
+                {%- if settings.social_instagram_link != blank -%}
+                  <li class="links-list__item">
+                    <a href="{{ settings.social_instagram_link }}" class="link links-list__link">
+                      {%- render 'icon-instagram' -%}
+                      <span class="visually-hidden">{{ 'general.social.links.instagram' | t }}</span>
+                    </a>
+                  </li>
+                {%- endif -%}
+                {%- if settings.social_tiktok_link != blank -%}
+                  <li class="links-list__item">
+                    <a href="{{ settings.social_tiktok_link }}" class="link links-list__link">
+                      {%- render 'icon-tiktok' -%}
+                      <span class="visually-hidden">{{ 'general.social.links.tiktok' | t }}</span>
+                    </a>
+                  </li>
+                {%- endif -%}
+                {%- if settings.social_youtube_link != blank -%}
+                  <li class="links-list__item">
+                    <a href="{{ settings.social_youtube_link }}" class="link links-list__link">
+                      {%- render 'icon-youtube' -%}
+                      <span class="visually-hidden">{{ 'general.social.links.youtube' | t }}</span>
+                    </a>
+                  </li>
+                {%- endif -%}
+                {%- if settings.social_pinterest_link != blank -%}
+                  <li class="links-list__item">
+                    <a href="{{ settings.social_pinterest_link }}" class="link links-list__link">
+                      {%- render 'icon-pinterest' -%}
+                      <span class="visually-hidden">{{ 'general.social.links.pinterest' | t }}</span>
+                    </a>
+                  </li>
+                {%- endif -%}
+                {%- if settings.social_facebook_link != blank -%}
+                  <li class="links-list__item">
+                    <a href="{{ settings.social_facebook_link }}" class="link links-list__link">
+                      {%- render 'icon-facebook' -%}
+                      <span class="visually-hidden">{{ 'general.social.links.facebook' | t }}</span>
+                    </a>
+                  </li>
+                {%- endif -%}
+              </ul>
+            {% endif %}
+          </div>
+        </div>
+
+        <nav class="drawer__navigation">
+          <ul class="drawer__menu list-unstyled" role="list">
+            {%- for link in section.settings.menu.links -%}
+              <li class="drawer__menu__item">
+                {%- if link.links != blank -%}
+                  <details id="Details-menu-drawer-menu-item-{{ forloop.index }}">
+                    <summary class="drawer__menu-item focus-inset d-flex align-items-center font-light text-secondary text-2.3 font-header position-relative js-not-menu-drawer">
+                      <span>{{ link.title | escape }}</span>
+
+                      <span aria-hidden="true" class="position-relative ml-1">
+                        {% render 'icon' with 'arrow',
+                          class: 'accordion__arrow accordion__arrow--open position-absolute text-primary'
+                        %}
+                        {% render 'icon' with 'arrow-short',
+                          class: 'accordion__arrow accordion__arrow--close position-absolute text-primary'
+                        %}
+                      </span>
+                    </summary>
+
+                    <div id="link-{{ link.title | escape | handle }}" class="pt-1.5 overflow-hidden" tabindex="-1">
+                      <div class="h-100">
+                        <ul class="drawer__menu--secondary list-unstyled lh-133" role="list" tabindex="-1">
+                          {%- for childlink in link.links -%}
+                            <li class="mb-0.5 mb-1--desk">
+                              {%- if childlink.links == blank -%}
+                                <a
+                                  href="{{ childlink.url }}"
+                                  class="link focus-inset text-secondary"
+                                  {% if childlink.current %}
+                                    aria-current="page"
+                                  {% endif %}
+                                >
+                                  {{ childlink.title | escape }}
+                                </a>
+                              {%- else -%}
+                                <details id="Details-menu-drawer-submenu-{{ forloop.index }}">
+                                  <summary class="link text-secondary focus-inset">
+                                    {{ childlink.title | escape }}
+                                  </summary>
+                                  <div id="childlink-{{ childlink.title | escape | handle }}" class="motion-reduce">
+                                    <ul
+                                      class="list-dots mt-0.5 mb-0.5 mt-1--desk mb-1--desk text-primary"
+                                      role="list"
+                                      tabindex="-1"
+                                    >
+                                      {%- for grandchildlink in childlink.links -%}
+                                        <li class="mb-0.5">
+                                          <a
+                                            href="{{ grandchildlink.url }}"
+                                            class="d-block link text-secondary text-1.23 focus-inset"
+                                            {% if grandchildlink.current %}
+                                              aria-current="page"
+                                            {% endif %}
+                                          >
+                                            {{ grandchildlink.title | escape }}
+                                          </a>
+                                        </li>
+                                      {%- endfor -%}
+                                    </ul>
+                                  </div>
+                                </details>
+                              {%- endif -%}
+                            </li>
+                          {%- endfor -%}
+                        </ul>
+                      </div>
+                    </div>
+                  </details>
+                {%- else -%}
+                  <a
+                    href="{{ link.url }}"
+                    class="drawer__menu-item link focus-inset d-flex align-items-center font-light text-secondary text-2.3 font-header"
+                    {% if link.current %}
+                      aria-current="page"
+                    {% endif %}
+                  >
+                    {{- link.title | escape -}}
+                  </a>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+          <ul class="drawer__menu--secondary list-unstyled mt-3.5 text-1.54 lh-133" role="list">
+            {% if section.settings.menu_secondary != blank %}
+              {%- for link in section.settings.menu_secondary.links -%}
+                <li class="drawer__menu--secondary__item mb-0.5 mb-1--desk">
+                  <a
+                    href="{{ link.url }}"
+                    class="link focus-inset text-secondary"
+                    {% if link.current %}
+                      aria-current="page"
+                    {% endif %}
+                  >
+                    {{- link.title | escape -}}
+                  </a>
+                </li>
+              {% endfor %}
+            {% endif %}
+            {%- if shop.customer_accounts_enabled -%}
+              <li class="drawer__menu--secondary__item mb-0.5 mb-1--desk">
+                <a
+                  href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
+                  class="link focus-inset text-secondary"
+                  {% if link.current %}
+                    aria-current="page"
+                  {% endif %}
+                >
+                  {%- liquid
+                    if customer
+                      echo 'customer.account_fallback' | t
+                    else
+                      echo 'customer.log_in' | t
+                    endif
+                  -%}
+                </a>
+              </li>
+            {%- endif -%}
+
+            <li class="drawer__menu--secondary__item">
+              <a
+                href="{{ routes.search_url }}"
+                class="link focus-inset text-secondary"
+                {% if link.current %}
+                  aria-current="page"
+                {% endif %}
+              >
+                {{- 'search.search' | t -}}
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="drawer__utility-links py-2 d-flex align-items-baseline mt-auto">
+          <h4 class="text-primary mb-0 text-1.7">
+            <i>{{ section.settings.sidebar_footer_title | escape }}</i>
+          </h4>
+          <a
+            class="link link--with-icon font-medium"
+            {% if block.settings.button_link == blank %}
+              role="link" aria-disabled="true" href="{{ section.settings.sidebar_footer_url }}"
+            {% endif %}
+          >
+            {{ section.settings.sidebar_footer_label | escape }}
+            {%- render 'icon' with 'arrow-short', class: 'link__icon' -%}
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <button
+      class="drawer__overlay {% if settings.sidebar_grain != blank %}drawer--grain{% endif %} position-fixed no-js-hidden h-100 w-100"
+      tabindex="-1"
+    >
+      <span class="drawer__overlay__inner flex-center position-absolute text-1.6 font-medium">
+        <span class="link link--with-icon text-{{ settings.sidebar_overlay_text }}" tabindex="0">
+          {{- 'cart.continue_shopping' | t -}}
+          {%- render 'icon' with 'arrow-short', class: 'link__icon' -%}
+        </span>
+      </span>
+    </button>
+  </details>
+</header-drawer>

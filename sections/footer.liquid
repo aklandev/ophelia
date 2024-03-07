@@ -1,0 +1,322 @@
+{{ 'section-footer.css' | asset_url | stylesheet_tag }}
+
+<footer class="footer text-secondary">
+  <div class="page-width">
+    <div class="footer__top d-flex flex-wrap">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'newsletter' %}
+            <div class="footer__block footer__block--newsletter">
+              {% if block.settings.heading != blank %}
+                <h2 class="pr-4--desk">{{ block.settings.heading }}</h2>
+              {% endif %}
+
+              {%- form 'customer', id: 'ContactFooter', class: 'newsletter-form mt-2.5--desk' -%}
+                <input type="hidden" name="contact[tags]" value="newsletter">
+                <div class="newsletter-form__field-wrapper position-relative">
+                  <div class="field">
+                    <label class="visually-hidden" for="NewsletterForm--{{ section.id }}">
+                      {{ 'newsletter.label' | t }}
+                    </label>
+                    <input
+                      id="NewsletterForm--{{ section.id }}"
+                      type="email"
+                      name="contact[email]"
+                      class="field__input pr-5 pr-8--desk"
+                      value="{{ form.email }}"
+                      aria-required="true"
+                      autocorrect="off"
+                      autocapitalize="off"
+                      autocomplete="email"
+                      {% if form.errors %}
+                        autofocus
+                        aria-invalid="true"
+                        aria-describedby="ContactFooter-error"
+                      {% elsif form.posted_successfully? %}
+                        aria-describedby="ContactFooter-success"
+                      {% endif %}
+                      placeholder="{{ block.settings.placeholder }}"
+                      required
+                    >
+                    <button
+                      type="submit"
+                      class="newsletter-form__button field__button link link--with-icon"
+                      name="commit"
+                      id="Subscribe"
+                      aria-label="{{ 'newsletter.button_label' | t }}"
+                    >
+                      {% render 'icon' with 'arrow', class: 'link__icon' %}
+                    </button>
+                  </div>
+                  {%- if form.errors -%}
+                    <small id="ContactFooter-error">
+                      {{- form.errors.translated_fields.email | capitalize }}
+                      {{ form.errors.messages.email -}}
+                    </small>
+                  {%- endif -%}
+                </div>
+                {%- if form.posted_successfully? -%}
+                  <h3 id="ContactFooter-success" tabindex="-1" autofocus>{{ 'newsletter.success' | t }}</h3>
+                {%- endif -%}
+              {%- endform -%}
+            </div>
+          {% when 'link_list' %}
+            <div class="footer__block footer__block--menu d-flex">
+              <ul class="footer__list list-unstyled text-2--desk lh-150 lh-125--desk">
+                {% for link in block.settings.menu.links %}
+                  <li>
+                    <a href="{{ link.url }}">{{ link.title }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+
+              {% if block.settings['menu-secondary'].links %}
+                <ul class="footer__list list-unstyled text-2--desk lh-150 lh-125--desk">
+                  {% for link in block.settings['menu-secondary'].links %}
+                    <li>
+                      <a href="{{ link.url }}">{{ link.title }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+        {% endcase %}
+      {% endfor %}
+    </div>
+    <div class="footer__bottom d-flex">
+      {%- if section.settings.enable_copyrights -%}
+        <div class="footer__copyright small-hide mb-2 text-0.92 text-1.23--desk lh-125 lh-150--desk">
+          <p>
+            &copy; {{ 'now' | date: '%Y' }}, {{ shop.name | link_to: routes.root_url }} -
+            {{ section.settings.copyrights_editable }}
+            {{ powered_by_link }}
+          </p>
+        </div>
+      {%- endif -%}
+
+      <div class="d-flex flex-wrap ml-auto">
+        {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
+          <div class="footer__bottom__select-wrapper ml-3.5--desk mr-2.5 mr-0--desk mb-2">
+            <localization-form>
+              {% form 'localization' %}
+                <div class="select">
+                  <button
+                    type="button"
+                    class="select__select localization-selector link"
+                    aria-expanded="false"
+                    aria-controls="CountryList"
+                  >
+                    {{ localization.country.name }} ({{ localization.country.currency.iso_code }}
+                    {{ localization.country.currency.symbol }})
+
+                    {%- render 'icon' with 'chevron' -%}
+                  </button>
+
+                  <ul id="CountryList" role="list" class="disclosure__list list-unstyled" hidden>
+                    {% for country in localization.available_countries %}
+                      <li class="disclosure__item" tabindex="-1">
+                        <a
+                          class="link link--text disclosure__link caption-large{% if country.iso_code == localization.country.iso_code %} disclosure__link--active{% endif %} focus-inset"
+                          href="#"
+                          {% if country.iso_code == localization.country.iso_code %}
+                            aria-current="true"
+                          {% endif %}
+                          data-value="{{ country.iso_code }}"
+                        >
+                          {{ country.name }} ({{ country.currency.iso_code }}
+                          {{ country.currency.symbol }})
+                        </a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+
+                  <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
+                </div>
+              {% endform %}
+            </localization-form>
+          </div>
+        {% endif %}
+
+        {%- if section.settings.enable_copyrights -%}
+          <div class="footer__copyright medium-hide large-up-hide w-100 mb-2 text-0.92 text-1.23--desk lh-125 lh-150--desk">
+            <p>
+              &copy; {{ 'now' | date: '%Y' }}, {{ shop.name | link_to: routes.root_url }} -
+              {{ section.settings.copyrights_editable }}
+              {{ powered_by_link }}
+            </p>
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.payment_enable -%}
+          <div class="footer__payment ml-3.5--desk mb-2">
+            <span class="visually-hidden">{{ 'sections.footer.payment' | t }}</span>
+            <ul class="list-unstyled" role="list">
+              {%- for type in shop.enabled_payment_types -%}
+                <li class="d-inline-block">
+                  {{ type | payment_type_svg_tag: class: 'icon' }}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  class LocalizationForm extends HTMLElement {
+    constructor() {
+      super();
+      this.elements = {
+        input: this.querySelector('input[name="language_code"], input[name="country_code"]'),
+        button: this.querySelector('button'),
+        panel: this.querySelector('ul'),
+      };
+      this.elements.button.addEventListener('click', this.openSelector.bind(this));
+      this.elements.button.addEventListener('focusout', this.closeSelector.bind(this));
+      this.addEventListener('keyup', this.onContainerKeyUp.bind(this));
+
+      this.querySelectorAll('a').forEach((item) => item.addEventListener('click', this.onItemClick.bind(this)));
+    }
+
+    hidePanel() {
+      this.elements.button.setAttribute('aria-expanded', 'false');
+      this.elements.panel.setAttribute('hidden', true);
+    }
+
+    onContainerKeyUp(event) {
+      if (event.code.toUpperCase() !== 'ESCAPE') return;
+
+      this.hidePanel();
+      this.elements.button.focus();
+    }
+
+    onItemClick(event) {
+      event.preventDefault();
+      const form = this.querySelector('form');
+      this.elements.input.value = event.currentTarget.dataset.value;
+      if (form) form.submit();
+    }
+
+    openSelector() {
+      this.elements.button.focus();
+      this.elements.panel.toggleAttribute('hidden');
+      this.elements.button.setAttribute(
+        'aria-expanded',
+        (this.elements.button.getAttribute('aria-expanded') === 'false').toString()
+      );
+    }
+
+    closeSelector(event) {
+      const shouldClose = event.relatedTarget && event.relatedTarget.nodeName === 'BUTTON';
+      if (event.relatedTarget === null || shouldClose) {
+        this.hidePanel();
+      }
+    }
+  }
+
+  customElements.define('localization-form', LocalizationForm);
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.footer.name",
+  "blocks": [
+    {
+      "type": "link_list",
+      "name": "t:sections.footer.blocks.link_list.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "link_list",
+          "id": "menu",
+          "default": "main-menu",
+          "label": "t:sections.footer.blocks.link_list.settings.primary_menu.label",
+          "info": "t:sections.footer.blocks.link_list.settings.primary_menu.info"
+        },
+        {
+          "type": "link_list",
+          "id": "menu-secondary",
+          "default": "footer",
+          "label": "t:sections.footer.blocks.link_list.settings.secondary_menu.label",
+          "info": "t:sections.footer.blocks.link_list.settings.secondary_menu.info"
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "t:sections.footer.blocks.newsletter.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "t:sections.footer.settings.header_1.content",
+          "info": "t:sections.footer.settings.header_1.info"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Heading",
+          "label": "t:sections.footer.blocks.newsletter.settings.heading.label"
+        },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "t:sections.footer.blocks.newsletter.settings.placeholder.label",
+          "default": "your@email.com"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.footer.settings.header_3.content",
+      "info": "t:sections.footer.settings.header_4.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_country_selector",
+      "default": true,
+      "label": "t:sections.footer.settings.enable_country_selector.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.settings.header__7.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "payment_enable",
+      "default": true,
+      "label": "t:sections.footer.settings.payment_enable.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.settings.header__8.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_copyrights",
+      "default": true,
+      "label": "t:sections.footer.settings.enable_copyrights.label"
+    },
+    {
+      "type": "text",
+      "id": "copyrights_editable",
+      "label": "t:sections.footer.settings.copyrights_editable.label",
+      "default": "All rights reserved."
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "newsletter"
+      },
+      {
+        "type": "link_list"
+      }
+    ]
+  }
+}
+{% endschema %}

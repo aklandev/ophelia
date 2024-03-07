@@ -1,0 +1,37 @@
+{
+  "sections": {
+    "collection-template": {
+      "type": "main-collection",
+      "blocks": {
+        "f11a2d20-0928-4eec-8737-aacb30e68ee0": {
+          "type": "review",
+          "settings": {
+            "review_position": 4,
+            "review_content": "<p><em>My skin feels tremendously better since I started using Ophélia night cream.<\/em><\/p>",
+            "review_author": "Julie, 28",
+            "review_avatar": "shopify:\/\/shop_images\/model-cream-3.jpg",
+            "review_grain": "shopify:\/\/shop_images\/grain_2_e096af63-4b7c-420a-9c9c-4dd8c03f8522.png"
+          }
+        }
+      },
+      "block_order": [
+        "f11a2d20-0928-4eec-8737-aacb30e68ee0"
+      ],
+      "settings": {
+        "show_collection_image": true,
+        "show_ellipse": true,
+        "show_collection_description": true,
+        "enable_filtering": true,
+        "enable_sorting": true,
+        "sidebar_menu": "main-menu",
+        "products_per_page": 6,
+        "page_title": "<p><em>Skincare<\/em> <br\/>au naturel<\/p>",
+        "page_description": "<p>The ever-important connection between cleansing and hydrating, our products balance skin to ensure it derives maximum benefits from hydration.<\/p>",
+        "page_collection": ""
+      }
+    }
+  },
+  "order": [
+    "collection-template"
+  ]
+}

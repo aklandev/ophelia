@@ -1,0 +1,110 @@
+@import "partials/product-rating";
+
+.card {
+  display: block;
+  overflow: hidden;
+  text-decoration: none;
+
+  margin-bottom: 1.3rem;
+  @include media-breakpoint-up(md) {
+    margin-bottom: 3.5rem;
+  }
+
+  .icon--star {
+    @include media-breakpoint-down(sm) {
+      width: 11px;
+    }
+  }
+  &__badge {
+    top: 0.7rem;
+    right: 0.7rem;
+    font-size: 0.77rem;
+
+    @include media-breakpoint-up(md) {
+      top: 1.8rem;
+      right: 1.8rem;
+      font-size: 1.25rem;
+    }
+  }
+  &__rating {
+    top: 0.7rem;
+    left: 0.7rem;
+    font-size: 0.77rem;
+    height: 13px;
+
+    span + span {
+      padding-left: 2px;
+      padding-top: 1px;
+    }
+
+    @include media-breakpoint-up(md) {
+      top: 1.75rem;
+      left: 1.8rem;
+      font-size: 1.25rem;
+
+      height: auto;
+
+      span + span {
+        padding-left: 7px;
+      }
+    }
+  }
+}
+
+.card-information {
+  > * + * {
+    margin-top: 0.5rem;
+  }
+  &__wrapper {
+    @include media-breakpoint-down(sm) {
+      font-size: 0.95rem;
+    }
+    > .rating {
+      margin-top: 0.4rem;
+    }
+    > *:not(.visually-hidden:first-child) + *:not(.rating):not(.price) {
+      margin-top: 0.35rem;
+    }
+
+    .price {
+      margin-top: 1.2rem;
+      @include media-breakpoint-down(sm) {
+        font-size: 1.1rem;
+      }
+    }
+  }
+  &__text {
+    color: inherit;
+
+    font-size: 1.385rem;
+    line-height: 111%;
+
+    @include media-breakpoint-up(md) {
+      font-size: 2.615rem;
+      line-height: 2.615rem;
+    }
+
+    &__subtitle {
+      font-size: 0.92rem;
+      @include media-breakpoint-up(md) {
+        font-size: inherit;
+      }
+    }
+  }
+}
+.card-wrapper {
+  color: c_rgb(var(--color-primary));
+  @include media-breakpoint-up(md) {
+    &:hover {
+      color: c_rgb(var(--color-secondary));
+      .card-information__text {
+        font-style: italic;
+      }
+    }
+  }
+  &.placeholder {
+    .media {
+      padding-bottom: 100%;
+    }
+  }
+}
